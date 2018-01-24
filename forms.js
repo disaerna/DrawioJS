@@ -63,5 +63,6 @@ function Text(){
 var rect = new Rectangle(400, 400);
 var circle = new Circle(1000);
 var rectNumbers = rect.getNumbers();
+
 console.log(rectNumbers);
-console.log(circle.getCircumference());
+
