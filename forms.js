@@ -18,8 +18,8 @@ Rectangle.prototype.constructor = Rectangle;
 
 // Constructor
 function Rectangle(x, y){
-    this.x = x;
-    this.y = y;
+    this.xOrigin = x;
+    this.yOrigin = y;
     this.height = 0;
     this.width = 0;
     Form.call(this, 'rectancle')
@@ -28,15 +28,16 @@ function Rectangle(x, y){
 // Prototypes
 Rectangle.prototype.getData = function(){
     return {
+        xOrigin: this.xOrigin,
+        yOrigin: this.yOrigin,
         height: this.height, 
         width: this.width,
-        area: this.height * this.width,
     };
 }
 
-Rectangle.prototype.configure = function(x, y, height, width){
-    this.x = x;
-    this.y = y;
+Rectangle.prototype.configure = function(xOrigin, yOrigin, height, width){
+    this.xOrigin = xOrigin;
+    this.yOrigin = yOrigin;
     this.height = height;
     this.width = width;
 }

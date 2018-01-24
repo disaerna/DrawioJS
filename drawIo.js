@@ -1,47 +1,53 @@
 /**
- * inspired by: http://atomicrobotdesign.com/blog/javascript/draw-a-rectangle-using-the-mouse-on-the-canvas-in-less-than-40-lines-of-javascript/
+ * code written with support from: http://atomicrobotdesign.com/blog/javascript/draw-a-rectangle-using-the-mouse-on-the-canvas-in-less-than-40-lines-of-javascript/
  */
 $(document).ready(function(){
-    
+    var shapes = []
+
     $("#toolbar").on("mouseover", function(){
         var drawing = false;
-        var c = document.getElementById("myCanvas");
-        var ctx = c.getContext("2d");
-        var x;
-        var y;
+        var canvas = document.getElementById("myCanvas");
+        var ctx = canvas.getContext('2d');
+        var firstMouseX = 0;
+        var firstMouseY = 0;
+        var mouseX = 0;
+        var mouseY = 0;
+        rect = {}
+        
         $("#rectangle").on("click", function(){
-            rectangle  = new Rectangle(x, y);
+            console.log(ctx);
             $("#myCanvas").on("mousedown", mouseDown);
             $("#myCanvas").on("mousemove", mouseMove);
             $("#myCanvas").on("mouseup", mouseUp);
-    
+            
             function mouseDown(event){
-                x = event.pageX - this.offsetTop;
-                y = event.pageY - this.offsetLeft;
+                rect.startX = event.pageX - this.offsetLeft;
+                rect.startY = event.pageY - this.offsetTop;
+                // rectangle  = new Rectangle(rect.startX, rect.startY);
                 drawing = true;
             }
             
             function mouseMove(event){
-                // koma i veg fyrir ad þegar dregið er tilbaka í ranga átt 
-                // að kassinn verði deformed
                 if(drawing){    
-                    width = (event.pageX - this.offsetTop) - x;
-                    height = (event.pageY - this.offsetLeft) - y;
-                    // clear the rectangle created by fillRect and replace with our rectangle
-                    // so it can be manipulated later
-                    ctx.fillRect(x, y, width, height);
-                    rectangle.configure(x, y, height, width);
+                    // need to fix issue with how the rectangle is shaped
+                    rect.width = (event.pageX - this.offsetLeft) - rect.startX;
+                    rect.height = (event.pageX - this.offsetTop) - rect.startY;
+                    // clears board all the time, need to create function
+                    // to print out all shapes in array each time
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    ctx.fillRect(rect.startX, rect.startY, rect.width, rect.height);
+                    // rectangle.configure(Math.abs(rect.height), Math.abs(rect.width));
                 }
             }
             
             function mouseUp(event){
                 drawing = false;
+                // update the rectangle
+                // push rectangle to array of shapes and display on the canvas
+                // ctx.fillRect(rect.startX, rect.startY, rect.width, rect.height);
+                // shapes.push(rectangle);
             }
-            $("#test").on("click", function(){
-                // Just a test to see that the rectangle gets saved
-                console.log(rectangle)
-                /ctx.fillRect(0, 0, rectangle.getData().width, rectangle.getData().height)
-            });
+
         });
 
     })
@@ -49,12 +55,12 @@ $(document).ready(function(){
 
 });
 
-var c = document.getElementById("myCanvas");
-var ctx = c.getContext("2d");
+var canvas = document.getElementById("myCanvas");
+var ctx = canvas.getContext("2d");
 ctx.moveTo(0,0);
 ctx.lineTo(200,100);
 ctx.stroke();
-c.addEventListener('mousemove', ev_mousemove, false);
+canvas.addEventListener('mousemove', ev_mousemove, false);
 
 var started = false;
 
