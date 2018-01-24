@@ -41,3 +41,18 @@ var ctx = c.getContext("2d");
 ctx.moveTo(0,0);
 ctx.lineTo(200,100);
 ctx.stroke();
+c.addEventListener('mousemove', ev_mousemove, false);
+
+var started = false;
+
+function ev_mousemove(ev) {
+    var x, y;
+    if(!started) {
+        ctx.beginPath();
+        ctx.moveTo(x,y);
+        started = true;
+    } else {
+        ctx.lineTo(x,y);
+        ctx.stroke();
+    }
+}
