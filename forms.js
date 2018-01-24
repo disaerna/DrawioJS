@@ -17,21 +17,33 @@ Rectangle.prototype = Object.create(Form.prototype);
 Rectangle.prototype.constructor = Rectangle;
 
 // Constructor
-function Rectangle(height, width){
+function Rectangle(x, y){
+    this.x = x;
+    this.y = y;
+    this.height = 0;
+    this.width = 0;
     Form.call(this, 'rectancle')
-    this.height = height;
-    this.width = width;
-    this.area = this.width * this.height;
-}
 
+}
 // Prototypes
-Rectangle.prototype.getNumbers = function(){
+Rectangle.prototype.getData = function(){
     return {
         height: this.height, 
         width: this.width,
         area: this.height * this.width,
     };
 }
+
+Rectangle.prototype.configure = function(x, y, height, width){
+    this.x = x;
+    this.y = y;
+    this.height = height;
+    this.width = width;
+}
+
+
+
+
 // CIRCLE
 
 Circle.prototype = Object.create(Form.prototype);
@@ -60,9 +72,4 @@ function Text(){
     Form.call(this, 'text')
 }
 
-var rect = new Rectangle(400, 400);
-var circle = new Circle(1000);
-var rectNumbers = rect.getNumbers();
-
-console.log(rectNumbers);
 
