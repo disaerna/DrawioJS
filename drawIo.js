@@ -7,64 +7,59 @@ $(document).ready(function(){
     var ctx = canvas.getContext('2d');
     var drawing = false;
 
-    $("#toolbar").on("mouseover", function(){
+
+    $("#rectangle").on("click", function(){
+        $("#myCanvas").on("mousedown", mouseDown);
+        $("#myCanvas").on("mousemove", mouseMove);
+        $("#myCanvas").on("mouseup", mouseUp);
+        var rect = {}
+        function mouseDown(event){
+            console.log(event)
+            mousePos = getMouseCoordinates(this, event);
+            rect.startX = mousePos.xPos;
+            rect.startY = mousePos.yPos;
+            drawing = true;
+        }
         
-        $("#rectangle").on("click", function(){
-            // console.log(ctx);
-            $("#myCanvas").on("mousedown", mouseDown);
-            $("#myCanvas").on("mousemove", mouseMove);
-            $("#myCanvas").on("mouseup", mouseUp);
-            var rect = {}
-            function mouseDown(event){
-                console.log(event)
+        function mouseMove(event){
+            if(drawing){    
+                // create the width and height of the rectangle by getting the new mouse cooirdinates and
+                // subtracting the initial.
                 mousePos = getMouseCoordinates(this, event);
-                rect.startX = mousePos.xPos;
-                rect.startY = mousePos.yPos;
-                drawing = true;
+                rect.width = mousePos.xPos - rect.startX;
+                rect.height = mousePos.yPos - rect.startY;
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                printShapes();
+                ctx.fillRect(rect.startX, rect.startY, rect.width, rect.height);
             }
-            
-            function mouseMove(event){
-                if(drawing){    
-                    // create the width and height of the rectangle by getting the new mouse cooirdinates and
-                    // subtracting the initial.
-                    mousePos = getMouseCoordinates(this, event);
-                    rect.width = mousePos.xPos - rect.startX;
-                    rect.height = mousePos.yPos - rect.startY;
-                    ctx.clearRect(0, 0, canvas.width, canvas.height);
-                    printShapes();
-                    ctx.fillRect(rect.startX, rect.startY, rect.width, rect.height);
+        }
+        
+        function mouseUp(event){
+            drawing = false;
+            var rectangle = new Rectangle(rect.startX, rect.startY, rect.width, rect.height);
+            console.log(rectangle);
+            shapes.push(rectangle);
+        }
+
+        //Get mouse coordinates within canvas, using the offset of the canvas and the page to subtract
+        function getMouseCoordinates(canvas, event){
+            return {
+                xPos: event.pageX - canvas.offsetLeft,
+                yPos: event.pageY - canvas.offsetTop,
+            }
+        }
+
+        function printShapes(){
+            shapes.forEach(shape => {
+                if(shape.getType() === 'rectangle'){
+                    var data = shape.getData();
+                    console.log(data);
+                    ctx.fillRect(data.xPos, data.yPos, data.width, data.height);
                 }
-            }
-            
-            function mouseUp(event){
-                drawing = false;
-                var rectangle = new Rectangle(rect.startX, rect.startY, rect.width, rect.height);
-                console.log(rectangle);
-                shapes.push(rectangle);
-            }
+            });
+        }
 
-            //Get mouse coordinates within canvas, using the offset of the canvas and the page to subtract
-            function getMouseCoordinates(canvas, event){
-                return {
-                    xPos: event.pageX - canvas.offsetLeft,
-                    yPos: event.pageY - canvas.offsetTop,
-                }
-            }
-
-            function printShapes(){
-                shapes.forEach(shape => {
-                    if(shape.getType() === 'rectangle'){
-                        var data = shape.getData();
-                        console.log(data);
-                        ctx.fillRect(data.xPos, data.yPos, data.width, data.height);
-                    }
-                });
-            }
-
-        });
-
-    })
-
+    });
 
 });
 
