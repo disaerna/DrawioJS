@@ -7,7 +7,7 @@ function Form(type){
 
 // Prototypes
 Form.prototype.getType = function(){
-    console.log(this.type);
+    return this.type;
 }
 
 // RECTANGLE
@@ -17,31 +17,30 @@ Rectangle.prototype = Object.create(Form.prototype);
 Rectangle.prototype.constructor = Rectangle;
 
 // Constructor
-function Rectangle(x, y){
-    this.xOrigin = x;
-    this.yOrigin = y;
-    this.height = 0;
-    this.width = 0;
-    Form.call(this, 'rectancle')
+function Rectangle(xPos, yPos, width, height){
+    Form.call(this, 'rectangle')
+    this.xPos = xPos;
+    this.yPos = yPos;
+    this.width = width;
+    this.height = height;
 
 }
 // Prototypes
 Rectangle.prototype.getData = function(){
     return {
-        xOrigin: this.xOrigin,
-        yOrigin: this.yOrigin,
-        height: this.height, 
+        xPos: this.xPos,
+        yPos: this.yPos,
         width: this.width,
+        height: this.height, 
     };
 }
 
-Rectangle.prototype.configure = function(xOrigin, yOrigin, height, width){
-    this.xOrigin = xOrigin;
-    this.yOrigin = yOrigin;
-    this.height = height;
-    this.width = width;
+Rectangle.prototype.configure = function(xPos, yPos, width, height){
+    if(xPos) this.xOrigin = xOrigin;
+    if(yPos) this.yOrigin = yOrigin;
+    if(width) this.width = width;
+    if(height) this.height = height;
 }
-
 
 
 

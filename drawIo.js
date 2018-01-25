@@ -3,49 +3,62 @@
  */
 $(document).ready(function(){
     var shapes = []
+    var canvas = document.getElementById("myCanvas");
+    var ctx = canvas.getContext('2d');
+    var drawing = false;
 
     $("#toolbar").on("mouseover", function(){
-        var drawing = false;
-        var canvas = document.getElementById("myCanvas");
-        var ctx = canvas.getContext('2d');
-        var firstMouseX = 0;
-        var firstMouseY = 0;
-        var mouseX = 0;
-        var mouseY = 0;
-        rect = {}
         
         $("#rectangle").on("click", function(){
-            console.log(ctx);
+            // console.log(ctx);
             $("#myCanvas").on("mousedown", mouseDown);
             $("#myCanvas").on("mousemove", mouseMove);
             $("#myCanvas").on("mouseup", mouseUp);
-            
+            var rect = {}
             function mouseDown(event){
-                rect.startX = event.pageX - this.offsetLeft;
-                rect.startY = event.pageY - this.offsetTop;
-                // rectangle  = new Rectangle(rect.startX, rect.startY);
+                console.log(event)
+                mousePos = getMouseCoordinates(this, event);
+                rect.startX = mousePos.xPos;
+                rect.startY = mousePos.yPos;
                 drawing = true;
             }
             
             function mouseMove(event){
                 if(drawing){    
-                    // need to fix issue with how the rectangle is shaped
-                    rect.width = (event.pageX - this.offsetLeft) - rect.startX;
-                    rect.height = (event.pageX - this.offsetTop) - rect.startY;
-                    // clears board all the time, need to create function
-                    // to print out all shapes in array each time
+                    // create the width and height of the rectangle by getting the new mouse cooirdinates and
+                    // subtracting the initial.
+                    mousePos = getMouseCoordinates(this, event);
+                    rect.width = mousePos.xPos - rect.startX;
+                    rect.height = mousePos.yPos - rect.startY;
                     ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    printShapes();
                     ctx.fillRect(rect.startX, rect.startY, rect.width, rect.height);
-                    // rectangle.configure(Math.abs(rect.height), Math.abs(rect.width));
                 }
             }
             
             function mouseUp(event){
                 drawing = false;
-                // update the rectangle
-                // push rectangle to array of shapes and display on the canvas
-                // ctx.fillRect(rect.startX, rect.startY, rect.width, rect.height);
-                // shapes.push(rectangle);
+                var rectangle = new Rectangle(rect.startX, rect.startY, rect.width, rect.height);
+                console.log(rectangle);
+                shapes.push(rectangle);
+            }
+
+            //Get mouse coordinates within canvas, using the offset of the canvas and the page to subtract
+            function getMouseCoordinates(canvas, event){
+                return {
+                    xPos: event.pageX - canvas.offsetLeft,
+                    yPos: event.pageY - canvas.offsetTop,
+                }
+            }
+
+            function printShapes(){
+                shapes.forEach(shape => {
+                    if(shape.getType() === 'rectangle'){
+                        var data = shape.getData();
+                        console.log(data);
+                        ctx.fillRect(data.xPos, data.yPos, data.width, data.height);
+                    }
+                });
             }
 
         });
