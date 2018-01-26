@@ -4,10 +4,14 @@
 $(document).ready(function(){
     let canvas = new Canvas();
 
-    $(".tool").on("click", function(event){
+    $(".shape").on("click", function(event){
         //retrieve the id of the current event and pass to canvas.draw()
         canvas.draw(event.currentTarget.id);
     });
+
+    $(".tool").on("click", function(event){
+        console.log(event.currentTarget.id);
+    })
 
 });
 
