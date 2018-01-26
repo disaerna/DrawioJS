@@ -42,24 +42,30 @@ $(document).ready(function(){
         }
 
         //Get mouse coordinates within canvas, using the offset of the canvas and the page to subtract
-        function getMouseCoordinates(canvas, event){
-            return {
-                xPos: event.pageX - canvas.offsetLeft,
-                yPos: event.pageY - canvas.offsetTop,
-            }
-        }
-
-        function printShapes(){
-            shapes.forEach(shape => {
-                if(shape.getType() === 'rectangle'){
-                    var data = shape.getData();
-                    console.log(data);
-                    ctx.fillRect(data.xPos, data.yPos, data.width, data.height);
-                }
-            });
-        }
-
+        
+        
     });
+
+
+    $("#circle").on("click", function(){
+        
+    });
+    function getMouseCoordinates(canvas, event){
+        return {
+            xPos: event.pageX - canvas.offsetLeft,
+            yPos: event.pageY - canvas.offsetTop,
+        }
+    }
+
+    function printShapes(){
+        shapes.forEach(shape => {
+            if(shape.getType() === 'rectangle'){
+                var data = shape.getData();
+                console.log(data);
+                ctx.fillRect(data.xPos, data.yPos, data.width, data.height);
+            }
+        });
+    }
 
 });
 
