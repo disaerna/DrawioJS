@@ -1,6 +1,7 @@
 // Constructor
-function Form(type){
+function Form(type, id){
     this.type = type;
+    this.id = id
 }
 
 // Prototypes

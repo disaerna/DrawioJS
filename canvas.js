@@ -1,9 +1,12 @@
 function Canvas(){
     this.shapes = []
+    this.undone = []
     this.currentShape;
     this.canvas = document.getElementById("canvas");
     this.ctx = canvas.getContext('2d');
     this.drawing = false;
+    //generate unique id for shapes for when moving them
+    this.id = 1;
 }
 
 /**
@@ -92,13 +95,33 @@ Canvas.prototype.drawShape = function(canvas, event){
         mousePos = this.getMouseCoordinates(canvas, event);
         this.currentShape.width = mousePos.xPos - this.currentShape.xPos;
         this.currentShape.height = mousePos.yPos - this.currentShape.yPos;
-        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         // every drawn element has to constantly print the previous drawn
         // shapes to be able to draw the current shape in right proportions
-        this.printShapes();
+        this.loadContent();
         this.ctx.fillRect(this.currentShape.xPos, this.currentShape.yPos, this.currentShape.width, this.currentShape.height);
     }
     if(this.currentShape instanceof Circle){
         // draw a circle
     }
+}
+
+Canvas.prototype.undo = function(){
+    if(this.shapes.length > 0){
+        var shape = this.shapes.pop();
+        this.undone.push(shape);
+        this.loadContent();
+    }
+}
+
+Canvas.prototype.redo = function(){
+    if(this.undone.length > 0){
+        var shape = this.undone.pop();
+        this.shapes.push(shape);
+        this.loadContent();
+    }
+}
+
+Canvas.prototype.loadContent = function(){
+    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    this.printShapes();
 }

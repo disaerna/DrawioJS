@@ -10,8 +10,16 @@ $(document).ready(function(){
     });
 
     $(".tool").on("click", function(event){
-        console.log(event.currentTarget.id);
+        var request = event.currentTarget.id;
+        if(request === 'undo'){
+            canvas.undo();
+            //perform undo
+        }
+        if(request === 'redo'){
+            //perform redo
+            canvas.redo();
+        }
     })
-
+    
 });
 
