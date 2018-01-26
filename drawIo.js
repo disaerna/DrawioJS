@@ -19,7 +19,16 @@ $(document).ready(function(){
             //perform redo
             canvas.redo();
         }
+        
     })
+
+    $("#fillColor").on("change", function(event){
+        canvas.fillColor = document.getElementById("fillColor").value;
+    });
+    $("#strokeColor").on("change", function(event){
+        canvas.strokeColor = document.getElementById("strokeColor").value;
+    }); 
+
     
 });
 
