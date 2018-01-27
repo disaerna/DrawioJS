@@ -40,6 +40,7 @@ Canvas.prototype.draw = function(requestedShape){
         console.log(canvas.currentShape);
         canvas.drawing = false;
         canvas.shapes.push(canvas.currentShape);
+        debugger;
     }
 }
 
@@ -59,7 +60,12 @@ Canvas.prototype.initShape = function(canvas, event, shape){
     }
     if(shape === 'circle'){
         // initialize a circle 
-        this.currentShape = new Circle();
+        this.currentShape = new Circle(this.id, this.fillColor);
+        mousePos = this.getMouseCoordinates(canvas, event);
+        this.currentShape.xPos = mousePos.xPos;
+        this.currentShape.yPos = mousePos.yPos;
+        this.currentShape.radius = 0;
+        this.id += 1;
         console.log(this.currentShape);
 
     }
@@ -71,22 +77,32 @@ Canvas.prototype.initShape = function(canvas, event, shape){
  * @param {an event} event 
  */
 Canvas.prototype.createShape = function(canvas, event){
+    mousePos = this.getMouseCoordinates(canvas, event);
+     // every drawn element has to constantly print the previous drawn
+    // shapes to be able to draw the current shape in right proportions
+    this.loadContent();
     if(this.currentShape instanceof Rectangle){
         mousePos = this.getMouseCoordinates(canvas, event);
         this.currentShape.width = mousePos.xPos - this.currentShape.xPos;
         this.currentShape.height = mousePos.yPos - this.currentShape.yPos;
-        // every drawn element has to constantly print the previous drawn
-        // shapes to be able to draw the current shape in right proportions
-        this.loadContent();
         this.ctx.fillStyle = this.fillColor;
         this.ctx.fillRect(this.currentShape.xPos, this.currentShape.yPos, this.currentShape.width, this.currentShape.height);
     }
     if(this.currentShape instanceof Circle){
         // draw a circle
+        mousePos = this.getMouseCoordinates(canvas, event);
+        //this.currentShape.radius = Math.abs(this.currentShape.xPos - mousePos.xPos)/2;
+        this.ctx.beginPath();
+        this.ctx.arc(this.currentShape.xPos, this.currentShape.yPos, Math.sqrt(Math.pow((this.currentShape.xPos - mousePos.xPos),2) + Math.pow((this.currentShape.yPos - mousePos.yPos), 2)), 0, 100);
+        if(this.currentShape.fill){
+            this.ctx.fill();
+        }
+        this.ctx.stroke();
     }
 }
 
 Canvas.prototype.undo = function(){
+    debugger;
     if(this.shapes.length > 0){
         var shape = this.shapes.pop();
         this.undone.push(shape);
@@ -126,6 +142,10 @@ Canvas.prototype.printShapes = function(){
             console.log(shape.fillColor);
             this.ctx.fillStyle = shape.fillColor;
             this.ctx.fillRect(shape.xPos, shape.yPos, shape.width, shape.height);
+        }
+        if(shape instanceof Circle){
+            this.ctx.fillStyle = shape.fillColor;
+            this.ctx.arc(shape.xPos, shape.yPos, shape.radius, 0, Math.PI * 2)
         }
     }
 }

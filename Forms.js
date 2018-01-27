@@ -35,11 +35,12 @@ function Rectangle(id, fillColor){
 Circle.prototype = Object.create(Form.prototype);
 Circle.prototype.constructor = Circle;
 
-function Circle(){
-    Form.call(this, 'circle')
-    this.diameter = 0;
-    this.radius = this.diameter / 2;
-    this.circumference = 2 * Math.PI * this.radius;
+function Circle(id, fillColor){
+    Form.call(this, 'circle', id, fillColor)
+    this.xPos = 0;
+    this.yPos = 0;
+    this.radius = 0;
+    this.circumference = 2 * Math.PI;
 }
 
 Circle.prototype.test = function(){
