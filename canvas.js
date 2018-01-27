@@ -68,7 +68,15 @@ Canvas.prototype.initShape = function(canvas, event, shape){
         this.currentShape.yPos = mousePos.yPos;
         this.currentShape.radius = 0;
         this.id += 1;
-
+    }
+    if(shape === 'line'){
+        this.currentShape = new Line(this.id, this.fillColor);
+        mousePos = this.getMouseCoordinates(canvas, event);
+        this.currentShape.xStartPos = mousePos.xPos;
+        this.currentShape.yStartPos = mousePos.yPos;
+        this.currentShape.xEndPos = mousePos.xPos;
+        this.currentShape.yEndPos = mousePos.yPos;
+        this.id += 1;
     }
 }
 
@@ -97,7 +105,17 @@ Canvas.prototype.createShape = function(canvas, event){
         this.currentShape.radius =  Math.sqrt(Math.pow((this.currentShape.xPos - mousePos.xPos),2) + Math.pow((this.currentShape.yPos - mousePos.yPos), 2));
         this.ctx.arc(this.currentShape.xPos, this.currentShape.yPos, this.currentShape.radius, 0, 100);
         this.ctx.fill()
+        //this.ctx.stroke();
+    }
+    if(this.currentShape instanceof Line){
+        mousePos = this.getMouseCoordinates(canvas, event);
+        this.ctx.beginPath();
+        this.ctx.moveTo(mousePos.xPos, mousePos.yPos);
+        this.ctx.lineTo(this.currentShape.xStartPos, this.currentShape.yStartPos);
+        this.ctx.strokeStyle = this.fillColor;
         this.ctx.stroke();
+        this.currentShape.xEndPos = mousePos.xPos;
+        this.currentShape.yEndPos = mousePos.yPos;
     }
 }
 
@@ -148,6 +166,13 @@ Canvas.prototype.printShapes = function(){
             this.ctx.arc(shape.xPos, shape.yPos, shape.radius, 0, Math.PI * 2)        
             // this.ctx.stroke();
             this.ctx.fill();
+        }
+        if(shape instanceof Line){
+            this.ctx.beginPath();
+            this.ctx.moveTo(shape.xStartPos, shape.yStartPos);
+            this.ctx.lineTo(shape.xEndPos, shape.yEndPos);
+            this.ctx.strokeStyle = shape.fillColor;
+            this.ctx.stroke();
         }
     }
 }

@@ -35,7 +35,7 @@ Circle.prototype = Object.create(Form.prototype);
 Circle.prototype.constructor = Circle;
 
 function Circle(id, fillColor){
-    Form.call(this, 'circle', id, fillColor)
+    Form.call(this, 'circle', id, fillColor);
     this.xPos = 0;
     this.yPos = 0;
     this.radius = 0;
@@ -44,4 +44,18 @@ function Circle(id, fillColor){
 
 Circle.prototype.test = function(){
     console.log("drawing circle");
+}
+
+/**
+ * LINE
+ */
+Line.prototype = Object.create(Form.prototype);
+Line.prototype.constructor = Line;
+
+function Line(id, fillColor){
+    Form.call(this, 'line', id, fillColor);
+    this.xStartPos = 0;
+    this.yStartPos = 0;
+    this.xEndPos = 0;
+    this.yEndPos = 0;
 }
