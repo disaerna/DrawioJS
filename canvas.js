@@ -26,6 +26,7 @@ Canvas.prototype.draw = function(requestedShape){
     function mouseDown(event){
         canvas.drawing = true;
         // send the canvas element, the event and the requested shape as parameters
+        canvas.loadContent();
         canvas.initShape(this, event, requestedShape);
     }
     
@@ -40,7 +41,7 @@ Canvas.prototype.draw = function(requestedShape){
         console.log(canvas.currentShape);
         canvas.drawing = false;
         canvas.shapes.push(canvas.currentShape);
-        debugger;
+        
     }
 }
 
@@ -66,7 +67,6 @@ Canvas.prototype.initShape = function(canvas, event, shape){
         this.currentShape.yPos = mousePos.yPos;
         this.currentShape.radius = 0;
         this.id += 1;
-        console.log(this.currentShape);
 
     }
 }
@@ -80,7 +80,7 @@ Canvas.prototype.createShape = function(canvas, event){
     mousePos = this.getMouseCoordinates(canvas, event);
      // every drawn element has to constantly print the previous drawn
     // shapes to be able to draw the current shape in right proportions
-    this.loadContent();
+    //this.loadContent();
     if(this.currentShape instanceof Rectangle){
         mousePos = this.getMouseCoordinates(canvas, event);
         this.currentShape.width = mousePos.xPos - this.currentShape.xPos;
@@ -93,16 +93,14 @@ Canvas.prototype.createShape = function(canvas, event){
         mousePos = this.getMouseCoordinates(canvas, event);
         //this.currentShape.radius = Math.abs(this.currentShape.xPos - mousePos.xPos)/2;
         this.ctx.beginPath();
-        this.ctx.arc(this.currentShape.xPos, this.currentShape.yPos, Math.sqrt(Math.pow((this.currentShape.xPos - mousePos.xPos),2) + Math.pow((this.currentShape.yPos - mousePos.yPos), 2)), 0, 100);
-        if(this.currentShape.fill){
-            this.ctx.fill();
-        }
+        this.currentShape.radius =  Math.sqrt(Math.pow((this.currentShape.xPos - mousePos.xPos),2) + Math.pow((this.currentShape.yPos - mousePos.yPos), 2));
+        this.ctx.arc(this.currentShape.xPos, this.currentShape.yPos, this.currentShape.radius, 0, 100);
+        this.ctx.fill()
         this.ctx.stroke();
     }
 }
 
 Canvas.prototype.undo = function(){
-    debugger;
     if(this.shapes.length > 0){
         var shape = this.shapes.pop();
         this.undone.push(shape);
@@ -139,13 +137,16 @@ Canvas.prototype.printShapes = function(){
     for(var i = 0; i < this.shapes.length; ++i){
         shape = this.shapes[i];
         if(shape instanceof Rectangle){
-            console.log(shape.fillColor);
+            //console.log(shape.fillColor);
             this.ctx.fillStyle = shape.fillColor;
             this.ctx.fillRect(shape.xPos, shape.yPos, shape.width, shape.height);
         }
         if(shape instanceof Circle){
             this.ctx.fillStyle = shape.fillColor;
-            this.ctx.arc(shape.xPos, shape.yPos, shape.radius, 0, Math.PI * 2)
+            this.ctx.beginPath();
+            this.ctx.arc(shape.xPos, shape.yPos, shape.radius, 0, Math.PI * 2)        
+            this.ctx.stroke();
+            this.ctx.fill();
         }
     }
 }
