@@ -21,7 +21,6 @@ Rectangle.prototype = Object.create(Form.prototype);
 Rectangle.prototype.constructor = Rectangle;
 
 function Rectangle(id, fillColor){
-    console.log(fillColor);
     Form.call(this, 'rectangle', id, fillColor)
     this.xPos = 0;
     this.yPos = 0;

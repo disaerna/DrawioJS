@@ -26,21 +26,22 @@ Canvas.prototype.draw = function(requestedShape){
     function mouseDown(event){
         canvas.drawing = true;
         // send the canvas element, the event and the requested shape as parameters
-        canvas.loadContent();
         canvas.initShape(this, event, requestedShape);
     }
     
     function mouseMove(event){
         // while we are in drawingmode we want to draw the shape
         if(canvas.drawing){    
+            canvas.loadContent();
             canvas.createShape(this, event);
         }
     }
     
     function mouseUp(event){
-        console.log(canvas.currentShape);
+        // console.log(canvas.currentShape);
         canvas.drawing = false;
         canvas.shapes.push(canvas.currentShape);
+        console.log(canvas.shapes);
         
     }
 }
@@ -81,11 +82,11 @@ Canvas.prototype.createShape = function(canvas, event){
      // every drawn element has to constantly print the previous drawn
     // shapes to be able to draw the current shape in right proportions
     //this.loadContent();
+    this.ctx.fillStyle = this.fillColor;
     if(this.currentShape instanceof Rectangle){
         mousePos = this.getMouseCoordinates(canvas, event);
         this.currentShape.width = mousePos.xPos - this.currentShape.xPos;
         this.currentShape.height = mousePos.yPos - this.currentShape.yPos;
-        this.ctx.fillStyle = this.fillColor;
         this.ctx.fillRect(this.currentShape.xPos, this.currentShape.yPos, this.currentShape.width, this.currentShape.height);
     }
     if(this.currentShape instanceof Circle){
@@ -145,7 +146,7 @@ Canvas.prototype.printShapes = function(){
             this.ctx.fillStyle = shape.fillColor;
             this.ctx.beginPath();
             this.ctx.arc(shape.xPos, shape.yPos, shape.radius, 0, Math.PI * 2)        
-            this.ctx.stroke();
+            // this.ctx.stroke();
             this.ctx.fill();
         }
     }
