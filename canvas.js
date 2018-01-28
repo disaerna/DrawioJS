@@ -15,7 +15,7 @@ function Canvas(){
 
 /**
  * Recieves a requested shape to draw and sets up event listeners and draws the shape 
- * @param {the shape requested, can be either rectangle or circle} requestedShape 
+ * @param {the requested shape to be drawn} requestedShape 
  */
 Canvas.prototype.draw = function(requestedShape){
     // assign this to the variable canvas, this is done due to javascripts scoping
@@ -104,15 +104,12 @@ Canvas.prototype.createShape = function(canvas, event){
     //this.loadContent();
     this.ctx.fillStyle = this.fillColor;
     if(this.currentShape instanceof Rectangle){
-        mousePos = this.getMouseCoordinates(canvas, event);
         this.currentShape.width = mousePos.xPos - this.currentShape.xPos;
         this.currentShape.height = mousePos.yPos - this.currentShape.yPos;
         this.ctx.fillRect(this.currentShape.xPos, this.currentShape.yPos, this.currentShape.width, this.currentShape.height);
     }
     if(this.currentShape instanceof Circle){
         // draw a circle
-        mousePos = this.getMouseCoordinates(canvas, event);
-        //this.currentShape.radius = Math.abs(this.currentShape.xPos - mousePos.xPos)/2;
         this.ctx.beginPath();
         this.currentShape.radius =  Math.sqrt(Math.pow((this.currentShape.xPos - mousePos.xPos),2) + Math.pow((this.currentShape.yPos - mousePos.yPos), 2));
         this.ctx.arc(this.currentShape.xPos, this.currentShape.yPos, this.currentShape.radius, 0, 100);
@@ -120,7 +117,6 @@ Canvas.prototype.createShape = function(canvas, event){
         //this.ctx.stroke();
     }
     if(this.currentShape instanceof Line){
-        mousePos = this.getMouseCoordinates(canvas, event);
         this.ctx.beginPath();
         this.ctx.moveTo(mousePos.xPos, mousePos.yPos);
         this.ctx.lineTo(this.currentShape.xStartPos, this.currentShape.yStartPos);
@@ -131,11 +127,10 @@ Canvas.prototype.createShape = function(canvas, event){
     }
     if(this.currentShape instanceof Letters){
         //debugger;
-        mousePos = this.getMouseCoordinates(canvas, event);
         this.currentShape.value = document.getElementById("textValue").value;
-        fs = document.getElementById("textSize");
+        var fs = document.getElementById("textSize");
         this.currentShape.fontSize = fs.options[fs.selectedIndex].text;
-        ft = document.getElementById("textType");
+        var ft = document.getElementById("textType");
         this.currentShape.fontType = ft.options[ft.selectedIndex].text;
         this.ctx.beginPath();
         this.ctx.font = this.currentShape.fontSize + " " + this.currentShape.fontType;
@@ -199,6 +194,7 @@ Canvas.prototype.printShapes = function(){
             this.ctx.stroke();
         }
         if(shape instanceof Letters){
+            this.ctx.fillStyle = shape.fillColor;
             this.ctx.beginPath();
             this.ctx.font = shape.fontSize + " " + shape.fontType;
             this.ctx.fillText(shape.value, shape.xPos, shape.yPos);

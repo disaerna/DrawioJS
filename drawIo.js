@@ -10,6 +10,8 @@ $(document).ready(function(){
         canvas.draw(event.currentTarget.id);
     });
 
+    // Hafa ser object sem er toolbarinn?
+    
     $(".tool").on("click", function(event){
         var request = event.currentTarget.id;
         if(request === 'undo'){

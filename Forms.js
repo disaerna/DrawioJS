@@ -1,14 +1,14 @@
-// FORM
-Form.prototype = Object.create(Canvas.prototype);
-Form.prototype.constructor = Form;
+// Shape
+Shape.prototype = Object.create(Canvas.prototype);
+Shape.prototype.constructor = Shape;
 
-function Form(type, id, fillColor){
+function Shape(type, id, fillColor){
     this.type = type;
     this.id = id
     if(fillColor) this.fillColor = fillColor;
 }
 
-Form.prototype.getType = function(){
+Shape.prototype.getType = function(){
     return this.type;
 }
 
@@ -17,11 +17,11 @@ Form.prototype.getType = function(){
 /**
  * RECTANGLE
  */
-Rectangle.prototype = Object.create(Form.prototype);
+Rectangle.prototype = Object.create(Shape.prototype);
 Rectangle.prototype.constructor = Rectangle;
 
 function Rectangle(id, fillColor){
-    Form.call(this, 'rectangle', id, fillColor)
+    Shape.call(this, 'rectangle', id, fillColor)
     this.xPos = 0;
     this.yPos = 0;
     this.width = 0;
@@ -31,11 +31,11 @@ function Rectangle(id, fillColor){
 /**
  * CIRCLE
  */
-Circle.prototype = Object.create(Form.prototype);
+Circle.prototype = Object.create(Shape.prototype);
 Circle.prototype.constructor = Circle;
 
 function Circle(id, fillColor){
-    Form.call(this, 'circle', id, fillColor);
+    Shape.call(this, 'circle', id, fillColor);
     this.xPos = 0;
     this.yPos = 0;
     this.radius = 0;
@@ -49,11 +49,11 @@ Circle.prototype.test = function(){
 /**
  * LINE
  */
-Line.prototype = Object.create(Form.prototype);
+Line.prototype = Object.create(Shape.prototype);
 Line.prototype.constructor = Line;
 
 function Line(id, fillColor){
-    Form.call(this, 'line', id, fillColor);
+    Shape.call(this, 'line', id, fillColor);
     this.xStartPos = 0;
     this.yStartPos = 0;
     this.xEndPos = 0;
@@ -64,11 +64,11 @@ function Line(id, fillColor){
  * TEXT
  */
 
- Letters.prototype = Object.create(Form.prototype);
+ Letters.prototype = Object.create(Shape.prototype);
  Letters.prototype.constructor = Letters;
 
  function Letters(id, fillColor){
-     Form.call(this, 'letters', id, fillColor);
+    Shape.call(this, 'letters', id, fillColor);
      this.xPos = 0;
      this.yPos = 0;
      this.fontSize = "12px";
