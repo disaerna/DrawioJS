@@ -12,7 +12,6 @@ function Canvas(){
 }
 
 
-
 /**
  * Recieves a requested shape to draw and sets up event listeners and draws the shape 
  * @param {the requested shape to be drawn} requestedShape 
@@ -61,16 +60,16 @@ Canvas.prototype.initShape = function(canvas, event, shape){
     if(shape === 'rectangle'){
         this.currentShape = new Rectangle(this.id, this.fillColor);
         mousePos = this.getMouseCoordinates(canvas, event);
-        this.currentShape.xPos = mousePos.xPos;
-        this.currentShape.yPos = mousePos.yPos;
+        this.currentShape.xStartPos = mousePos.xPos;
+        this.currentShape.yStartPos = mousePos.yPos;
         this.id += 1;
     }
     if(shape === 'circle'){
         // initialize a circle 
         this.currentShape = new Circle(this.id, this.fillColor);
         mousePos = this.getMouseCoordinates(canvas, event);
-        this.currentShape.xPos = mousePos.xPos;
-        this.currentShape.yPos = mousePos.yPos;
+        this.currentShape.xStartPos = mousePos.xPos;
+        this.currentShape.yStartPos = mousePos.yPos;
         this.currentShape.radius = 0;
         this.id += 1;
     }
@@ -86,8 +85,8 @@ Canvas.prototype.initShape = function(canvas, event, shape){
     if(shape == 'letters'){
         this.currentShape = new Letters(this.id, this.fillColor);
         mousePos = this.getMouseCoordinates(canvas, event);
-        this.currentShape.xPos = mousePos.xPos;
-        this.currentShape.yPos = mousePos.yPos;
+        this.currentShape.xStartPos = mousePos.xPos;
+        this.currentShape.ySyartPos = mousePos.yPos;
         this.id += 1;
     }
 }
@@ -104,15 +103,15 @@ Canvas.prototype.createShape = function(canvas, event){
     //this.loadContent();
     this.ctx.fillStyle = this.fillColor;
     if(this.currentShape instanceof Rectangle){
-        this.currentShape.width = mousePos.xPos - this.currentShape.xPos;
-        this.currentShape.height = mousePos.yPos - this.currentShape.yPos;
-        this.ctx.fillRect(this.currentShape.xPos, this.currentShape.yPos, this.currentShape.width, this.currentShape.height);
+        this.currentShape.width = mousePos.xPos - this.currentShape.xStartPos;
+        this.currentShape.height = mousePos.yPos - this.currentShape.yStartPos;
+        this.ctx.fillRect(this.currentShape.xStartPos, this.currentShape.yStartPos, this.currentShape.width, this.currentShape.height);
     }
     if(this.currentShape instanceof Circle){
         // draw a circle
         this.ctx.beginPath();
-        this.currentShape.radius =  Math.sqrt(Math.pow((this.currentShape.xPos - mousePos.xPos),2) + Math.pow((this.currentShape.yPos - mousePos.yPos), 2));
-        this.ctx.arc(this.currentShape.xPos, this.currentShape.yPos, this.currentShape.radius, 0, 100);
+        this.currentShape.radius =  Math.sqrt(Math.pow((this.currentShape.xStartPos - mousePos.xPos),2) + Math.pow((this.currentShape.yStartPos - mousePos.yPos), 2));
+        this.ctx.arc(this.currentShape.xStartPos, this.currentShape.yStartPos, this.currentShape.radius, 0, 100);
         this.ctx.fill()
         //this.ctx.stroke();
     }
@@ -177,12 +176,12 @@ Canvas.prototype.printShapes = function(){
         if(shape instanceof Rectangle){
             //console.log(shape.fillColor);
             this.ctx.fillStyle = shape.fillColor;
-            this.ctx.fillRect(shape.xPos, shape.yPos, shape.width, shape.height);
+            this.ctx.fillRect(shape.xStartPos, shape.yStartPos, shape.width, shape.height);
         }
         if(shape instanceof Circle){
             this.ctx.fillStyle = shape.fillColor;
             this.ctx.beginPath();
-            this.ctx.arc(shape.xPos, shape.yPos, shape.radius, 0, Math.PI * 2)        
+            this.ctx.arc(shape.xStartPos, shape.yStartPos, shape.radius, 0, Math.PI * 2)        
             // this.ctx.stroke();
             this.ctx.fill();
         }

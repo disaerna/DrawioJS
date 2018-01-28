@@ -5,6 +5,8 @@ Shape.prototype.constructor = Shape;
 function Shape(type, id, fillColor){
     this.type = type;
     this.id = id
+    this.xStartPos = 0;
+    this.yStartPos = 0;
     if(fillColor) this.fillColor = fillColor;
 }
 
@@ -22,8 +24,6 @@ Rectangle.prototype.constructor = Rectangle;
 
 function Rectangle(id, fillColor){
     Shape.call(this, 'rectangle', id, fillColor)
-    this.xPos = 0;
-    this.yPos = 0;
     this.width = 0;
     this.height = 0
 }
@@ -36,14 +36,7 @@ Circle.prototype.constructor = Circle;
 
 function Circle(id, fillColor){
     Shape.call(this, 'circle', id, fillColor);
-    this.xPos = 0;
-    this.yPos = 0;
     this.radius = 0;
-    this.circumference = 2 * Math.PI;
-}
-
-Circle.prototype.test = function(){
-    console.log("drawing circle");
 }
 
 /**
@@ -54,8 +47,6 @@ Line.prototype.constructor = Line;
 
 function Line(id, fillColor){
     Shape.call(this, 'line', id, fillColor);
-    this.xStartPos = 0;
-    this.yStartPos = 0;
     this.xEndPos = 0;
     this.yEndPos = 0;
 }
@@ -69,8 +60,6 @@ function Line(id, fillColor){
 
  function Letters(id, fillColor){
     Shape.call(this, 'letters', id, fillColor);
-     this.xPos = 0;
-     this.yPos = 0;
      this.fontSize = "12px";
      this.fontType = "Arial";
      this.font = this.fontSize + " " + this.fontType;
