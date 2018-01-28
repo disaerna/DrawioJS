@@ -22,31 +22,31 @@ Canvas.prototype.draw = function(requestedShape){
     $("#canvas").on("mousedown", mouseDown);
     $("#canvas").on("mousemove", mouseMove);
     $("#canvas").on("mouseup", mouseUp);
+
     function mouseDown(event){
         canvas.drawing = true;
         // send the canvas element, the event and the requested shape as parameters
         canvas.initShape(this, event, requestedShape);
         if(requestedShape === 'letters'){
-            canvas.createShape(this, event);
+            canvas.renderShape(this, event);
         }
     }
     
     function mouseMove(event){
         // while we are in drawingmode we want to draw the shape
-        if(canvas.drawing){    
+        if(canvas.drawing){ 
+            // every drawn element has to constantly print the previous drawn
+            // shapes to be able to draw the current shape in right proportions   
             canvas.loadContent();
             if(requestedShape != 'letters'){
-                canvas.createShape(this, event);
+                canvas.renderShape(this, event);
             }        
         }
     }
     
     function mouseUp(event){
-        // console.log(canvas.currentShape);
         canvas.drawing = false;
-        canvas.shapes.push(canvas.currentShape);
-        console.log(canvas.shapes);
-        
+        canvas.shapes.push(canvas.currentShape);        
     }
 }
 
@@ -57,38 +57,31 @@ Canvas.prototype.draw = function(requestedShape){
  * @param {a shape to initialize} shape 
  */
 Canvas.prototype.initShape = function(canvas, event, shape){
+    mousePos = this.getMouseCoordinates(canvas, event);
     if(shape === 'rectangle'){
-        this.currentShape = new Rectangle(this.id, this.fillColor);
-        mousePos = this.getMouseCoordinates(canvas, event);
-        this.currentShape.xStartPos = mousePos.xPos;
-        this.currentShape.yStartPos = mousePos.yPos;
-        this.id += 1;
+        this.currentShape = new Rectangle(this.id, mousePos, this.fillColor);
     }
     if(shape === 'circle'){
         // initialize a circle 
         this.currentShape = new Circle(this.id, this.fillColor);
-        mousePos = this.getMouseCoordinates(canvas, event);
+        this.currentShape.initialize(mousePos);
         this.currentShape.xStartPos = mousePos.xPos;
         this.currentShape.yStartPos = mousePos.yPos;
         this.currentShape.radius = 0;
-        this.id += 1;
     }
     if(shape === 'line'){
         this.currentShape = new Line(this.id, this.fillColor);
-        mousePos = this.getMouseCoordinates(canvas, event);
         this.currentShape.xStartPos = mousePos.xPos;
         this.currentShape.yStartPos = mousePos.yPos;
         this.currentShape.xEndPos = mousePos.xPos;
         this.currentShape.yEndPos = mousePos.yPos;
-        this.id += 1;
     }
     if(shape == 'letters'){
         this.currentShape = new Letters(this.id, this.fillColor);
-        mousePos = this.getMouseCoordinates(canvas, event);
         this.currentShape.xStartPos = mousePos.xPos;
         this.currentShape.ySyartPos = mousePos.yPos;
-        this.id += 1;
     }
+    this.id += 1;
 }
 
 /**
@@ -96,16 +89,11 @@ Canvas.prototype.initShape = function(canvas, event, shape){
  * @param {a canvas element} canvas 
  * @param {an event} event 
  */
-Canvas.prototype.createShape = function(canvas, event){
+Canvas.prototype.renderShape = function(canvas, event){
     mousePos = this.getMouseCoordinates(canvas, event);
-     // every drawn element has to constantly print the previous drawn
-    // shapes to be able to draw the current shape in right proportions
-    //this.loadContent();
     this.ctx.fillStyle = this.fillColor;
     if(this.currentShape instanceof Rectangle){
-        this.currentShape.width = mousePos.xPos - this.currentShape.xStartPos;
-        this.currentShape.height = mousePos.yPos - this.currentShape.yStartPos;
-        this.ctx.fillRect(this.currentShape.xStartPos, this.currentShape.yStartPos, this.currentShape.width, this.currentShape.height);
+        this.currentShape.render(this.ctx, mousePos);
     }
     if(this.currentShape instanceof Circle){
         // draw a circle

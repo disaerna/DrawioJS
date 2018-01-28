@@ -2,11 +2,11 @@
 Shape.prototype = Object.create(Canvas.prototype);
 Shape.prototype.constructor = Shape;
 
-function Shape(type, id, fillColor){
+function Shape(type, id, mousePos, fillColor){
     this.type = type;
     this.id = id
-    this.xStartPos = 0;
-    this.yStartPos = 0;
+    this.xStartPos = mousePos.xPos;
+    this.yStartPos = mousePos.yPos;
     if(fillColor) this.fillColor = fillColor;
 }
 
@@ -14,19 +14,24 @@ Shape.prototype.getType = function(){
     return this.type;
 }
 
-
-
 /**
  * RECTANGLE
  */
 Rectangle.prototype = Object.create(Shape.prototype);
 Rectangle.prototype.constructor = Rectangle;
 
-function Rectangle(id, fillColor){
-    Shape.call(this, 'rectangle', id, fillColor)
+function Rectangle(id, mousePos, fillColor){
+    Shape.call(this, 'rectangle', id, mousePos, fillColor)
     this.width = 0;
     this.height = 0
 }
+
+Rectangle.prototype.render = function(ctx, mousePos){
+    this.width = mousePos.xPos - this.xStartPos;
+    this.height = mousePos.yPos - this.yStartPos;
+    ctx.fillRect(this.xStartPos, this.yStartPos, this.width, this.height);
+}
+
 
 /**
  * CIRCLE
