@@ -59,3 +59,21 @@ function Line(id, fillColor){
     this.xEndPos = 0;
     this.yEndPos = 0;
 }
+
+/** 
+ * TEXT
+ */
+
+ Letters.prototype = Object.create(Form.prototype);
+ Letters.prototype.constructor = Letters;
+
+ function Letters(id, fillColor){
+     Form.call(this, 'letters', id, fillColor);
+     this.xPos = 0;
+     this.yPos = 0;
+     this.fontSize = "12px";
+     this.fontType = "Arial";
+     this.font = this.fontSize + " " + this.fontType;
+     this.value = "";
+    
+ }

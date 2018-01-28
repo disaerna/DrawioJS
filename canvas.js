@@ -27,13 +27,18 @@ Canvas.prototype.draw = function(requestedShape){
         canvas.drawing = true;
         // send the canvas element, the event and the requested shape as parameters
         canvas.initShape(this, event, requestedShape);
+        if(requestedShape === 'letters'){
+            canvas.createShape(this, event);
+        }
     }
     
     function mouseMove(event){
         // while we are in drawingmode we want to draw the shape
         if(canvas.drawing){    
             canvas.loadContent();
-            canvas.createShape(this, event);
+            if(requestedShape != 'letters'){
+                canvas.createShape(this, event);
+            }        
         }
     }
     
@@ -78,6 +83,13 @@ Canvas.prototype.initShape = function(canvas, event, shape){
         this.currentShape.yEndPos = mousePos.yPos;
         this.id += 1;
     }
+    if(shape == 'letters'){
+        this.currentShape = new Letters(this.id, this.fillColor);
+        mousePos = this.getMouseCoordinates(canvas, event);
+        this.currentShape.xPos = mousePos.xPos;
+        this.currentShape.yPos = mousePos.yPos;
+        this.id += 1;
+    }
 }
 
 /**
@@ -116,6 +128,18 @@ Canvas.prototype.createShape = function(canvas, event){
         this.ctx.stroke();
         this.currentShape.xEndPos = mousePos.xPos;
         this.currentShape.yEndPos = mousePos.yPos;
+    }
+    if(this.currentShape instanceof Letters){
+        //debugger;
+        mousePos = this.getMouseCoordinates(canvas, event);
+        this.currentShape.value = document.getElementById("textValue").value;
+        fs = document.getElementById("textSize");
+        this.currentShape.fontSize = fs.options[fs.selectedIndex].text;
+        ft = document.getElementById("textType");
+        this.currentShape.fontType = ft.options[ft.selectedIndex].text;
+        this.ctx.beginPath();
+        this.ctx.font = this.currentShape.fontSize + " " + this.currentShape.fontType;
+        this.ctx.fillText(this.currentShape.value, mousePos.xPos, mousePos.yPos);
     }
 }
 
@@ -173,6 +197,11 @@ Canvas.prototype.printShapes = function(){
             this.ctx.lineTo(shape.xEndPos, shape.yEndPos);
             this.ctx.strokeStyle = shape.fillColor;
             this.ctx.stroke();
+        }
+        if(shape instanceof Letters){
+            this.ctx.beginPath();
+            this.ctx.font = shape.fontSize + " " + shape.fontType;
+            this.ctx.fillText(shape.value, shape.xPos, shape.yPos);
         }
     }
 }
