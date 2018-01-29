@@ -105,19 +105,41 @@ function Line(id, fillColor){
      this.yEndPos = 0;
  }
 
- Pen.prototype.draw = function(ctx, mousePos){
-    ctx.beginPath();
-    ctx.moveTo(mousePos.xPos, mousePos.yPos);
-    ctx.lineTo(mousePos.xStartPos, mousePos.yStartPos);
-    ctx.stroke();
-    this.xEndPos = mousePos.xPos;
-    this.yEndPos = mousePos.yPos;
-}
+ var clickX = new Array();
+ var clickY = new Array();
+ var clickDrag = new Array();
 
-Pen.prototype.render = function(ctx){
-    ctx.beginPath();
-    ctx.moveTo(this.xStartPos, this.yStartPos);
-    ctx.lineTo(this.xEndPos, this.yEndPos);
-    ctx.strokeStyle = shape.fillColor;
-    ctx.stroke();
-}
+ function addclick(x, y, drag) {
+     clickX.push(x);
+     clickY.push(y);
+     clickDrag.push(drag);
+ }
+
+ Pen.prototype.draw = function(ctx, mousePos){
+    for(var i = 0; i < clickX.length; i++){
+        ctx.beginPath();
+        if(clickDrag[i] && i){
+            ctx.moveTo(clickX[i-1], clickY[i-1]);
+        }
+        else {
+            ctx.moveTo(clickX[i]-1, clickY[i]);
+        }
+        ctx.lineTo(clickX[i], clickY[i]);
+        ctx.closePath();
+        ctx.stroke();
+    }   
+ }
+
+ Pen.prototype.render = function(ctx){
+    for(var i = 0; i < clickX.length; i++){
+        ctx.beginPath();
+        if(clickDrag[i] && i){
+            ctx.moveTo(clickX[i-1], clickY[i-1]);
+        }
+        else {
+            ctx.moveTo(clickX[i]-1, clickY[i]);
+        }
+        ctx.strokeStyle = shape.fillColor;
+        ctx.stroke();
+    }
+ }

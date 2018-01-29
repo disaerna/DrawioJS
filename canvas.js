@@ -9,6 +9,8 @@ function Canvas(){
     this.strokeColor;
     //generate unique id for shapes for when moving them
     this.id = 1;
+
+
 }
 
 
@@ -40,7 +42,7 @@ Canvas.prototype.draw = function(requestedShape){
             canvas.loadContent();
             if(requestedShape != 'letters'){
                 canvas.drawShape(this, event);
-            }        
+            }   
         }
     }
     
