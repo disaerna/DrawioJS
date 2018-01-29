@@ -7,6 +7,8 @@ function Shape(type, id, mousePos, fillColor){
     this.id = id
     this.xStartPos = mousePos.xPos;
     this.yStartPos = mousePos.yPos;
+    this.xEndPos = mousePos.xPos;
+    this.yEndPos = mousePos.yPos;
     if(fillColor) this.fillColor = fillColor;
 }
 

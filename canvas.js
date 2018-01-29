@@ -65,16 +65,10 @@ Canvas.prototype.initShape = function(canvas, event, shape){
         this.currentShape = new Circle(this.id, mousePos, this.fillColor);
     }
     if(shape === 'line'){
-        this.currentShape = new Line(this.id, this.fillColor);
-        this.currentShape.xStartPos = mousePos.xPos;
-        this.currentShape.yStartPos = mousePos.yPos;
-        this.currentShape.xEndPos = mousePos.xPos;
-        this.currentShape.yEndPos = mousePos.yPos;
+        this.currentShape = new Line(this.id, mousePos, this.fillColor);
     }
     if(shape == 'letters'){
-        this.currentShape = new Letters(this.id, this.fillColor);
-        this.currentShape.xStartPos = mousePos.xPos;
-        this.currentShape.ySyartPos = mousePos.yPos;
+        this.currentShape = new Letters(this.id, mousePos, this.fillColor);
     }
     this.id += 1;
 }
@@ -131,6 +125,16 @@ Canvas.prototype.redo = function(){
     }
 }
 
+Canvas.prototype.clear = function(){
+    if(this.shapes.length > 0){
+        if(confirm("Are you sure you want to clear the canvas?")){
+            this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+            this.undone = [];
+            this.shapes = [];
+        }
+    }
+
+}
 
 /**
  * Retrieve the current mouse coordinates
@@ -165,10 +169,11 @@ Canvas.prototype.renderShapes = function(){
             this.ctx.stroke();
         }
         if(shape instanceof Letters){
+            console.log(shape);
             this.ctx.fillStyle = shape.fillColor;
             this.ctx.beginPath();
             this.ctx.font = shape.fontSize + " " + shape.fontType;
-            this.ctx.fillText(shape.value, shape.xPos, shape.yPos);
+            this.ctx.fillText(shape.value, shape.xStartPos, shape.yStartPos);
         }
     }
 }

@@ -22,6 +22,9 @@ $(document).ready(function(){
             //perform redo
             canvas.redo();
         }
+        if(request === 'clear') {
+            canvas.clear();
+        }
         
     })
 
