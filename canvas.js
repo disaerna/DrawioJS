@@ -28,7 +28,7 @@ Canvas.prototype.draw = function(requestedShape){
         // send the canvas element, the event and the requested shape as parameters
         canvas.initShape(this, event, requestedShape);
         if(requestedShape === 'letters'){
-            canvas.renderShape(this, event);
+            canvas.drawShapes(this, event);
         }
     }
     
@@ -37,9 +37,9 @@ Canvas.prototype.draw = function(requestedShape){
         if(canvas.drawing){ 
             // every drawn element has to constantly print the previous drawn
             // shapes to be able to draw the current shape in right proportions   
-            canvas.loadContent();
+            canvas.renderContent();
             if(requestedShape != 'letters'){
-                canvas.renderShape(this, event);
+                canvas.drawShapes(this, event);
             }        
         }
     }
@@ -62,12 +62,7 @@ Canvas.prototype.initShape = function(canvas, event, shape){
         this.currentShape = new Rectangle(this.id, mousePos, this.fillColor);
     }
     if(shape === 'circle'){
-        // initialize a circle 
-        this.currentShape = new Circle(this.id, this.fillColor);
-        this.currentShape.initialize(mousePos);
-        this.currentShape.xStartPos = mousePos.xPos;
-        this.currentShape.yStartPos = mousePos.yPos;
-        this.currentShape.radius = 0;
+        this.currentShape = new Circle(this.id, mousePos, this.fillColor);
     }
     if(shape === 'line'){
         this.currentShape = new Line(this.id, this.fillColor);
@@ -89,11 +84,11 @@ Canvas.prototype.initShape = function(canvas, event, shape){
  * @param {a canvas element} canvas 
  * @param {an event} event 
  */
-Canvas.prototype.renderShape = function(canvas, event){
+Canvas.prototype.drawShapes = function(canvas, event){
     mousePos = this.getMouseCoordinates(canvas, event);
     this.ctx.fillStyle = this.fillColor;
     if(this.currentShape instanceof Rectangle){
-        this.currentShape.render(this.ctx, mousePos);
+        this.currentShape.draw(this.ctx, mousePos);
     }
     if(this.currentShape instanceof Circle){
         // draw a circle
@@ -158,13 +153,11 @@ Canvas.prototype.getMouseCoordinates = function(canvas, event){
  * Loop through all elements of the shape array
  * and print them on the canvas
  */
-Canvas.prototype.printShapes = function(){
+Canvas.prototype.renderShapes = function(){
     for(var i = 0; i < this.shapes.length; ++i){
         shape = this.shapes[i];
         if(shape instanceof Rectangle){
-            //console.log(shape.fillColor);
-            this.ctx.fillStyle = shape.fillColor;
-            this.ctx.fillRect(shape.xStartPos, shape.yStartPos, shape.width, shape.height);
+            shape.render(this.ctx);
         }
         if(shape instanceof Circle){
             this.ctx.fillStyle = shape.fillColor;
@@ -189,7 +182,7 @@ Canvas.prototype.printShapes = function(){
     }
 }
 
-Canvas.prototype.loadContent = function(){
+Canvas.prototype.renderContent = function(){
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-    this.printShapes();
+    this.renderShapes();
 }

@@ -26,12 +26,16 @@ function Rectangle(id, mousePos, fillColor){
     this.height = 0
 }
 
-Rectangle.prototype.render = function(ctx, mousePos){
+Rectangle.prototype.draw = function(ctx, mousePos){
     this.width = mousePos.xPos - this.xStartPos;
     this.height = mousePos.yPos - this.yStartPos;
     ctx.fillRect(this.xStartPos, this.yStartPos, this.width, this.height);
 }
 
+Rectangle.prototype.render = function(ctx){
+    ctx.fillStyle = this.fillColor;
+    ctx.fillRect(this.xStartPos, this.yStartPos, this.width, this.height);
+}
 
 /**
  * CIRCLE
@@ -40,7 +44,7 @@ Circle.prototype = Object.create(Shape.prototype);
 Circle.prototype.constructor = Circle;
 
 function Circle(id, fillColor){
-    Shape.call(this, 'circle', id, fillColor);
+    Shape.call(this, 'circle', id, mousePos, fillColor);
     this.radius = 0;
 }
 
