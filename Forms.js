@@ -75,3 +75,15 @@ function Line(id, fillColor){
      this.value = "";
     
  }
+
+ /**
+  * FREEHAND 
+  */
+
+ Freehand.prototype = Object.create(Shape.prototype);
+ Freehand.prototype.constructor = Freehand;
+
+ function Freehand(id, mousePos, fillColor){
+     Shape.call(this, 'freehand', id, mousePos, fillColor);
+     
+ }
