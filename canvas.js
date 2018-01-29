@@ -28,7 +28,7 @@ Canvas.prototype.draw = function(requestedShape){
         // send the canvas element, the event and the requested shape as parameters
         canvas.initShape(this, event, requestedShape);
         if(requestedShape === 'letters'){
-            canvas.drawShapes(this, event);
+            canvas.drawShape(this, event);
         }
     }
     
@@ -37,16 +37,16 @@ Canvas.prototype.draw = function(requestedShape){
         if(canvas.drawing){ 
             // every drawn element has to constantly print the previous drawn
             // shapes to be able to draw the current shape in right proportions   
-            canvas.renderContent();
+            canvas.loadContent();
             if(requestedShape != 'letters'){
-                canvas.drawShapes(this, event);
+                canvas.drawShape(this, event);
             }        
         }
     }
     
     function mouseUp(event){
         canvas.drawing = false;
-        canvas.shapes.push(canvas.currentShape);        
+        canvas.shapes.push(canvas.currentShape);
     }
 }
 
@@ -84,19 +84,14 @@ Canvas.prototype.initShape = function(canvas, event, shape){
  * @param {a canvas element} canvas 
  * @param {an event} event 
  */
-Canvas.prototype.drawShapes = function(canvas, event){
+Canvas.prototype.drawShape = function(canvas, event){
     mousePos = this.getMouseCoordinates(canvas, event);
     this.ctx.fillStyle = this.fillColor;
     if(this.currentShape instanceof Rectangle){
         this.currentShape.draw(this.ctx, mousePos);
     }
     if(this.currentShape instanceof Circle){
-        // draw a circle
-        this.ctx.beginPath();
-        this.currentShape.radius =  Math.sqrt(Math.pow((this.currentShape.xStartPos - mousePos.xPos),2) + Math.pow((this.currentShape.yStartPos - mousePos.yPos), 2));
-        this.ctx.arc(this.currentShape.xStartPos, this.currentShape.yStartPos, this.currentShape.radius, 0, 100);
-        this.ctx.fill()
-        //this.ctx.stroke();
+        this.currentShape.draw(this.ctx, mousePos);
     }
     if(this.currentShape instanceof Line){
         this.ctx.beginPath();
@@ -160,11 +155,7 @@ Canvas.prototype.renderShapes = function(){
             shape.render(this.ctx);
         }
         if(shape instanceof Circle){
-            this.ctx.fillStyle = shape.fillColor;
-            this.ctx.beginPath();
-            this.ctx.arc(shape.xStartPos, shape.yStartPos, shape.radius, 0, Math.PI * 2)        
-            // this.ctx.stroke();
-            this.ctx.fill();
+            shape.render(this.ctx);
         }
         if(shape instanceof Line){
             this.ctx.beginPath();
@@ -182,7 +173,7 @@ Canvas.prototype.renderShapes = function(){
     }
 }
 
-Canvas.prototype.renderContent = function(){
+Canvas.prototype.loadContent = function(){
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     this.renderShapes();
 }

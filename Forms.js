@@ -43,9 +43,25 @@ Rectangle.prototype.render = function(ctx){
 Circle.prototype = Object.create(Shape.prototype);
 Circle.prototype.constructor = Circle;
 
-function Circle(id, fillColor){
+function Circle(id, mousePos, fillColor){
     Shape.call(this, 'circle', id, mousePos, fillColor);
     this.radius = 0;
+}
+
+Circle.prototype.draw = function(ctx, mousePos){
+    ctx.beginPath();
+    this.radius =  Math.sqrt(Math.pow((this.xStartPos - mousePos.xPos),2) + Math.pow((this.yStartPos - mousePos.yPos), 2));
+    ctx.arc(this.xStartPos, this.yStartPos, this.radius, 0, 100);
+    ctx.fill()
+    ctx.stroke();
+}
+
+Circle.prototype.render = function(ctx){
+    ctx.fillStyle = this.fillColor;
+    ctx.beginPath();
+    ctx.arc(this.xStartPos, this.yStartPos, this.radius, 0, Math.PI * 2)        
+    // this.ctx.stroke();
+    ctx.fill();
 }
 
 /**
