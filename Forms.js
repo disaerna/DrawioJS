@@ -93,13 +93,31 @@ function Line(id, fillColor){
  }
 
  /**
-  * FREEHAND 
+  * PEN 
   */
 
- Freehand.prototype = Object.create(Shape.prototype);
- Freehand.prototype.constructor = Freehand;
+ Pen.prototype = Object.create(Shape.prototype);
+ Pen.prototype.constructor = Pen;
 
- function Freehand(id, mousePos, fillColor){
+ function Pen(id, mousePos, fillColor){
      Shape.call(this, 'freehand', id, mousePos, fillColor);
-     
+     this.xEndPos = 0;
+     this.yEndPos = 0;
  }
+
+ Pen.prototype.draw = function(ctx, mousePos){
+    ctx.beginPath();
+    ctx.moveTo(mousePos.xPos, mousePos.yPos);
+    ctx.lineTo(mousePos.xStartPos, mousePos.yStartPos);
+    ctx.stroke();
+    this.xEndPos = mousePos.xPos;
+    this.yEndPos = mousePos.yPos;
+}
+
+Pen.prototype.render = function(ctx){
+    ctx.beginPath();
+    ctx.moveTo(this.xStartPos, this.yStartPos);
+    ctx.lineTo(this.xEndPos, this.yEndPos);
+    ctx.strokeStyle = shape.fillColor;
+    ctx.stroke();
+}

@@ -76,6 +76,9 @@ Canvas.prototype.initShape = function(canvas, event, shape){
         this.currentShape.xStartPos = mousePos.xPos;
         this.currentShape.ySyartPos = mousePos.yPos;
     }
+    if(shape == 'pen'){
+        this.currentShape = new Pen(this.id, mousePos, this.fillColor);
+    }
     this.id += 1;
 }
 
@@ -112,6 +115,9 @@ Canvas.prototype.drawShape = function(canvas, event){
         this.ctx.beginPath();
         this.ctx.font = this.currentShape.fontSize + " " + this.currentShape.fontType;
         this.ctx.fillText(this.currentShape.value, mousePos.xPos, mousePos.yPos);
+    }
+    if(this.currentShape instanceof Pen){
+        this.currentShape.draw(this.ctx, mousePos);
     }
 }
 
@@ -169,6 +175,9 @@ Canvas.prototype.renderShapes = function(){
             this.ctx.beginPath();
             this.ctx.font = shape.fontSize + " " + shape.fontType;
             this.ctx.fillText(shape.value, shape.xPos, shape.yPos);
+        }
+        if(shape instanceof Pen){
+            shape.render(this.ctx);
         }
     }
 }
