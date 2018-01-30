@@ -103,8 +103,14 @@ function Line(id, fillColor){
      Shape.call(this, 'freehand', id, mousePos, fillColor);
      this.xEndPos = 0;
      this.yEndPos = 0;
- }
 
+     /*var clickX = new Array();
+     var clickY = new Array();
+     var clickDrag = new Array();
+     clickX.push(mousePos.xPos);
+     clickY.push(mousePos.yPos);
+     clickDrag.push(true);*/
+ }
  var clickX = new Array();
  var clickY = new Array();
  var clickDrag = new Array();
@@ -116,6 +122,7 @@ function Line(id, fillColor){
  }
 
  Pen.prototype.draw = function(ctx, mousePos){
+    addclick(mousePos.xPos, mousePos.yPos, true);
     for(var i = 0; i < clickX.length; i++){
         ctx.beginPath();
         if(clickDrag[i] && i){
@@ -126,20 +133,11 @@ function Line(id, fillColor){
         }
         ctx.lineTo(clickX[i], clickY[i]);
         ctx.closePath();
+        ctx.strokeStyle = this.fillColor;
         ctx.stroke();
     }   
  }
 
  Pen.prototype.render = function(ctx){
-    for(var i = 0; i < clickX.length; i++){
-        ctx.beginPath();
-        if(clickDrag[i] && i){
-            ctx.moveTo(clickX[i-1], clickY[i-1]);
-        }
-        else {
-            ctx.moveTo(clickX[i]-1, clickY[i]);
-        }
-        ctx.strokeStyle = shape.fillColor;
-        ctx.stroke();
-    }
+    
  }

@@ -9,8 +9,6 @@ function Canvas(){
     this.strokeColor;
     //generate unique id for shapes for when moving them
     this.id = 1;
-
-
 }
 
 
