@@ -7,6 +7,7 @@ function Canvas(){
     this.drawing = false;
     this.fillColor = document.getElementById("fillColor").value;
     this.strokeColor;
+    this.lineWidth = document.getElementById("lineWidth").value;
     //generate unique id for shapes for when moving them
     this.id = 1;
 }
@@ -38,15 +39,16 @@ Canvas.prototype.draw = function(requestedShape){
             // every drawn element has to constantly print the previous drawn
             // shapes to be able to draw the current shape in right proportions   
             canvas.loadContent();
-            if(requestedShape != 'letters'){
-                canvas.drawShape(this, event);
-            }   
+            canvas.drawShape(this, event);
         }
     }
     
     function mouseUp(event){
         canvas.drawing = false;
         canvas.shapes.push(canvas.currentShape);
+        clickX = [];
+        clickY = [];
+        clickDrag = [];
     }
 }
 
@@ -59,19 +61,19 @@ Canvas.prototype.draw = function(requestedShape){
 Canvas.prototype.initShape = function(canvas, event, shape){
     mousePos = this.getMouseCoordinates(canvas, event);
     if(shape === 'rectangle'){
-        this.currentShape = new Rectangle(this.id, mousePos, this.fillColor);
+        this.currentShape = new Rectangle(this.id, mousePos, this.fillColor, this.lineWidth);
     }
     if(shape === 'circle'){
-        this.currentShape = new Circle(this.id, mousePos, this.fillColor);
+        this.currentShape = new Circle(this.id, mousePos, this.fillColor, this.lineWidth);
     }
     if(shape === 'line'){
-        this.currentShape = new Line(this.id, mousePos, this.fillColor);
+        this.currentShape = new Line(this.id, mousePos, this.fillColor, this.lineWidth);
     }
     if(shape == 'letters'){
-        this.currentShape = new Letters(this.id, mousePos, this.fillColor);
+        this.currentShape = new Letters(this.id, mousePos, this.fillColor, this.lineWidth);
     }
     if(shape == 'pen'){
-        this.currentShape = new Pen(this.id, mousePos, this.fillColor);
+        this.currentShape = new Pen(this.id, mousePos, this.fillColor, this.lineWidth);
     }
     this.id += 1;
 }
@@ -84,35 +86,8 @@ Canvas.prototype.initShape = function(canvas, event, shape){
 Canvas.prototype.drawShape = function(canvas, event){
     mousePos = this.getMouseCoordinates(canvas, event);
     this.ctx.fillStyle = this.fillColor;
-    if(this.currentShape instanceof Rectangle){
-        this.currentShape.draw(this.ctx, mousePos);
-    }
-    if(this.currentShape instanceof Circle){
-        this.currentShape.draw(this.ctx, mousePos);
-    }
-    if(this.currentShape instanceof Line){
-        this.ctx.beginPath();
-        this.ctx.moveTo(mousePos.xPos, mousePos.yPos);
-        this.ctx.lineTo(this.currentShape.xStartPos, this.currentShape.yStartPos);
-        this.ctx.strokeStyle = this.fillColor;
-        this.ctx.stroke();
-        this.currentShape.xEndPos = mousePos.xPos;
-        this.currentShape.yEndPos = mousePos.yPos;
-    }
-    if(this.currentShape instanceof Letters){
-        //debugger;
-        this.currentShape.value = document.getElementById("textValue").value;
-        var fs = document.getElementById("textSize");
-        this.currentShape.fontSize = fs.options[fs.selectedIndex].text;
-        var ft = document.getElementById("textType");
-        this.currentShape.fontType = ft.options[ft.selectedIndex].text;
-        this.ctx.beginPath();
-        this.ctx.font = this.currentShape.fontSize + " " + this.currentShape.fontType;
-        this.ctx.fillText(this.currentShape.value, mousePos.xPos, mousePos.yPos);
-    }
-    if(this.currentShape instanceof Pen){
-        this.currentShape.draw(this.ctx, mousePos);
-    }
+    this.currentShape.draw(this.ctx, mousePos);
+    
 }
 
 Canvas.prototype.undo = function(){
@@ -139,7 +114,6 @@ Canvas.prototype.clear = function(){
             this.shapes = [];
         }
     }
-
 }
 
 /**
@@ -160,30 +134,8 @@ Canvas.prototype.getMouseCoordinates = function(canvas, event){
  */
 Canvas.prototype.renderShapes = function(){
     for(var i = 0; i < this.shapes.length; ++i){
-        shape = this.shapes[i];
-        if(shape instanceof Rectangle){
-            shape.render(this.ctx);
-        }
-        if(shape instanceof Circle){
-            shape.render(this.ctx);
-        }
-        if(shape instanceof Line){
-            this.ctx.beginPath();
-            this.ctx.moveTo(shape.xStartPos, shape.yStartPos);
-            this.ctx.lineTo(shape.xEndPos, shape.yEndPos);
-            this.ctx.strokeStyle = shape.fillColor;
-            this.ctx.stroke();
-        }
-        if(shape instanceof Letters){
-            console.log(shape);
-            this.ctx.fillStyle = shape.fillColor;
-            this.ctx.beginPath();
-            this.ctx.font = shape.fontSize + " " + shape.fontType;
-            this.ctx.fillText(shape.value, shape.xStartPos, shape.yStartPos);
-        }
-        if(shape instanceof Pen){
-            shape.render(this.ctx);
-        }
+        shape = this.shapes[i];    
+        shape.render(this.ctx);
     }
 }
 

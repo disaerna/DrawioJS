@@ -32,6 +32,10 @@ body{
     display: inline;
 }
 
+select.form-control{
+    width: 140px;
+    display: inline;
+}
 
 input, select{
     border-radius: 4px;
