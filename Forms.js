@@ -141,5 +141,17 @@ function Line(id, fillColor){
  }
 
  Pen.prototype.render = function(ctx){
-    
+    for(var i = 0; i < clickX.length; i++){
+        ctx.beginPath();
+        if(clickDrag[i] && i){
+            ctx.moveTo(clickX[i-1], clickY[i-1]);
+        }
+        else {
+            ctx.moveTo(clickX[i]-1, clickY[i]);
+        }
+        ctx.lineTo(clickX[i], clickY[i]);
+        ctx.closePath();
+        ctx.strokeStyle = this.fillColor;
+        ctx.stroke();
+    }
  }
