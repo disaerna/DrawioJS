@@ -1,10 +1,16 @@
 body{
-    padding: 10px;
+    margin: auto;
     background-color: blue;
 }
 
 #toolbar{
+    width: 100%;
     cursor: pointer;
+    height: 100px;
+    border-bottom: 2px solid black;
+    display: inline-block;
+    margin-bottom: 20px;
+    padding: 15px;
 }
 
 /* #rectangle{
@@ -18,12 +24,26 @@ body{
 #canvas{
     border:1px solid #000000;
     cursor: crosshair;
+    margin: auto;
+    display: block;
 }
 
-#text {
+#text{
     display: inline;
 }
 
-#text * {
-    margin: 10px;
+
+input, select{
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.42857143;
+    height: 34px;
+}
+#colors {
+    padding-top: 10px;
+}
+#colors > input{
+    height: 25px;
+    width: 25px;
 }
