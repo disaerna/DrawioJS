@@ -25,6 +25,10 @@ button.btn {
     border-color: #47476b;
 }
 
+.tool:hover, .shape:hover{
+    background-color: #a3a3c2;
+}
+
 /* #rectangle{
     background: url(icons/square-and-circle.png) no-repeat left center;
     width: 40px;
@@ -62,8 +66,4 @@ input, select{
 #colors > input{
     height: 25px;
     width: 25px;
-}
-
-button i.flaticon-save{
-    text-align: center;
 }
