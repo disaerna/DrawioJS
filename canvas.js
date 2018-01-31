@@ -57,6 +57,7 @@ Canvas.prototype.draw = function(requestedShape){
  */
 Canvas.prototype.initShape = function(canvas, event, shape){
     mousePos = this.getMouseCoordinates(canvas, event);
+    console.log(mousePos)
     if(shape === 'rectangle'){
         this.currentShape = new Rectangle(this.id, mousePos, this.fillColor, this.strokeColor, this.lineWidth);
     }
