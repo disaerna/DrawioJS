@@ -3,6 +3,10 @@ body{
     background-color: rgb(255, 0, 225);
 }
 
+*{
+    margin-top: 5px;
+}
+
 #toolbar{
     width: 100%;
     cursor: pointer;
@@ -10,7 +14,15 @@ body{
     border-bottom: 2px solid black;
     display: inline-block;
     margin-bottom: 20px;
-    padding: 15px;
+    padding: 4px;
+}
+
+button.btn {
+    padding: 1px 4px;
+    font-size: 16px;
+    background-color:  #c2c2d6;
+    border: 2px solid;
+    border-color: #47476b;
 }
 
 /* #rectangle{
@@ -50,4 +62,8 @@ input, select{
 #colors > input{
     height: 25px;
     width: 25px;
+}
+
+button i.flaticon-save{
+    text-align: center;
 }

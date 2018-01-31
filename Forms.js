@@ -77,7 +77,7 @@ Circle.prototype.render = function(ctx){
     ctx.fillStyle = this.fillColor;
     ctx.beginPath();
     ctx.lineWidth = this.lineWidth;
-    ctx.arc(this.xStartPos, this.yStartPos, this.radius, 0, Math.PI * 2)        
+    ctx.arc(this.xStartPos, this.yStartPos, this.radius, 0, Math.PI * 2);
     // this.ctx.stroke();
     ctx.fill();
 }
