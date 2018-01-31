@@ -46,9 +46,6 @@ Canvas.prototype.draw = function(requestedShape){
     function mouseUp(event){
         canvas.drawing = false;
         canvas.shapes.push(canvas.currentShape);
-        clickX = [];
-        clickY = [];
-        clickDrag = [];
     }
 }
 
@@ -76,6 +73,30 @@ Canvas.prototype.initShape = function(canvas, event, shape){
         this.currentShape = new Pen(this.id, mousePos, this.fillColor, this.strokeColor, this.lineWidth);
     }
     this.id += 1;
+}
+
+Canvas.prototype.loadShapes = function(shapes){
+    temp = []
+    shapes.forEach(shape => {
+        console.log("here")
+        if(shape.type === 'rectangle'){
+            temp.push(Object.assign(Object.create(Rectangle.prototype), shape));
+        }
+        if(shape.type === 'circle'){
+            temp.push(Object.assign(Object.create(Circle.prototype), shape));
+        }
+        if(shape.type === 'line'){
+            temp.push(Object.assign(Object.create(Line.prototype), shape));
+        }
+        if(shape.type === 'letters'){
+            temp.push(Object.assign(Object.create(Letters.prototype), shape));
+        }
+        if(shape.type === 'pen'){
+            temp.push(Object.assign(Object.create(Pen.prototype), shape));
+        }
+    });
+    this.shapes = temp;
+    this.loadContent();
 }
 
 /**

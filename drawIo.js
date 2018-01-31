@@ -3,7 +3,7 @@
  */
 $(document).ready(function(){
     let canvas = new Canvas();
-
+    let storage = window.localStorage
     $(".shape").on("click", function(event){
         //retrieve the id of the current event and pass to canvas.draw()
         $("#canvas").unbind();
@@ -24,6 +24,14 @@ $(document).ready(function(){
         }
         if(request === 'clear') {
             canvas.clear();
+        }
+        if(request === 'save'){
+            console.log(canvas.shapes)
+            storage.setItem(canvas.canvas, JSON.stringify(canvas.shapes))
+        }
+        if(request === 'load'){
+            var shapes = JSON.parse(storage.getItem(canvas.canvas));
+            canvas.loadShapes(shapes);
         }
         
     })
