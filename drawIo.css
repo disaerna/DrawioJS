@@ -27,6 +27,7 @@ button.btn {
 
 .tool:hover, .shape:hover{
     background-color: #a3a3c2;
+    
 }
 
 /* #rectangle{
@@ -51,6 +52,16 @@ button.btn {
 select.form-control{
     width: 140px;
     display: inline;
+}
+
+#fillColor, #strokeColor {
+    width: 20px;
+    height: 20px;
+    border-radius: 0px;
+}
+
+#color-div{
+    display: inline-block;
 }
 
 input, select{
