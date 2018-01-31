@@ -2,19 +2,25 @@
 Shape.prototype = Object.create(Canvas.prototype);
 Shape.prototype.constructor = Shape;
 
-function Shape(type, id, mousePos, fillColor, lineWidth){
+function Shape(type, id, mousePos, fillColor, strokeColor, lineWidth){
     this.type = type;
     this.id = id
     this.xStartPos = mousePos.xPos;
     this.yStartPos = mousePos.yPos;
-    this.xEndPos = 0;
-    this.yEndPos = 0;
+    this.fillColor = fillColor;
+    this.strokeColor = strokeColor;
     this.lineWidth = lineWidth;
-    if(fillColor) this.fillColor = fillColor;
 }
 
 Shape.prototype.getType = function(){
     return this.type;
+}
+
+Shape.prototype.setStyles = function(ctx){
+    this.lineWidth = lineWidth();
+    ctx.fillStyle = this.fillColor;
+    ctx.strokeStyle = this.strokeColor;
+    ctx.lineWidth = this.lineWidth;
 }
 
 /**
@@ -23,8 +29,8 @@ Shape.prototype.getType = function(){
 Rectangle.prototype = Object.create(Shape.prototype);
 Rectangle.prototype.constructor = Rectangle;
 
-function Rectangle(id, mousePos, fillColor, lineWidth){
-    Shape.call(this, 'rectangle', id, mousePos, fillColor)
+function Rectangle(id, mousePos, fillColor, strokeColor, lineWidth){
+    Shape.call(this, 'rectangle', id, mousePos, fillColor, strokeColor, lineWidth)
     this.width = 0;
     this.height = 0
 }
@@ -32,15 +38,16 @@ function Rectangle(id, mousePos, fillColor, lineWidth){
 Rectangle.prototype.draw = function(ctx, mousePos){
     this.width = mousePos.xPos - this.xStartPos;
     this.height = mousePos.yPos - this.yStartPos;
-    this.lineWidth = lineWidth();
-    ctx.lineWidth = this.lineWidth;
+    this.setStyles(ctx);
     ctx.fillRect(this.xStartPos, this.yStartPos, this.width, this.height);
+    ctx.strokeRect(this.xStartPos, this.yStartPos, this.width, this.height)
 }
 
 Rectangle.prototype.render = function(ctx){
-    ctx.fillStyle = this.fillColor;
-    ctx.lineWidth = this.lineWidth;
+    this.setStyles(ctx);
     ctx.fillRect(this.xStartPos, this.yStartPos, this.width, this.height);
+    ctx.strokeRect(this.xStartPos, this.yStartPos, this.width, this.height)
+
 }
 
 /**
@@ -49,8 +56,8 @@ Rectangle.prototype.render = function(ctx){
 Circle.prototype = Object.create(Shape.prototype);
 Circle.prototype.constructor = Circle;
 
-function Circle(id, mousePos, fillColor, lineWidth){
-    Shape.call(this, 'circle', id, mousePos, fillColor);
+function Circle(id, mousePos, fillColor, strokeColor, lineWidth){
+    Shape.call(this, 'circle', id, mousePos, fillColor, strokeColor, lineWidth);
     this.radius = 0;
 }
 
@@ -59,6 +66,8 @@ Circle.prototype.draw = function(ctx, mousePos){
     this.radius =  Math.sqrt(Math.pow((this.xStartPos - mousePos.xPos),2) + Math.pow((this.yStartPos - mousePos.yPos), 2));
     this.lineWidth = lineWidth();
     ctx.lineWidth = this.lineWidth;
+    ctx.fillStyle = this.fillColor;
+    ctx.strokeStyle = this.strokeColor;
     ctx.arc(this.xStartPos, this.yStartPos, this.radius, 0, 100);
     ctx.fill()
     ctx.stroke();
@@ -79,8 +88,10 @@ Circle.prototype.render = function(ctx){
 Line.prototype = Object.create(Shape.prototype);
 Line.prototype.constructor = Line;
 
-function Line(id, mousePos, fillColor, lineWidth){
-    Shape.call(this, 'line', id, mousePos, fillColor);
+function Line(id, mousePos, fillColor, strokeColor, lineWidth){
+    Shape.call(this, 'line', id, mousePos, fillColor, strokeColor, lineWidth);
+    this.xEndPos = 0;
+    this.yEndPos = 0;
 }
 
 Line.prototype.draw = function(ctx, mousePos){
@@ -111,8 +122,8 @@ Line.prototype.render = function(ctx){
  Letters.prototype = Object.create(Shape.prototype);
  Letters.prototype.constructor = Letters;
 
- function Letters(id, fillColor, lineWidth){
-    Shape.call(this, 'letters', id, fillColor);
+ function Letters(id, fillColor, strokeColor, lineWidth){
+    Shape.call(this, 'letters', id, fillColor, strokeColor, lineWidth);
     this.fontSize = "12px";
     this.fontType = "Arial";
     this.font = this.fontSize + " " + this.fontType;
@@ -145,8 +156,8 @@ Line.prototype.render = function(ctx){
  Pen.prototype = Object.create(Shape.prototype);
  Pen.prototype.constructor = Pen;
 
- function Pen(id, mousePos, fillColor, lineWidth){
-     Shape.call(this, 'pen', id, mousePos, fillColor);
+ function Pen(id, mousePos, fillColor, strokeColor, lineWidth){
+     Shape.call(this, 'pen', id, mousePos, fillColor, strokeColor, lineWidth);
      this.xEndPos = 0;
      this.yEndPos = 0;
      this.xPos = [];
@@ -172,19 +183,17 @@ Pen.prototype.click = function(x, y, drag) {
     ctx.closePath();
  }
 
- Pen.prototype.drawRender = function(ctx){
-    for(var i = 0; i < this.xPos.length; i++){
-       ctx.beginPath();
-       ctx.lineWidth = this.lineWidth;
-       if(this.posArr[i] && i > 0){
-           ctx.moveTo(this.xPos[i-1], this.yPos[i-1]);
-       }
-       else {
-           ctx.moveTo(this.xPos[i]-1, this.yPos[i]);
-       }
-       ctx.lineTo(this.xPos[i], this.yPos[i]);
-       ctx.strokeStyle = this.fillColor;
-       ctx.stroke();
+
+Pen.prototype.drawRender = function(ctx){
+    ctx.lineWidth = this.lineWidth;
+    for(var i = 0; i < this.xPos.length; i++){ 
+        if(this.posArr[i]){
+            ctx.beginPath();
+            ctx.moveTo(this.xPos[i], this.yPos[i]);
+        }
+        ctx.lineTo(this.xPos[i+1], this.yPos[i+1]);
+        ctx.strokeStyle = this.fillColor;
+        ctx.stroke();
    }
  }
 

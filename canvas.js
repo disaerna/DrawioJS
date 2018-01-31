@@ -6,7 +6,7 @@ function Canvas(){
     this.ctx = canvas.getContext('2d');
     this.drawing = false;
     this.fillColor = document.getElementById("fillColor").value;
-    this.strokeColor;
+    this.strokeColor = document.getElementById('strokeColor').value;
     this.lineWidth = document.getElementById("lineWidth").value;
     //generate unique id for shapes for when moving them
     this.id = 1;
@@ -61,19 +61,19 @@ Canvas.prototype.draw = function(requestedShape){
 Canvas.prototype.initShape = function(canvas, event, shape){
     mousePos = this.getMouseCoordinates(canvas, event);
     if(shape === 'rectangle'){
-        this.currentShape = new Rectangle(this.id, mousePos, this.fillColor, this.lineWidth);
+        this.currentShape = new Rectangle(this.id, mousePos, this.fillColor, this.strokeColor, this.lineWidth);
     }
     if(shape === 'circle'){
-        this.currentShape = new Circle(this.id, mousePos, this.fillColor, this.lineWidth);
+        this.currentShape = new Circle(this.id, mousePos, this.fillColor, this.strokeColor, this.lineWidth);
     }
     if(shape === 'line'){
-        this.currentShape = new Line(this.id, mousePos, this.fillColor, this.lineWidth);
+        this.currentShape = new Line(this.id, mousePos, this.fillColor, this.strokeColor, this.lineWidth);
     }
     if(shape == 'letters'){
-        this.currentShape = new Letters(this.id, mousePos, this.fillColor, this.lineWidth);
+        this.currentShape = new Letters(this.id, mousePos, this.fillColor, this.strokeColor, this.lineWidth);
     }
     if(shape == 'pen'){
-        this.currentShape = new Pen(this.id, mousePos, this.fillColor, this.lineWidth);
+        this.currentShape = new Pen(this.id, mousePos, this.fillColor, this.strokeColor, this.lineWidth);
     }
     this.id += 1;
 }
@@ -85,7 +85,8 @@ Canvas.prototype.initShape = function(canvas, event, shape){
  */
 Canvas.prototype.drawShape = function(canvas, event){
     mousePos = this.getMouseCoordinates(canvas, event);
-    this.ctx.fillStyle = this.fillColor;
+    // this.ctx.fillStyle = this.fillColor;
+    // this.ctx.strokeStyle = this.strokeStyle;
     this.currentShape.draw(this.ctx, mousePos);
     
 }
