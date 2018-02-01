@@ -194,6 +194,10 @@ Pen.prototype.click = function(x, y, drag) {
 
 Pen.prototype.drawRender = function(ctx){
     ctx.lineWidth = this.lineWidth;
+    ctx.lineCap = "round";
+    ctx.lineJoine = "round";
+    // ctx.shadowBlur = 5;
+    // ctx.shadowColor = this.fillColor;
     for(var i = 0; i < this.xPos.length; i++){ 
         if(this.posArr[i]){
             ctx.beginPath();
