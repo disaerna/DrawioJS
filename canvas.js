@@ -39,6 +39,19 @@ Canvas.prototype.move = function(){
                     tempShape = shape;
                 }
             }
+            if(shape instanceof Pen){
+                console.log(shape)
+                for(var i = 0; i < shape.moveArr.length; ++i){
+                    var m = shape.moveArr[i];
+                    if((mousePos.xPos >= (m.xPos - 15) && mousePos.xPos <= (m.xPos + 15))
+                    && mousePos.yPos >= (m.yPos - 15) && mousePos.yPos <= (m.yPos + 15)){
+                        console.log("moveshit")
+                        tempShape = shape;
+                        break;
+                    }
+                }
+                
+            }
         });
         initialMousePos = mousePos;
     }
@@ -52,6 +65,10 @@ Canvas.prototype.move = function(){
                 initialMousePos.xPos = mousePos.xPos;
                 initialMousePos.yPos = mousePos.yPos;
                 canvas.loadContent();
+
+                if(tempShape instanceof Pen){
+                    
+                }
             }
 
             // tempShape.draw(canvas.ctx, mousePos);

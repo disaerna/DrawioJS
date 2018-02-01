@@ -171,18 +171,20 @@ Line.prototype.render = function(ctx){
      this.xPos = [];
      this.yPos = [];
      this.posArr = [];
+     this.moveArr = [];
  }
 
 
-Pen.prototype.click = function(x, y, drag) {
-     this.xPos.push(x);
-     this.yPos.push(y);
+Pen.prototype.click = function(mousePos, drag) {
+     this.xPos.push(mousePos.xPos);
+     this.yPos.push(mousePos.yPos);
+     this.moveArr.push(mousePos);
      this.posArr.push(drag);
  }
 
  Pen.prototype.draw = function(ctx, mousePos){
     this.lineWidth = lineWidth();
-    this.click(mousePos.xPos, mousePos.yPos, true);
+    this.click(mousePos, true);
     this.drawRender(ctx)
  }
 
