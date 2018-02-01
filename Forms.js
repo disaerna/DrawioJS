@@ -4,7 +4,7 @@ Shape.prototype.constructor = Shape;
 
 function Shape(type, id, mousePos, fillColor, strokeColor, lineWidth){
     this.type = type;
-    this.id = id
+    this.id = id;
     this.xStartPos = mousePos.xPos;
     this.yStartPos = mousePos.yPos;
     this.fillColor = fillColor;
@@ -48,6 +48,10 @@ Rectangle.prototype.render = function(ctx){
     ctx.fillRect(this.xStartPos, this.yStartPos, this.width, this.height);
     ctx.strokeRect(this.xStartPos, this.yStartPos, this.width, this.height)
 
+}
+
+Rectangle.prototype.move = function(ctx, mousePos){
+    
 }
 
 /**

@@ -5,11 +5,56 @@ function Canvas(){
     this.canvas = document.getElementById("canvas");
     this.ctx = canvas.getContext('2d');
     this.drawing = false;
+    this.moving = false;
     this.fillColor = document.getElementById("fillColor").value;
     this.strokeColor = document.getElementById('strokeColor').value;
     this.lineWidth = document.getElementById("lineWidth").value;
     //generate unique id for shapes for when moving them
     this.id = 1;
+}
+
+Canvas.prototype.move = function(){
+    var canvas = this;
+    $("#canvas").on("mousedown", mouseDown);
+    $("#canvas").on("mousemove", mouseMove);
+    $("#canvas").on("mouseup", mouseUp);
+    var tempShape = null;
+    var initialMousePos;
+    function mouseDown(event){
+        canvas.moving = true;
+        var mousePos = canvas.getMouseCoordinates(this, event);
+        console.log(mousePos)
+        canvas.shapes.forEach(shape => {
+            if(shape instanceof Rectangle){
+                //move rectangle
+                if((mousePos.xPos >= shape.xStartPos && mousePos.xPos <= (shape.xStartPos + shape.width))
+                && mousePos.yPos >= shape.yStartPos && mousePos.yPos <= (shape.yStartPos + shape.height)){
+                    tempShape = shape;
+                }
+            }
+        });
+        initialMousePos = mousePos;
+    }
+
+    function mouseMove(event){
+        if(canvas.moving){
+            if(tempShape != null){
+                var mousePos = canvas.getMouseCoordinates(this, event)
+                tempShape.xStartPos = tempShape.xStartPos - (initialMousePos.xPos - mousePos.xPos);
+                tempShape.yStartPos = tempShape.yStartPos - (initialMousePos.yPos - mousePos.yPos);
+                initialMousePos.xPos = mousePos.xPos;
+                initialMousePos.yPos = mousePos.yPos;
+                canvas.loadContent();
+            }
+
+            // tempShape.draw(canvas.ctx, mousePos);
+        }
+    }
+
+    function mouseUp(event){
+        canvas.moving = false;
+        console.log(tempShape);
+    }
 }
 
 
@@ -46,6 +91,7 @@ Canvas.prototype.draw = function(requestedShape){
     function mouseUp(event){
         canvas.drawing = false;
         canvas.shapes.push(canvas.currentShape);
+        console.log(canvas.currentShape);
     }
 }
 
@@ -57,7 +103,6 @@ Canvas.prototype.draw = function(requestedShape){
  */
 Canvas.prototype.initShape = function(canvas, event, shape){
     mousePos = this.getMouseCoordinates(canvas, event);
-    console.log(mousePos)
     if(shape === 'rectangle'){
         this.currentShape = new Rectangle(this.id, mousePos, this.fillColor, this.strokeColor, this.lineWidth);
     }

@@ -33,6 +33,10 @@ $(document).ready(function(){
             var shapes = JSON.parse(storage.getItem(canvas.canvas));
             canvas.loadShapes(shapes);
         }
+        if(request === 'move'){
+            $("#canvas").unbind();
+            canvas.move();
+        }
         
     })
 
