@@ -18,14 +18,14 @@ Shape.prototype.getType = function(){
 
 Shape.prototype.setStyles = function(ctx){
     this.lineWidth = lineWidth();
-    ctx.fillStyle = this.fillColor;
-    ctx.strokeStyle = this.strokeColor;
+    ctx.fillStyle = this.strokeColor;
+    ctx.strokeStyle = this.fillColor;
     ctx.lineWidth = this.lineWidth;
 }
 
 Shape.prototype.loadStyles = function(ctx){
-    ctx.fillStyle = this.fillColor;
-    ctx.strokeStyle = this.strokeColor;
+    ctx.fillStyle = this.strokeColor;
+    ctx.strokeStyle = this.fillColor;
     ctx.lineWidth = this.lineWidth;
 }
 
