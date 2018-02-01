@@ -18,8 +18,14 @@ Shape.prototype.getType = function(){
 
 Shape.prototype.setStyles = function(ctx){
     this.lineWidth = lineWidth();
-    ctx.fillStyle = this.fillColor;
-    ctx.strokeStyle = this.strokeColor;
+    ctx.fillStyle = this.strokeColor;
+    ctx.strokeStyle = this.fillColor;
+    ctx.lineWidth = this.lineWidth;
+}
+
+Shape.prototype.loadStyles = function(ctx){
+    ctx.fillStyle = this.strokeColor;
+    ctx.strokeStyle = this.fillColor;
     ctx.lineWidth = this.lineWidth;
 }
 
@@ -44,7 +50,7 @@ Rectangle.prototype.draw = function(ctx, mousePos){
 }
 
 Rectangle.prototype.render = function(ctx){
-    this.setStyles(ctx);
+    this.loadStyles(ctx);
     ctx.fillRect(this.xStartPos, this.yStartPos, this.width, this.height);
     ctx.strokeRect(this.xStartPos, this.yStartPos, this.width, this.height)
 
@@ -68,22 +74,19 @@ function Circle(id, mousePos, fillColor, strokeColor, lineWidth){
 Circle.prototype.draw = function(ctx, mousePos){
     ctx.beginPath();
     this.radius =  Math.sqrt(Math.pow((this.xStartPos - mousePos.xPos),2) + Math.pow((this.yStartPos - mousePos.yPos), 2));
-    this.lineWidth = lineWidth();
-    ctx.lineWidth = this.lineWidth;
-    ctx.fillStyle = this.fillColor;
-    ctx.strokeStyle = this.strokeColor;
-    ctx.arc(this.xStartPos, this.yStartPos, this.radius, 0, 100);
+    this.setStyles(ctx);
+    ctx.arc(this.xStartPos, this.yStartPos, this.radius, 0, Math.PI * 2);
     ctx.fill()
     ctx.stroke();
 }
 
 Circle.prototype.render = function(ctx){
-    ctx.fillStyle = this.fillColor;
     ctx.beginPath();
-    ctx.lineWidth = this.lineWidth;
+    this.loadStyles(ctx);
     ctx.arc(this.xStartPos, this.yStartPos, this.radius, 0, Math.PI * 2);
-    // this.ctx.stroke();
     ctx.fill();
+    ctx.stroke();
+
 }
 
 /**
@@ -100,11 +103,9 @@ function Line(id, mousePos, fillColor, strokeColor, lineWidth){
 
 Line.prototype.draw = function(ctx, mousePos){
     ctx.beginPath();
-    this.lineWidth = lineWidth();
-    ctx.lineWidth = this.lineWidth;
     ctx.moveTo(mousePos.xPos, mousePos.yPos);
+    this.setStyles(ctx);
     ctx.lineTo(this.xStartPos, this.yStartPos);
-    ctx.strokeStyle = this.fillColor;
     ctx.stroke();
     this.xEndPos = mousePos.xPos;
     this.yEndPos = mousePos.yPos;
@@ -112,10 +113,9 @@ Line.prototype.draw = function(ctx, mousePos){
 
 Line.prototype.render = function(ctx){
     ctx.beginPath();
-    ctx.lineWidth = this.lineWidth;
+    this.loadStyles(ctx);
     ctx.moveTo(this.xStartPos, this.yStartPos);
     ctx.lineTo(this.xEndPos, this.yEndPos);
-    ctx.strokeStyle = this.fillColor;
     ctx.stroke();
 }
 
@@ -142,15 +142,19 @@ Line.prototype.render = function(ctx){
     this.fontType = ft.options[ft.selectedIndex].text;
     ctx.beginPath();
     ctx.font = this.fontSize + " " + this.fontType;
+    this.setStyles(ctx);
     ctx.fillText(this.value, mousePos.xPos, mousePos.yPos);
+    ctx.strokeText(this.value, mousePos.xPos, mousePos.yPos);
     ctx.closePath();
     
 }
 
  Letters.prototype.render = function(ctx){
     ctx.beginPath();
+    this.loadStyles(ctx);
     ctx.font = this.fontSize + " " + this.fontType;
     ctx.fillText(this.value, shape.xStartPos, shape.yStartPos);
+    ctx.strokeText(this.value, shape.xStartPos, shape.yStartPos);
     ctx.closePath();
  }
  /**
