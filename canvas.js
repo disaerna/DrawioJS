@@ -23,12 +23,19 @@ Canvas.prototype.move = function(){
     function mouseDown(event){
         canvas.moving = true;
         var mousePos = canvas.getMouseCoordinates(this, event);
-        console.log(mousePos)
         canvas.shapes.forEach(shape => {
             if(shape instanceof Rectangle){
                 //move rectangle
                 if((mousePos.xPos >= shape.xStartPos && mousePos.xPos <= (shape.xStartPos + shape.width))
                 && mousePos.yPos >= shape.yStartPos && mousePos.yPos <= (shape.yStartPos + shape.height)){
+                    tempShape = shape;
+                }
+            }
+            if(shape instanceof Circle){
+                var x = Math.pow((mousePos.xPos-shape.xStartPos),2);
+                var y = Math.pow((mousePos.yPos-shape.yStartPos),2);
+                var distance = Math.sqrt(x+y);
+                if(distance < shape.radius){
                     tempShape = shape;
                 }
             }
@@ -91,7 +98,6 @@ Canvas.prototype.draw = function(requestedShape){
     function mouseUp(event){
         canvas.drawing = false;
         canvas.shapes.push(canvas.currentShape);
-        console.log(canvas.currentShape);
     }
 }
 
@@ -103,6 +109,7 @@ Canvas.prototype.draw = function(requestedShape){
  */
 Canvas.prototype.initShape = function(canvas, event, shape){
     mousePos = this.getMouseCoordinates(canvas, event);
+    console.log(mousePos)
     if(shape === 'rectangle'){
         this.currentShape = new Rectangle(this.id, mousePos, this.fillColor, this.strokeColor, this.lineWidth);
     }
