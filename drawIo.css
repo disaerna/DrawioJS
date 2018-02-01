@@ -30,14 +30,6 @@ button.btn {
     
 }
 
-/* #rectangle{
-    background: url(icons/square-and-circle.png) no-repeat left center;
-    width: 40px;
-    height: 40px;
-    border: 0;
-    background-size: 95%;
-} */
-
 #canvas{
     border:1px solid #000000;
     cursor: crosshair;
