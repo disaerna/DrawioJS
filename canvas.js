@@ -1,6 +1,6 @@
 function Canvas(){
-    this.shapes = []
-    this.undone = []
+    this.shapes = [];
+    this.undone = [];
     this.currentShape;
     this.canvas = document.getElementById("canvas");
     this.ctx = canvas.getContext('2d');
@@ -23,7 +23,7 @@ Canvas.prototype.draw = function(requestedShape){
     $("#canvas").on("mousedown", mouseDown);
     $("#canvas").on("mousemove", mouseMove);
     $("#canvas").on("mouseup", mouseUp);
-
+    
     function mouseDown(event){
         canvas.drawing = true;
         // send the canvas element, the event and the requested shape as parameters
@@ -57,7 +57,9 @@ Canvas.prototype.draw = function(requestedShape){
  */
 Canvas.prototype.initShape = function(canvas, event, shape){
     mousePos = this.getMouseCoordinates(canvas, event);
-    console.log(mousePos)
+    console.log(mousePos);
+    console.log(shape);
+    
     if(shape === 'rectangle'){
         this.currentShape = new Rectangle(this.id, mousePos, this.fillColor, this.strokeColor, this.lineWidth);
     }
