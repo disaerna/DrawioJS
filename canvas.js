@@ -39,6 +39,12 @@ Canvas.prototype.move = function(){
                     tempShape = shape;
                 }
             }
+            if(shape instanceof Line){
+                if((mousePos.xPos >= shape.xStartPos && mousePos.xPos <= (shape.xStartPos + shape.xEndPos))
+                && mousePos.yPos >= shape.yStartPos && mousePos.yPos <= (shape.yStartPos + shape.yEndPos)){
+                    tempShape = shape;
+                }
+            }
         });
         initialMousePos = mousePos;
     }
@@ -49,6 +55,8 @@ Canvas.prototype.move = function(){
                 var mousePos = canvas.getMouseCoordinates(this, event)
                 tempShape.xStartPos = tempShape.xStartPos - (initialMousePos.xPos - mousePos.xPos);
                 tempShape.yStartPos = tempShape.yStartPos - (initialMousePos.yPos - mousePos.yPos);
+                tempShape.xEndPos = tempShape.xEndPos - (initialMousePos.xPos - mousePos.xPos);
+                tempShape.yEndPos = tempShape.yEndPos - (initialMousePos.yPos - mousePos.yPos);
                 initialMousePos.xPos = mousePos.xPos;
                 initialMousePos.yPos = mousePos.yPos;
                 canvas.loadContent();
