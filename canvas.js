@@ -167,8 +167,6 @@ Canvas.prototype.loadShapes = function(shapes){
  */
 Canvas.prototype.drawShape = function(canvas, event){
     mousePos = this.getMouseCoordinates(canvas, event);
-    // this.ctx.fillStyle = this.fillColor;
-    // this.ctx.strokeStyle = this.strokeStyle;
     this.currentShape.draw(this.ctx, mousePos);
     
 }
