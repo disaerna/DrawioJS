@@ -202,12 +202,7 @@ Pen.prototype.click = function(mousePos, drag) {
 
  Pen.prototype.draw = function(ctx, mousePos){
     this.lineWidth = lineWidth();
-<<<<<<< HEAD
-    this.setStyles(ctx);
-    this.click(mousePos.xPos, mousePos.yPos, true);
-=======
     this.click(mousePos, true);
->>>>>>> 94b9bd995bb8be5ce173d14b4b5606643a6929e8
     this.drawRender(ctx)
  }
 
