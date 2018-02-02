@@ -189,19 +189,25 @@ Line.prototype.render = function(ctx){
      this.xPos = [];
      this.yPos = [];
      this.posArr = [];
+     this.moveArr = [];
  }
 
 
-Pen.prototype.click = function(x, y, drag) {
-     this.xPos.push(x);
-     this.yPos.push(y);
+Pen.prototype.click = function(mousePos, drag) {
+     this.xPos.push(mousePos.xPos);
+     this.yPos.push(mousePos.yPos);
+     this.moveArr.push(mousePos);
      this.posArr.push(drag);
  }
 
  Pen.prototype.draw = function(ctx, mousePos){
     this.lineWidth = lineWidth();
+<<<<<<< HEAD
     this.setStyles(ctx);
     this.click(mousePos.xPos, mousePos.yPos, true);
+=======
+    this.click(mousePos, true);
+>>>>>>> 94b9bd995bb8be5ce173d14b4b5606643a6929e8
     this.drawRender(ctx)
  }
 
@@ -213,6 +219,10 @@ Pen.prototype.click = function(x, y, drag) {
 
 Pen.prototype.drawRender = function(ctx){
     ctx.lineWidth = this.lineWidth;
+    ctx.lineCap = "round";
+    ctx.lineJoine = "round";
+    // ctx.shadowBlur = 5;
+    // ctx.shadowColor = this.fillColor;
     for(var i = 0; i < this.xPos.length; i++){ 
         if(this.posArr[i]){
             ctx.beginPath();

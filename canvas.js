@@ -39,7 +39,26 @@ Canvas.prototype.move = function(){
                     tempShape = shape;
                 }
             }
+            if(shape instanceof Pen){
+                console.log(shape)
+                for(var i = 0; i < shape.moveArr.length; ++i){
+                    var m = shape.moveArr[i];
+                    if((mousePos.xPos >= (m.xPos - 15) && mousePos.xPos <= (m.xPos + 15))
+                    && mousePos.yPos >= (m.yPos - 15) && mousePos.yPos <= (m.yPos + 15)){
+                        console.log("moveshit")
+                        tempShape = shape;
+                        break;
+                    }
+                }
+            }
+            if(shape instanceof Line){
+                if((mousePos.xPos >= shape.xStartPos && mousePos.xPos <= (shape.xStartPos + shape.xEndPos))
+                && mousePos.yPos >= shape.yStartPos && mousePos.yPos <= (shape.yStartPos + shape.yEndPos)){
+                    tempShape = shape;
+                }
+            }
         });
+        console.log(mousePos)
         initialMousePos = mousePos;
     }
 
@@ -47,11 +66,23 @@ Canvas.prototype.move = function(){
         if(canvas.moving){
             if(tempShape != null){
                 var mousePos = canvas.getMouseCoordinates(this, event)
-                tempShape.xStartPos = tempShape.xStartPos - (initialMousePos.xPos - mousePos.xPos);
-                tempShape.yStartPos = tempShape.yStartPos - (initialMousePos.yPos - mousePos.yPos);
+                var xOffset = initialMousePos.xPos - mousePos.xPos;
+                var yOffset = initialMousePos.yPos - mousePos.yPos;
+                if(tempShape instanceof Pen){
+                    for(var i = 0; i < tempShape.xPos.length; ++i){
+                        tempShape.xPos[i] = tempShape.xPos[i] - xOffset;
+                        tempShape.yPos[i] = tempShape.yPos[i] - yOffset;
+                        tempShape.moveArr[i].xPos = tempShape.moveArr[i].xPos - xOffset;
+                        tempShape.moveArr[i].yPos = tempShape.moveArr[i].yPos - yOffset;
+                    }
+                }
+                tempShape.xStartPos = tempShape.xStartPos - xOffset;
+                tempShape.yStartPos = tempShape.yStartPos - yOffset;
+                tempShape.xEndPos = tempShape.xEndPos - xOffset;
+                tempShape.yEndPos = tempShape.yEndPos - yOffset;
+                canvas.loadContent();
                 initialMousePos.xPos = mousePos.xPos;
                 initialMousePos.yPos = mousePos.yPos;
-                canvas.loadContent();
             }
         }
     }
@@ -170,8 +201,6 @@ Canvas.prototype.loadShapes = function(shapes){
  */
 Canvas.prototype.drawShape = function(canvas, event){
     mousePos = this.getMouseCoordinates(canvas, event);
-    // this.ctx.fillStyle = this.fillColor;
-    // this.ctx.strokeStyle = this.strokeStyle;
     this.currentShape.draw(this.ctx, mousePos);
     
 }

@@ -11,8 +11,6 @@
 </head>
 <body>
     <div id="toolbar">
-            <!-- <button id="save">Save</button>
-            <button id="load">Load</button> -->
             <div id="buttons">
                 <button type="button" class="btn tool" id="save" title="Save"><i class="flaticon-save"></i></button>
                 <button type="button" class="btn tool" id="load" title="Load"><i class="flaticon-upload"></i></button>
@@ -22,8 +20,8 @@
                 <button type="button" class="btn tool" id="move" title="Move"><i class="flaticon-move-tool-arrows"></i></button>
                 <button type="button" class="btn shape" id="line" title="Line"><i class="flaticon-interface-1"></i></button>
                 <button type="button" class="btn shape" id="pen" title="Pen"><i class="flaticon-pen"></i></button>
-                <button type="button" class="btn shape" id="rectangle" title="Rectangle"><i class="flaticon-shape"></i> Rectangle</button>
-                <button type="button" class="btn shape" id="circle" title="Circle"><i class="flaticon-circle"></i> Circle</button>
+                <button type="button" class="btn shape" id="rectangle" title="Rectangle"><i class="flaticon-shape"></i></button>
+                <button type="button" class="btn shape" id="circle" title="Circle"><i class="flaticon-circle"></i></button>
                 <div id="color-div">
                     <label for="fillColor">Fill Color</label>
                     <input id="fillColor" type="color" value="#ffffff"/>
@@ -35,7 +33,7 @@
             <div>
                 <div id="text">
                     <button type="button" class="btn shape" id="letters" title="Text"><i class="flaticon-font-size"></i></button>
-                    <select id="textSize" class="form-control">
+                    <select id="textSize" class="form-control" title="Text size">
                         <option value="10px">10px</option>
                         <option value="14px" selected="selected">14px</option>
                         <option value="18px">18px</option>
@@ -45,7 +43,7 @@
                         <option value="34px">34px</option>
                         <option value="38px">38px</option>
                     </select>
-                    <select id="textType" class="form-control">
+                    <select id="textType" class="form-control" title="Font family">
                         <option value="Arial" selected="selected">Arial</option>
                         <option value="Arial Black">Arial Black</option>
                         <option value="Comic Sans MS">Comic Sans MS</option>
@@ -54,7 +52,7 @@
                     </select>
                    <!-- <input type="text" id="textValue"/>-->
                 </div>
-                <select id="lineWidth" class="form-control">
+                <select id="lineWidth" class="form-control" title="Line width">
                     <option value="1">1px</option>
                     <option value="2" selected="selected">2px</option>
                     <option value="3">3px</option>
