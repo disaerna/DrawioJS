@@ -67,15 +67,8 @@ Canvas.prototype.move = function(){
                 var p2 = { xPos: shape.xEndPos, yPos: shape.yEndPos }
                 var numerator =  Math.abs((p2.yPos - p1.yPos) * p0.xPos - (p2.xPos - p1.xPos) * p0.yPos + (p2.xPos*p1.yPos) - (p2.yPos*p1.xPos));
                 var denominator = Math.sqrt(Math.pow((p2.yPos - p1.yPos), 2) + Math.pow((p2.xPos - p1.xPos), 2));
-                var result = numerator / denominator;
-                // console.log(canvas.ctx)
-                // console.log(p0)
-                // console.log(p1)
-                // console.log(p2)
-                // console.log(result);
-
-                if((mousePos.xPos >= shape.xStartPos && mousePos.xPos <= (shape.xStartPos + shape.xEndPos))
-                && mousePos.yPos >= shape.yStartPos && mousePos.yPos <= (shape.yStartPos + shape.yEndPos)){
+                var result = parseInt(numerator / denominator);
+                if(result < 10){
                     tempShape = shape;
                 }
             }
