@@ -29,14 +29,10 @@ button.btn {
     background-color: #a3a3c2;
     
 }
-<<<<<<< HEAD
 #canvas-container{
     width: 800px;
     height: 500px;
 }
-=======
-
->>>>>>> 94b9bd995bb8be5ce173d14b4b5606643a6929e8
 #canvas{
     border:1px solid #000000;
     cursor: crosshair;
