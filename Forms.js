@@ -42,6 +42,8 @@ function Rectangle(id, mousePos, fillColor, strokeColor, lineWidth){
     Shape.call(this, 'rectangle', id, mousePos, fillColor, strokeColor, lineWidth);
     this.width = 0;
     this.height = 0;
+    this.xEndPos = 0;
+    this.yEndPos = 0;
 }
 
 Rectangle.prototype.draw = function(ctx, mousePos){
@@ -50,6 +52,8 @@ Rectangle.prototype.draw = function(ctx, mousePos){
     this.setStyles(ctx);
     ctx.fillRect(this.xStartPos, this.yStartPos, this.width, this.height);
     ctx.strokeRect(this.xStartPos, this.yStartPos, this.width, this.height);
+    this.xEndPos = mousePos.xPos;
+    this.yEndPos = mousePos.yPos;
 }
 
 Rectangle.prototype.render = function(ctx){
@@ -131,6 +135,8 @@ Line.prototype.render = function(ctx){
     this.value = "";
     this.xStartPos = mousePos.xPos;
     this.yStartPos = mousePos.yPos;
+    this.width = 0;
+    this.height = 0;
  }
 
  Letters.prototype.display = function(){
@@ -148,10 +154,13 @@ Line.prototype.render = function(ctx){
 
  Letters.prototype.draw = function(ctx, mousePos){
     this.value = document.getElementById("textValue").value;
+    this.width = ctx.measureText(this.value).width;
     var fs = document.getElementById("textSize");
     this.fontSize = fs.options[fs.selectedIndex].text;
     var ft = document.getElementById("textType");
     this.fontType = ft.options[ft.selectedIndex].text;
+    var temp = String(this.fontSize);
+    this.height = temp.slice(0,2);
     ctx.beginPath();
     ctx.font = this.fontSize + " " + this.fontType;
     this.setStyles(ctx);
