@@ -22,7 +22,7 @@ Shape.prototype.getType = function(){
 Shape.prototype.setStyles = function(ctx){
     this.lineWidth = lineWidth();
     ctx.fillStyle = this.fillColor;
-    ctx.strokeStyle = this.strokeColor;;
+    ctx.strokeStyle = this.strokeColor;
     ctx.lineWidth = this.lineWidth;
 }
 
@@ -39,9 +39,9 @@ Rectangle.prototype = Object.create(Shape.prototype);
 Rectangle.prototype.constructor = Rectangle;
 
 function Rectangle(id, mousePos, fillColor, strokeColor, lineWidth){
-    Shape.call(this, 'rectangle', id, mousePos, fillColor, strokeColor, lineWidth)
+    Shape.call(this, 'rectangle', id, mousePos, fillColor, strokeColor, lineWidth);
     this.width = 0;
-    this.height = 0
+    this.height = 0;
 }
 
 Rectangle.prototype.draw = function(ctx, mousePos){
@@ -49,17 +49,13 @@ Rectangle.prototype.draw = function(ctx, mousePos){
     this.height = mousePos.yPos - this.yStartPos;
     this.setStyles(ctx);
     ctx.fillRect(this.xStartPos, this.yStartPos, this.width, this.height);
-    ctx.strokeRect(this.xStartPos, this.yStartPos, this.width, this.height)
+    ctx.strokeRect(this.xStartPos, this.yStartPos, this.width, this.height);
 }
 
 Rectangle.prototype.render = function(ctx){
     this.loadStyles(ctx);
     ctx.fillRect(this.xStartPos, this.yStartPos, this.width, this.height);
-    ctx.strokeRect(this.xStartPos, this.yStartPos, this.width, this.height)
-}
-
-Rectangle.prototype.move = function(ctx, mousePos){
-    
+    ctx.strokeRect(this.xStartPos, this.yStartPos, this.width, this.height);
 }
 
 /**
@@ -78,7 +74,7 @@ Circle.prototype.draw = function(ctx, mousePos){
     this.radius =  Math.sqrt(Math.pow((this.xStartPos - mousePos.xPos),2) + Math.pow((this.yStartPos - mousePos.yPos), 2));
     this.setStyles(ctx);
     ctx.arc(this.xStartPos, this.yStartPos, this.radius, 0, Math.PI * 2);
-    ctx.fill()
+    ctx.fill();
     ctx.stroke();
 }
 
@@ -88,7 +84,6 @@ Circle.prototype.render = function(ctx){
     ctx.arc(this.xStartPos, this.yStartPos, this.radius, 0, Math.PI * 2);
     ctx.fill();
     ctx.stroke();
-
 }
 
 /**
@@ -192,7 +187,6 @@ Line.prototype.render = function(ctx){
      this.moveArr = [];
  }
 
-
 Pen.prototype.click = function(mousePos, drag) {
      this.xPos.push(mousePos.xPos);
      this.yPos.push(mousePos.yPos);
@@ -203,14 +197,13 @@ Pen.prototype.click = function(mousePos, drag) {
  Pen.prototype.draw = function(ctx, mousePos){
     this.lineWidth = lineWidth();
     this.click(mousePos, true);
-    this.drawRender(ctx)
+    this.drawRender(ctx);
  }
 
  Pen.prototype.render = function(ctx){
     this.drawRender(ctx);
     ctx.closePath();
  }
-
 
 Pen.prototype.drawRender = function(ctx){
     ctx.lineWidth = this.lineWidth;
@@ -233,4 +226,3 @@ Pen.prototype.drawRender = function(ctx){
      var width = document.getElementById("lineWidth");
      return width.options[width.selectedIndex].value;
  }
- 

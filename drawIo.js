@@ -38,17 +38,15 @@ $(document).ready(function(){
         if(request === 'move'){
             $("#canvas").unbind();
             canvas.move();
-        }
-        
-    })
+        }    
+    });
 
     $("#fillColor").on("change", function(event){
         canvas.fillColor = document.getElementById("fillColor").value;
     });
+
     $("#strokeColor").on("change", function(event){
         canvas.strokeColor = document.getElementById("strokeColor").value;
     }); 
-
-    
 });
 
