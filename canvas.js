@@ -13,17 +13,22 @@ function Canvas(){
     this.id = 1;
 }
 
+/**
+ * Loop through all shapes and check if mouse is within it's area
+ * The shapes are layered as they are pushed onto the shapes array
+ */
 Canvas.prototype.move = function(){
     var canvas = this;
     $("#canvas").on("mousedown", mouseDown);
     $("#canvas").on("mousemove", mouseMove);
     $("#canvas").on("mouseup", mouseUp);
     var tempShape = null;
-    var initialMousePos;
+    var initialMousePos
     function mouseDown(event){
         canvas.moving = true;
         var mousePos = canvas.getMouseCoordinates(this, event);
         canvas.shapes.forEach(shape => {
+            console.log(shape)
             if(shape instanceof Rectangle){
                 //move rectangle
                 if((mousePos.xPos >= shape.xStartPos && mousePos.xPos <= (shape.xStartPos + shape.width))
@@ -40,11 +45,13 @@ Canvas.prototype.move = function(){
                 }
             }
             if(shape instanceof Pen){
-                console.log(shape)
+                var lineWidth = parseInt(document.getElementById("lineWidth").value);
+                var offset = 14 - lineWidth;
+                console.log(offset)
                 for(var i = 0; i < shape.moveArr.length; ++i){
                     var m = shape.moveArr[i];
-                    if((mousePos.xPos >= (m.xPos - 15) && mousePos.xPos <= (m.xPos + 15))
-                    && mousePos.yPos >= (m.yPos - 15) && mousePos.yPos <= (m.yPos + 15)){
+                    if((mousePos.xPos >= (m.xPos - offset) && mousePos.xPos <= (m.xPos + offset))
+                    && mousePos.yPos >= (m.yPos - offset) && mousePos.yPos <= (m.yPos + offset)){
                         console.log("moveshit")
                         tempShape = shape;
                         break;
@@ -58,7 +65,6 @@ Canvas.prototype.move = function(){
                 }
             }
         });
-        console.log(mousePos)
         initialMousePos = mousePos;
     }
 
@@ -84,14 +90,12 @@ Canvas.prototype.move = function(){
                 initialMousePos.xPos = mousePos.xPos;
                 initialMousePos.yPos = mousePos.yPos;
             }
-
-            // tempShape.draw(canvas.ctx, mousePos);
         }
     }
 
     function mouseUp(event){
         canvas.moving = false;
-        console.log(tempShape);
+        tempShape = null;
     }
 }
 
@@ -140,7 +144,6 @@ Canvas.prototype.draw = function(requestedShape){
  */
 Canvas.prototype.initShape = function(canvas, event, shape){
     mousePos = this.getMouseCoordinates(canvas, event);
-    console.log(mousePos)
     if(shape === 'rectangle'){
         this.currentShape = new Rectangle(this.id, mousePos, this.fillColor, this.strokeColor, this.lineWidth);
     }
