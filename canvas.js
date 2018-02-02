@@ -3,11 +3,11 @@ function Canvas(){
     this.undone = [];
     this.currentShape;
     this.canvas = document.getElementById("canvas");
-    this.ctx = canvas.getContext('2d');
+    this.ctx = canvas.getContext("2d");
     this.drawing = false;
     this.moving = false;
     this.fillColor = document.getElementById("fillColor").value;
-    this.strokeColor = document.getElementById('strokeColor').value;
+    this.strokeColor = document.getElementById("strokeColor").value;
     this.lineWidth = document.getElementById("lineWidth").value;
     //generate unique id for shapes for when moving them
     this.id = 1;
@@ -53,14 +53,10 @@ Canvas.prototype.move = function(){
                 initialMousePos.yPos = mousePos.yPos;
                 canvas.loadContent();
             }
-
-            // tempShape.draw(canvas.ctx, mousePos);
         }
     }
-
     function mouseUp(event){
         canvas.moving = false;
-        console.log(tempShape);
     }
 }
 
@@ -75,13 +71,14 @@ Canvas.prototype.draw = function(requestedShape){
     $("#canvas").on("mousedown", mouseDown);
     $("#canvas").on("mousemove", mouseMove);
     $("#canvas").on("mouseup", mouseUp);
+    $("#textValue").on('keydown',keyDown);
     
     function mouseDown(event){
         canvas.drawing = true;
         // send the canvas element, the event and the requested shape as parameters
         canvas.initShape(this, event, requestedShape);
         if(requestedShape === 'letters'){
-            canvas.drawShape(this, event);
+            canvas.currentShape.display();
         }
     }
     
@@ -90,15 +87,31 @@ Canvas.prototype.draw = function(requestedShape){
         if(canvas.drawing){ 
             // every drawn element has to constantly print the previous drawn
             // shapes to be able to draw the current shape in right proportions   
-            canvas.loadContent();
-            canvas.drawShape(this, event);
+            canvas.loadContent();    
+            if(requestedShape !== 'letters'){
+                canvas.drawShape(this, event);
+            }            
         }
     }
     
     function mouseUp(event){
-        canvas.drawing = false;
-        canvas.shapes.push(canvas.currentShape);
+        if(requestedShape !== 'letters'){
+            canvas.drawing = false;
+            canvas.shapes.push(canvas.currentShape);
+        }
+        
     }
+
+    function keyDown(event){
+        var key = event.which;
+        if(key == 13 && requestedShape === 'letters'){
+            canvas.drawShape(canvas, event);
+            canvas.drawing = false;
+            canvas.shapes.push(canvas.currentShape);
+            console.log(canvas);
+        }
+    }
+
 }
 
 /**
@@ -109,7 +122,6 @@ Canvas.prototype.draw = function(requestedShape){
  */
 Canvas.prototype.initShape = function(canvas, event, shape){
     mousePos = this.getMouseCoordinates(canvas, event);
-    console.log(mousePos)
     if(shape === 'rectangle'){
         this.currentShape = new Rectangle(this.id, mousePos, this.fillColor, this.strokeColor, this.lineWidth);
     }
@@ -131,7 +143,6 @@ Canvas.prototype.initShape = function(canvas, event, shape){
 Canvas.prototype.loadShapes = function(shapes){
     temp = []
     shapes.forEach(shape => {
-        console.log("here")
         if(shape.type === 'rectangle'){
             temp.push(Object.assign(Object.create(Rectangle.prototype), shape));
         }

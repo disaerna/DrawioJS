@@ -25,10 +25,10 @@
                 <button type="button" class="btn shape" id="rectangle" title="Rectangle"><i class="flaticon-shape"></i> Rectangle</button>
                 <button type="button" class="btn shape" id="circle" title="Circle"><i class="flaticon-circle"></i> Circle</button>
                 <div id="color-div">
-                    <label for="fillColor">Color</label>
-                    <input id="fillColor" type="color" value="#000000"/>
-                    <label for="strokeColor">Fill Color</label>
-                    <input id="strokeColor" type="color" value="#ffffff"/>
+                    <label for="fillColor">Fill Color</label>
+                    <input id="fillColor" type="color" value="#ffffff"/>
+                    <label for="strokeColor">Color</label>
+                    <input id="strokeColor" type="color" value="#000000"/>
                 </div>
                 
             </div>
@@ -52,7 +52,7 @@
                         <option value="Courier New">Courier New</option>
                         <option value="Times New Roman">Times New Roman</option>
                     </select>
-                    <input type="text" id="textValue"/>
+                   <!-- <input type="text" id="textValue"/>-->
                 </div>
                 <select id="lineWidth" class="form-control">
                     <option value="1">1px</option>
@@ -67,11 +67,11 @@
                     <option value="10">10px</option>
                 </select>
             </div>
-        <!-- <button id="line">Line</button>
-        <button id="text">Text</button>
-        <button id="pen">Pen</button>  -->
     </div>
-    <canvas id="canvas" width="800" height="500"></canvas>
+    <div id="canvas-container">
+        <canvas id="canvas" width="800" height="500"></canvas>
+        <input type="text" id="textValue" tabindex="100"/>
+    </div>
     <div>
         <a href="https://www.flaticon.com/authors/freepik"> Icons designed by Freepik from Flaticon</a>
     </div>
