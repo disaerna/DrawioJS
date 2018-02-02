@@ -29,7 +29,10 @@ button.btn {
     background-color: #a3a3c2;
     
 }
-
+#canvas-container{
+    width: 800px;
+    height: 500px;
+}
 #canvas{
     border:1px solid #000000;
     cursor: crosshair;
@@ -56,16 +59,21 @@ select.form-control{
     display: inline-block;
 }
 
-input, select{
+select{
     border-radius: 4px;
     font-size: 14px;
     font-weight: 400;
     line-height: 1.42857143;
     height: 34px;
 }
+#textValue{
+    position: absolute;
+}
+
 #colors {
     padding-top: 10px;
 }
+
 #colors > input{
     height: 25px;
     width: 25px;

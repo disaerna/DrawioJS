@@ -2,6 +2,9 @@
 Shape.prototype = Object.create(Canvas.prototype);
 Shape.prototype.constructor = Shape;
 
+var currentLetter;
+var currentCtx;
+
 function Shape(type, id, mousePos, fillColor, strokeColor, lineWidth){
     this.type = type;
     this.id = id;
@@ -18,14 +21,14 @@ Shape.prototype.getType = function(){
 
 Shape.prototype.setStyles = function(ctx){
     this.lineWidth = lineWidth();
-    ctx.fillStyle = this.strokeColor;
-    ctx.strokeStyle = this.fillColor;
+    ctx.fillStyle = this.fillColor;
+    ctx.strokeStyle = this.strokeColor;;
     ctx.lineWidth = this.lineWidth;
 }
 
 Shape.prototype.loadStyles = function(ctx){
-    ctx.fillStyle = this.strokeColor;
-    ctx.strokeStyle = this.fillColor;
+    ctx.fillStyle = this.fillColor;
+    ctx.strokeStyle = this.strokeColor;
     ctx.lineWidth = this.lineWidth;
 }
 
@@ -53,7 +56,6 @@ Rectangle.prototype.render = function(ctx){
     this.loadStyles(ctx);
     ctx.fillRect(this.xStartPos, this.yStartPos, this.width, this.height);
     ctx.strokeRect(this.xStartPos, this.yStartPos, this.width, this.height)
-
 }
 
 Rectangle.prototype.move = function(ctx, mousePos){
@@ -126,13 +128,28 @@ Line.prototype.render = function(ctx){
  Letters.prototype = Object.create(Shape.prototype);
  Letters.prototype.constructor = Letters;
 
- function Letters(id, fillColor, strokeColor, lineWidth){
+ function Letters(id, mousePos, fillColor, strokeColor, lineWidth){
     Shape.call(this, 'letters', id, fillColor, strokeColor, lineWidth);
     this.fontSize = "12px";
     this.fontType = "Arial";
     this.font = this.fontSize + " " + this.fontType;
     this.value = "";
+    this.xStartPos = mousePos.xPos;
+    this.yStartPos = mousePos.yPos;
  }
+
+ Letters.prototype.display = function(){
+
+     $("#textValue").removeAttr("style");
+     $("#textValue").css({
+         top: mousePos.yPos+$('canvas').offset().top,
+         left: mousePos.xPos
+     });
+    
+     setTimeout(function(){
+         $('#textValue').focus()
+     },50);
+ };
 
  Letters.prototype.draw = function(ctx, mousePos){
     this.value = document.getElementById("textValue").value;
@@ -143,18 +160,19 @@ Line.prototype.render = function(ctx){
     ctx.beginPath();
     ctx.font = this.fontSize + " " + this.fontType;
     this.setStyles(ctx);
-    ctx.fillText(this.value, mousePos.xPos, mousePos.yPos);
-    ctx.strokeText(this.value, mousePos.xPos, mousePos.yPos);
+    ctx.fillText(this.value, this.xStartPos, this.yStartPos);
+    //ctx.strokeText(this.value, this.xStartPos, this.yStartPos);
     ctx.closePath();
-    
-}
+    $("#textValue").removeAttr("style").css("display", "none");
+    document.getElementById("textValue").value="";
+};    
 
- Letters.prototype.render = function(ctx){
+ Letters.prototype.render = function(ctx){ 
     ctx.beginPath();
     this.loadStyles(ctx);
     ctx.font = this.fontSize + " " + this.fontType;
     ctx.fillText(this.value, shape.xStartPos, shape.yStartPos);
-    ctx.strokeText(this.value, shape.xStartPos, shape.yStartPos);
+    //ctx.strokeText(this.value, shape.xStartPos, shape.yStartPos);
     ctx.closePath();
  }
  /**
@@ -206,7 +224,7 @@ Pen.prototype.drawRender = function(ctx){
             ctx.moveTo(this.xPos[i], this.yPos[i]);
         }
         ctx.lineTo(this.xPos[i+1], this.yPos[i+1]);
-        ctx.strokeStyle = this.fillColor;
+        ctx.strokeStyle = this.strokeColor;
         ctx.stroke();
    }
  }

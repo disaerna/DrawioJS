@@ -23,17 +23,17 @@
                 <button type="button" class="btn shape" id="rectangle" title="Rectangle"><i class="flaticon-shape"></i></button>
                 <button type="button" class="btn shape" id="circle" title="Circle"><i class="flaticon-circle"></i></button>
                 <div id="color-div">
-                    <label for="fillColor">Color</label>
-                    <input id="fillColor" type="color" value="#000000"/>
-                    <label for="strokeColor">Fill Color</label>
-                    <input id="strokeColor" type="color" value="#ffffff"/>
+                    <label for="fillColor">Fill Color</label>
+                    <input id="fillColor" type="color" value="#ffffff"/>
+                    <label for="strokeColor">Color</label>
+                    <input id="strokeColor" type="color" value="#000000"/>
                 </div>
                 
             </div>
             <div>
                 <div id="text">
                     <button type="button" class="btn shape" id="letters" title="Text"><i class="flaticon-font-size"></i></button>
-                    <select id="textSize" class="form-control">
+                    <select id="textSize" class="form-control" title="Text size">
                         <option value="10px">10px</option>
                         <option value="14px" selected="selected">14px</option>
                         <option value="18px">18px</option>
@@ -43,16 +43,16 @@
                         <option value="34px">34px</option>
                         <option value="38px">38px</option>
                     </select>
-                    <select id="textType" class="form-control">
+                    <select id="textType" class="form-control" title="Font family">
                         <option value="Arial" selected="selected">Arial</option>
                         <option value="Arial Black">Arial Black</option>
                         <option value="Comic Sans MS">Comic Sans MS</option>
                         <option value="Courier New">Courier New</option>
                         <option value="Times New Roman">Times New Roman</option>
                     </select>
-                    <input type="text" id="textValue"/>
+                   <!-- <input type="text" id="textValue"/>-->
                 </div>
-                <select id="lineWidth" class="form-control">
+                <select id="lineWidth" class="form-control" title="Line width">
                     <option value="1">1px</option>
                     <option value="2" selected="selected">2px</option>
                     <option value="3">3px</option>
@@ -66,7 +66,10 @@
                 </select>
             </div>
     </div>
-    <canvas id="canvas" width="800" height="500"></canvas>
+    <div id="canvas-container">
+        <canvas id="canvas" width="800" height="500"></canvas>
+        <input type="text" id="textValue" tabindex="100"/>
+    </div>
     <div>
         <a href="https://www.flaticon.com/authors/freepik"> Icons designed by Freepik from Flaticon</a>
     </div>
