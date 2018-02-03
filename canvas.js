@@ -9,8 +9,6 @@ function Canvas(){
     this.fillColor = document.getElementById("fillColor").value;
     this.strokeColor = document.getElementById("strokeColor").value;
     this.lineWidth = document.getElementById("lineWidth").value;
-    //generate unique id for shapes for when moving them
-    this.id = 1;
 }
 
 /**
@@ -18,15 +16,16 @@ function Canvas(){
  * The shapes are layered as they are pushed onto the shapes array
  */
 Canvas.prototype.move = function(){
-    var canvas = this;
     $("#canvas").on("mousedown", mouseDown);
     $("#canvas").on("mousemove", mouseMove);
     $("#canvas").on("mouseup", mouseUp);
+    var canvas = this;
     var tempShape = null;
     var initialMousePos;
     function mouseDown(event){
         canvas.moving = true;
         var mousePos = canvas.getMouseCoordinates(this, event);
+        
         canvas.shapes.forEach(shape => {
             console.log(shape);
             if(shape instanceof Rectangle){
