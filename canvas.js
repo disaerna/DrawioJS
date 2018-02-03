@@ -10,6 +10,7 @@ function Canvas() {
     this.strokeColor = document.getElementById("strokeColor").value;
     this.lineWidth = document.getElementById("lineWidth").value;
     this.retShape = null;
+    this.id = 0;
 }
 /**
  * Loop through all shapes and check if mouse is within it's area
@@ -276,6 +277,7 @@ Canvas.prototype.changeColor = function() {
  */
 Canvas.prototype.initShape = function(canvas, event, shape, isStroke) {
     mousePos = this.getMouseCoordinates(canvas, event);
+    console.log(mousePos.xPos + " " + mousePos.yPos);
     if (shape === "rectangle") {
         this.currentShape = new Rectangle(
             this.id,

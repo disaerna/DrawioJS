@@ -48,6 +48,12 @@ button.active {
 
 #textValue {
     display: none;
+    background-color: transparent;
+    border: 1px dashed black;
+}
+
+#textValue:focus {
+    outline: none;
 }
 
 #canvas-container {

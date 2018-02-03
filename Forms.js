@@ -181,11 +181,18 @@ function Letters(id, mousePos, fillColor, strokeColor, lineWidth) {
 }
 
 Letters.prototype.display = function() {
+    var fs = document.getElementById("textSize");
+    this.fontSize = fs.options[fs.selectedIndex].text;
+    var ft = document.getElementById("textType");
+    this.fontType = ft.options[ft.selectedIndex].text;
     $("#textValue").removeAttr("style");
     $("#textValue").css({
         top: mousePos.yPos + $("canvas").offset().top,
         left: mousePos.xPos + $("canvas").offset().left,
-        display: "block"
+        height: this.fontSize,
+        fontSize: this.fontSize,
+        display: "block",
+        color: this.fillColor
     });
 
     setTimeout(function() {
@@ -196,15 +203,13 @@ Letters.prototype.display = function() {
 Letters.prototype.draw = function(ctx, mousePos) {
     this.value = document.getElementById("textValue").value;
     this.width = ctx.measureText(this.value).width;
-    var fs = document.getElementById("textSize");
-    this.fontSize = fs.options[fs.selectedIndex].text;
-    var ft = document.getElementById("textType");
-    this.fontType = ft.options[ft.selectedIndex].text;
     var temp = String(this.fontSize);
     this.height = temp.slice(0, 2);
     ctx.beginPath();
     ctx.font = this.fontSize + " " + this.fontType;
     this.setStyles(ctx);
+    //Position of the text was jumping, trying to minimize it with -5
+    this.yStartPos = parseInt(this.height) + parseInt(this.yStartPos) - 5;
     ctx.fillText(this.value, this.xStartPos, this.yStartPos);
     //ctx.strokeText(this.value, this.xStartPos, this.yStartPos);
     ctx.closePath();
