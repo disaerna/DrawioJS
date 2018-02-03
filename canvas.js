@@ -11,7 +11,7 @@ function Canvas() {
     this.lineWidth = document.getElementById("lineWidth").value;
     this.retShape = null;
     //generate unique id for shapes for when moving them
-    //this.id = 1;
+    this.id = 1;
 }
 /**
  * Loop through all shapes and check if mouse is within it's area
