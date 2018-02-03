@@ -22,7 +22,6 @@ Canvas.prototype.findShape = function(mousePos) {
     var tempShape = null;
     canvas.shapes.forEach(shape => {
         if (shape instanceof Rectangle) {
-            //move rectangle
             if (shape.height < 0 && shape.width < 0) {
                 if (
                     mousePos.xPos >= shape.xEndPos &&
@@ -31,7 +30,6 @@ Canvas.prototype.findShape = function(mousePos) {
                     mousePos.yPos <= shape.yEndPos + Math.abs(shape.height)
                 ) {
                     tempShape = shape;
-                    //console.log(shape);
                 }
             } else if (shape.width < 0) {
                 if (
@@ -41,7 +39,6 @@ Canvas.prototype.findShape = function(mousePos) {
                     mousePos.yPos <= shape.yStartPos + Math.abs(shape.height)
                 ) {
                     tempShape = shape;
-                    //console.log(shape);
                 }
             } else if (shape.height < 0) {
                 if (
@@ -51,7 +48,6 @@ Canvas.prototype.findShape = function(mousePos) {
                     mousePos.yPos <= shape.yEndPos + Math.abs(shape.height)
                 ) {
                     tempShape = shape;
-                    //console.log(shape);
                 }
             } else {
                 if (
@@ -61,7 +57,6 @@ Canvas.prototype.findShape = function(mousePos) {
                     mousePos.yPos <= shape.yStartPos + Math.abs(shape.height)
                 ) {
                     tempShape = shape;
-                    //console.log(shape);
                 }
             }
         }
@@ -79,8 +74,7 @@ Canvas.prototype.findShape = function(mousePos) {
             var lineWidth = parseInt(
                 document.getElementById("lineWidth").value
             );
-            var offset = 14 - lineWidth;
-            console.log(offset);
+            var offset = 16 - lineWidth;
             for (var i = 0; i < shape.moveArr.length; ++i) {
                 var m = shape.moveArr[i];
                 if (
@@ -89,9 +83,7 @@ Canvas.prototype.findShape = function(mousePos) {
                     mousePos.yPos >= m.yPos - offset &&
                     mousePos.yPos <= m.yPos + offset
                 ) {
-                    console.log("moveshit");
                     tempShape = shape;
-                    break;
                 }
             }
         }
@@ -124,12 +116,14 @@ Canvas.prototype.findShape = function(mousePos) {
             }
         }
         if (shape instanceof Letters) {
+            console.log("letters");
             if (
                 mousePos.xPos >= shape.xStartPos &&
                 mousePos.xPos <= shape.xStartPos + shape.width &&
                 mousePos.yPos >= shape.yStartPos &&
                 mousePos.yPos <= shape.yStartPos + shape.height
             ) {
+                console.log("inside letters");
                 tempShape = shape;
             }
         }
@@ -153,8 +147,6 @@ Canvas.prototype.move = function() {
         canvas.moving = true;
         var mousePos = canvas.getMouseCoordinates(this, event);
         canvas.findShape(mousePos);
-        console.log("after return ");
-        console.log(canvas.retShape);
         tempShape = canvas.retShape;
         initialMousePos = mousePos;
     }
@@ -265,7 +257,7 @@ Canvas.prototype.changeColor = function() {
     function mouseUp(event) {
         if (shape !== null) {
             color = document.getElementById("fillColor").value;
-            if (shape instanceof Line) {
+            if (shape instanceof Line || shape instanceof Pen) {
                 shape.strokeColor = color;
             }
             if (shape.stroke === "stroke") {

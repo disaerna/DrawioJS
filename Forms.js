@@ -123,8 +123,8 @@ Circle.prototype.render = function(ctx) {
     if (this.stroke === "stroke") {
         ctx.stroke();
     } else {
-        ctx.stroke();
         ctx.fill();
+        ctx.stroke();
     }
 };
 
@@ -260,9 +260,8 @@ Pen.prototype.render = function(ctx) {
 Pen.prototype.drawRender = function(ctx) {
     ctx.lineWidth = this.lineWidth;
     ctx.lineCap = "round";
-    ctx.lineJoine = "round";
-    // ctx.shadowBlur = 5;
-    // ctx.shadowColor = this.fillColor;
+
+    //ctx.shadowColor = this.fillColor;
     for (var i = 0; i < this.xPos.length; i++) {
         if (this.posArr[i]) {
             ctx.beginPath();
