@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,71 +8,120 @@
     <link rel="stylesheet" href="drawIo.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="cssIcons/flaticon.css">
-    <title>Document</title>
+    <script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
+    <title>Draw Io</title>
 </head>
+
 <body>
-    <div id="toolbar">
-            <div id="buttons">
-                <button type="button" class="btn tool" id="save" title="Save"><i class="flaticon-save"></i></button>
-                <button type="button" class="btn tool" id="load" title="Load"><i class="flaticon-upload"></i></button>
-                <button type="button" class="btn tool" id="undo" title="Undo"><i class="flaticon-undo-arrow"></i></button>
-                <button type="button" class="btn tool" id="redo" title="Redo"><i class="flaticon-redo-arrow"></i></button>
-                <button type="button" class="btn tool" id="clear" title="Clear canvas"><i class="flaticon-rubbish-bin"></i></button>
-                <button type="button" class="btn tool" id="move" title="Move"><i class="flaticon-move-tool-arrows"></i></button>
-                <button type="button" class="btn shape" id="line" title="Line"><i class="flaticon-interface-1"></i></button>
-                <button type="button" class="btn shape" id="pen" title="Pen"><i class="flaticon-pen"></i></button>
-                <button type="button" class="btn shape" id="rectangle" title="Rectangle"><i class="flaticon-shape"></i></button>
-                <button type="button" class="btn shape" id="circle" title="Circle"><i class="flaticon-circle"></i></button>
+    <div id="container">
+        <div id="toolbar">
+            <div id="fa">
+                <button class="tool" id="save">
+                    <i class="fas fa-save tool"></i>
+                </button>
+                <button class="tool" id="load">
+                    <i class="fas fa-cloud-upload-alt tool"></i>
+                </button>
+                <button class="tool" id="undo">
+                    <i class="fas fa-undo tool"></i>
+                </button>
+                <button class="tool" id="redo">
+                    <i class="fas fa-redo tool"></i>
+                </button>
+                <button class="tool" id="clear">
+                    <i class="fas fa-trash-alt tool"></i>
+                </button>
+                <button class="tool" id="move">
+                    <i class="fas fa-arrows-alt tool"></i>
+                </button>
+                <button class="shape" id="line">
+                    <i class="flaticon-interface-1 shape"></i>
+                </button>
+                <button class="shape stroke" id="rectangle">
+                    <i class="far fa-square shape"></i>
+                </button>
+                <button class="shape fill" id="rectangle">
+                    <i class="fas fa-square shape"></i>
+                </button>
+                <button class="shape stroke" id="circle">
+                    <i class="far fa-circle shape"></i>
+                </button>
+                <button class="shape fill" id="circle">
+                    <i class="fas fa-circle shape"></i>
+                </button>
+                <button class="shape" id="pen">
+                    <i class="fas fa-pencil-alt shape" id="pen"></i>
+                </button>
+                <button class="shape" id="letters">
+                    <i class="fas fa-font shape" id="letters"></i>
+                </button>
+            </div>
+            <div class="second-bar">
                 <div id="color-div">
                     <label for="fillColor">Fill Color</label>
-                    <input id="fillColor" type="color" value="#ffffff"/>
+                    <input id="fillColor" type="color" value="#ffffff" />
                     <label for="strokeColor">Color</label>
-                    <input id="strokeColor" type="color" value="#000000"/>
+                    <input id="strokeColor" type="color" value="#000000" />
                 </div>
-                
-            </div>
-            <div>
-                <div id="text">
-                    <button type="button" class="btn shape" id="letters" title="Text"><i class="flaticon-font-size"></i></button>
-                    <select id="textSize" class="form-control" title="Text size">
-                        <option value="10px">10px</option>
-                        <option value="14px" selected="selected">14px</option>
-                        <option value="18px">18px</option>
-                        <option value="22px">22px</option>
-                        <option value="26px">26px</option>
-                        <option value="30px">30px</option>
-                        <option value="34px">34px</option>
-                        <option value="38px">38px</option>
+                <div>
+                    <label for="lineWidth">Line width</label>
+                    <select id="lineWidth" class="form-control" title="Line width">
+                        <option value="1">1px</option>
+                        <option value="2" selected="selected">2px</option>
+                        <option value="3">3px</option>
+                        <option value="4">4px</option>
+                        <option value="5">5px</option>
+                        <option value="6">6px</option>
+                        <option value="7">7px</option>
+                        <option value="8">8px</option>
+                        <option value="9">9px</option>
+                        <option value="10">10px</option>
                     </select>
-                    <select id="textType" class="form-control" title="Font family">
-                        <option value="Arial" selected="selected">Arial</option>
-                        <option value="Arial Black">Arial Black</option>
-                        <option value="Comic Sans MS">Comic Sans MS</option>
-                        <option value="Courier New">Courier New</option>
-                        <option value="Times New Roman">Times New Roman</option>
-                    </select>
-                   <!-- <input type="text" id="textValue"/>-->
+                    <div id="text">
+                        <label for="textSize">Font size</label>
+                        <select id="textSize" class="form-control" title="Text size">
+                            <option value="10px">10px</option>
+                            <option value="14px" selected="selected">14px</option>
+                            <option value="18px">18px</option>
+                            <option value="22px">22px</option>
+                            <option value="26px">26px</option>
+                            <option value="30px">30px</option>
+                            <option value="34px">34px</option>
+                            <option value="38px">38px</option>
+                        </select>
+                        <label for="textType">Font type</label>
+                        <select id="textType" class="form-control" title="Font family">
+                            <option value="Arial" selected="selected">Arial</option>
+                            <option value="Arial Black">Arial Black</option>
+                            <option value="Comic Sans MS">Comic Sans MS</option>
+                            <option value="Courier New">Courier New</option>
+                            <option value="Times New Roman">Times New Roman</option>
+                        </select>
+                        <!-- <input type="text" id="textValue"/>-->
+                    </div>
                 </div>
-                <select id="lineWidth" class="form-control" title="Line width">
-                    <option value="1">1px</option>
-                    <option value="2" selected="selected">2px</option>
-                    <option value="3">3px</option>
-                    <option value="4">4px</option>
-                    <option value="5">5px</option>
-                    <option value="6">6px</option>
-                    <option value="7">7px</option>
-                    <option value="8">8px</option>
-                    <option value="9">9px</option>
-                    <option value="10">10px</option>
-                </select>
             </div>
-    </div>
-    <div id="canvas-container">
-        <canvas id="canvas" width="800" height="500"></canvas>
-        <input type="text" id="textValue" tabindex="100"/>
+        </div>
+        <!--<div id="buttons">
+            <button type="button" class="btn tool" id="save" title="Save"><i class="flaticon-save"></i></button>
+            <button type="button" class="btn tool" id="load" title="Load"><i class="flaticon-upload"></i></button>
+            <button type="button" class="btn tool" id="undo" title="Undo"><i class="flaticon-undo-arrow"></i></button>
+            <button type="button" class="btn tool" id="redo" title="Redo"><i class="flaticon-redo-arrow"></i></button>
+            <button type="button" class="btn tool" id="clear" title="Clear canvas"><i class="flaticon-rubbish-bin"></i></button>
+            <button type="button" class="btn tool" id="move" title="Move"><i class="flaticon-move-tool-arrows"></i></button>
+            <button type="button" class="btn shape" id="line" title="Line"><i class="flaticon-interface-1"></i></button>
+            <button type="button" class="btn shape" id="pen" title="Pen"><i class="flaticon-pen"></i></button>
+            <button type="button" class="btn shape" id="rectangle" title="Rectangle"><i class="flaticon-shape"></i></button>
+            <button type="button" class="btn shape" id="circle" title="Circle"><i class="flaticon-circle"></i></button>
+            
+        </div>
+    -->
+        <div id="canvas-container">
+            <canvas id="canvas" width="800" height="500"></canvas>
+            <input type="text" id="textValue" tabindex="100" />
+        </div>
     </div>
     <div>
-        <a href="https://www.flaticon.com/authors/freepik"> Icons designed by Freepik from Flaticon</a>
     </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="drawIo.js"></script>
