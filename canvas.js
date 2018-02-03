@@ -9,13 +9,136 @@ function Canvas() {
     this.fillColor = document.getElementById("fillColor").value;
     this.strokeColor = document.getElementById("strokeColor").value;
     this.lineWidth = document.getElementById("lineWidth").value;
+    this.retShape = null;
     //generate unique id for shapes for when moving them
-    this.id = 1;
+    //this.id = 1;
 }
-
 /**
  * Loop through all shapes and check if mouse is within it's area
  * The shapes are layered as they are pushed onto the shapes array
+ */
+Canvas.prototype.findShape = function(mousePos) {
+    var canvas = this;
+    var tempShape = null;
+    canvas.shapes.forEach(shape => {
+        if (shape instanceof Rectangle) {
+            //move rectangle
+            if (shape.height < 0 && shape.width < 0) {
+                if (
+                    mousePos.xPos >= shape.xEndPos &&
+                    mousePos.xPos <= shape.xEndPos + Math.abs(shape.width) &&
+                    mousePos.yPos >= shape.yEndPos &&
+                    mousePos.yPos <= shape.yEndPos + Math.abs(shape.height)
+                ) {
+                    tempShape = shape;
+                    //console.log(shape);
+                }
+            } else if (shape.width < 0) {
+                if (
+                    mousePos.xPos >= shape.xEndPos &&
+                    mousePos.xPos <= shape.xEndPos + Math.abs(shape.width) &&
+                    mousePos.yPos >= shape.yStartPos &&
+                    mousePos.yPos <= shape.yStartPos + Math.abs(shape.height)
+                ) {
+                    tempShape = shape;
+                    //console.log(shape);
+                }
+            } else if (shape.height < 0) {
+                if (
+                    mousePos.xPos >= shape.xStartPos &&
+                    mousePos.xPos <= shape.xStartPos + Math.abs(shape.width) &&
+                    mousePos.yPos >= shape.yEndPos &&
+                    mousePos.yPos <= shape.yEndPos + Math.abs(shape.height)
+                ) {
+                    tempShape = shape;
+                    //console.log(shape);
+                }
+            } else {
+                if (
+                    mousePos.xPos >= shape.xStartPos &&
+                    mousePos.xPos <= shape.xStartPos + Math.abs(shape.width) &&
+                    mousePos.yPos >= shape.yStartPos &&
+                    mousePos.yPos <= shape.yStartPos + Math.abs(shape.height)
+                ) {
+                    tempShape = shape;
+                    //console.log(shape);
+                }
+            }
+        }
+        if (shape instanceof Circle) {
+            //move circle
+            var x = Math.pow(mousePos.xPos - shape.xStartPos, 2);
+            var y = Math.pow(mousePos.yPos - shape.yStartPos, 2);
+            var distance = Math.sqrt(x + y);
+            if (distance < shape.radius) {
+                tempShape = shape;
+            }
+        }
+        if (shape instanceof Pen) {
+            //move pen
+            var lineWidth = parseInt(
+                document.getElementById("lineWidth").value
+            );
+            var offset = 14 - lineWidth;
+            console.log(offset);
+            for (var i = 0; i < shape.moveArr.length; ++i) {
+                var m = shape.moveArr[i];
+                if (
+                    mousePos.xPos >= m.xPos - offset &&
+                    mousePos.xPos <= m.xPos + offset &&
+                    mousePos.yPos >= m.yPos - offset &&
+                    mousePos.yPos <= m.yPos + offset
+                ) {
+                    console.log("moveshit");
+                    tempShape = shape;
+                    break;
+                }
+            }
+        }
+        if (shape instanceof Line) {
+            //move line
+            var p0 = {
+                xPos: mousePos.xPos,
+                yPos: mousePos.yPos
+            };
+            var p1 = {
+                xPos: shape.xStartPos,
+                yPos: shape.yStartPos
+            };
+            var p2 = {
+                xPos: shape.xEndPos,
+                yPos: shape.yEndPos
+            };
+            var numerator = Math.abs(
+                (p2.yPos - p1.yPos) * p0.xPos -
+                    (p2.xPos - p1.xPos) * p0.yPos +
+                    p2.xPos * p1.yPos -
+                    p2.yPos * p1.xPos
+            );
+            var denominator = Math.sqrt(
+                Math.pow(p2.yPos - p1.yPos, 2) + Math.pow(p2.xPos - p1.xPos, 2)
+            );
+            var result = parseInt(numerator / denominator);
+            if (result < 10) {
+                tempShape = shape;
+            }
+        }
+        if (shape instanceof Letters) {
+            if (
+                mousePos.xPos >= shape.xStartPos &&
+                mousePos.xPos <= shape.xStartPos + shape.width &&
+                mousePos.yPos >= shape.yStartPos &&
+                mousePos.yPos <= shape.yStartPos + shape.height
+            ) {
+                tempShape = shape;
+            }
+        }
+        this.retShape = tempShape;
+    });
+};
+
+/**
+ * Moves shape around the canvas.
  */
 Canvas.prototype.move = function() {
     var canvas = this;
@@ -29,148 +152,10 @@ Canvas.prototype.move = function() {
         canvas.loadContent();
         canvas.moving = true;
         var mousePos = canvas.getMouseCoordinates(this, event);
-        canvas.shapes.forEach(shape => {
-            if (shape instanceof Rectangle) {
-                //move rectangle
-                console.log(
-                    "startpos x " +
-                        shape.xStartPos +
-                        " startpos y " +
-                        shape.yStartPos
-                );
-                console.log(
-                    "endpos x " + shape.xEndPos + " endpos y " + shape.yEndPos
-                );
-                console.log(
-                    "mouse x pos " +
-                        mousePos.xPos +
-                        " mouse y pos " +
-                        mousePos.yPos
-                );
-                console.log("width " + shape.width + " height " + shape.height);
-                if (shape.height < 0 && shape.width < 0) {
-                    console.log("HI");
-                    if (
-                        mousePos.xPos >= shape.xEndPos &&
-                        mousePos.xPos <=
-                            shape.xEndPos + Math.abs(shape.width) &&
-                        mousePos.yPos >= shape.yEndPos &&
-                        mousePos.yPos <= shape.yEndPos + Math.abs(shape.height)
-                    ) {
-                        tempShape = shape;
-                        //console.log(shape);
-                    }
-                } else if (shape.width < 0) {
-                    if (
-                        mousePos.xPos >= shape.xEndPos &&
-                        mousePos.xPos <=
-                            shape.xEndPos + Math.abs(shape.width) &&
-                        mousePos.yPos >= shape.yStartPos &&
-                        mousePos.yPos <=
-                            shape.yStartPos + Math.abs(shape.height)
-                    ) {
-                        tempShape = shape;
-                        //console.log(shape);
-                    }
-                } else if (shape.height < 0) {
-                    if (
-                        mousePos.xPos >= shape.xStartPos &&
-                        mousePos.xPos <=
-                            shape.xStartPos + Math.abs(shape.width) &&
-                        mousePos.yPos >= shape.yEndPos &&
-                        mousePos.yPos <= shape.yEndPos + Math.abs(shape.height)
-                    ) {
-                        tempShape = shape;
-                        //console.log(shape);
-                    }
-                } else {
-                    if (
-                        mousePos.xPos >= shape.xStartPos &&
-                        mousePos.xPos <=
-                            shape.xStartPos + Math.abs(shape.width) &&
-                        mousePos.yPos >= shape.yStartPos &&
-                        mousePos.yPos <=
-                            shape.yStartPos + Math.abs(shape.height)
-                    ) {
-                        tempShape = shape;
-                        //console.log(shape);
-                    }
-                }
-            }
-            if (shape instanceof Circle) {
-                //move circle
-                var x = Math.pow(mousePos.xPos - shape.xStartPos, 2);
-                var y = Math.pow(mousePos.yPos - shape.yStartPos, 2);
-                var distance = Math.sqrt(x + y);
-                if (distance < shape.radius) {
-                    tempShape = shape;
-                }
-            }
-            if (shape instanceof Pen) {
-                //move pen
-                var lineWidth = parseInt(
-                    document.getElementById("lineWidth").value
-                );
-                var offset = 14 - lineWidth;
-                console.log(offset);
-                for (var i = 0; i < shape.moveArr.length; ++i) {
-                    var m = shape.moveArr[i];
-                    if (
-                        mousePos.xPos >= m.xPos - offset &&
-                        mousePos.xPos <= m.xPos + offset &&
-                        mousePos.yPos >= m.yPos - offset &&
-                        mousePos.yPos <= m.yPos + offset
-                    ) {
-                        console.log("moveshit");
-                        tempShape = shape;
-                        break;
-                    }
-                }
-            }
-            if (shape instanceof Line) {
-                //move line
-                var p0 = {
-                    xPos: mousePos.xPos,
-                    yPos: mousePos.yPos
-                };
-                var p1 = {
-                    xPos: shape.xStartPos,
-                    yPos: shape.yStartPos
-                };
-                var p2 = {
-                    xPos: shape.xEndPos,
-                    yPos: shape.yEndPos
-                };
-                var numerator = Math.abs(
-                    (p2.yPos - p1.yPos) * p0.xPos -
-                        (p2.xPos - p1.xPos) * p0.yPos +
-                        p2.xPos * p1.yPos -
-                        p2.yPos * p1.xPos
-                );
-                var denominator = Math.sqrt(
-                    Math.pow(p2.yPos - p1.yPos, 2) +
-                        Math.pow(p2.xPos - p1.xPos, 2)
-                );
-                var result = parseInt(numerator / denominator);
-                if (result < 10) {
-                    tempShape = shape;
-                }
-            }
-            if (shape instanceof Letters) {
-                if (
-                    mousePos.xPos >= shape.xStartPos &&
-                    mousePos.xPos <= shape.xStartPos + shape.width &&
-                    mousePos.yPos >= shape.yStartPos &&
-                    mousePos.yPos <= shape.yStartPos + shape.height
-                ) {
-                    tempShape = shape;
-                    console.log("shape id " + shape.id);
-                    console.log("shape width " + shape.width);
-                    console.log("shape heigt " + shape.height);
-                    console.log("INSIDE");
-                }
-            }
-        });
+        canvas.findShape(mousePos);
+        console.log("after return ");
+        console.log(canvas.retShape);
+        tempShape = canvas.retShape;
         initialMousePos = mousePos;
     }
 
@@ -205,9 +190,7 @@ Canvas.prototype.move = function() {
 
     function mouseUp(event) {
         canvas.moving = false;
-        console.log("UP " + tempShape.id);
         tempShape = null;
-        console.log("Null " + tempShape);
     }
 };
 
@@ -268,6 +251,31 @@ Canvas.prototype.draw = function(requestedShape, isStroke) {
     }
 };
 
+Canvas.prototype.changeColor = function() {
+    var canvas = this;
+    $("#canvas").on("mousedown", mouseDown);
+    $("#canvas").on("mouseup", mouseUp);
+    var shape = null;
+    function mouseDown(event) {
+        var mousePos = canvas.getMouseCoordinates(this, event);
+        canvas.findShape(mousePos);
+        shape = canvas.retShape;
+    }
+
+    function mouseUp(event) {
+        if (shape !== null) {
+            color = document.getElementById("fillColor").value;
+            if (shape instanceof Line) {
+                shape.strokeColor = color;
+            }
+            if (shape.stroke === "stroke") {
+                shape.stroke = "fill";
+            }
+            shape.fillColor = color;
+            canvas.loadContent();
+        }
+    }
+};
 /**
  * Initialize shape and prepare for drawing
  * @param {a canvas element} canvas

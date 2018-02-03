@@ -42,6 +42,10 @@ $(document).ready(function() {
             $("#canvas").unbind();
             canvas.move();
         }
+        if (request === "colorchange") {
+            $("#canvas").unbind();
+            canvas.changeColor();
+        }
     });
 
     $("#fillColor").on("change", function(event) {

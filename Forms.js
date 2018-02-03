@@ -62,7 +62,6 @@ Rectangle.prototype.draw = function(ctx, mousePos) {
     this.setStyles(ctx);
     if (this.stroke === "stroke") {
         ctx.strokeRect(this.xStartPos, this.yStartPos, this.width, this.height);
-        console.log("STROKE");
     } else {
         ctx.fillRect(this.xStartPos, this.yStartPos, this.width, this.height);
         ctx.strokeRect(this.xStartPos, this.yStartPos, this.width, this.height);
@@ -75,7 +74,6 @@ Rectangle.prototype.render = function(ctx) {
     this.loadStyles(ctx);
     if (this.stroke === "stroke") {
         ctx.strokeRect(this.xStartPos, this.yStartPos, this.width, this.height);
-        console.log("STROKE");
     } else {
         ctx.fillRect(this.xStartPos, this.yStartPos, this.width, this.height);
         ctx.strokeRect(this.xStartPos, this.yStartPos, this.width, this.height);
@@ -143,6 +141,7 @@ function Line(id, mousePos, fillColor, strokeColor, lineWidth) {
 }
 
 Line.prototype.draw = function(ctx, mousePos) {
+    console.log("draw");
     ctx.beginPath();
     ctx.moveTo(mousePos.xPos, mousePos.yPos);
     this.setStyles(ctx);
@@ -150,6 +149,7 @@ Line.prototype.draw = function(ctx, mousePos) {
     ctx.stroke();
     this.xEndPos = mousePos.xPos;
     this.yEndPos = mousePos.yPos;
+    ctx.closePath();
 };
 
 Line.prototype.render = function(ctx) {
@@ -158,6 +158,7 @@ Line.prototype.render = function(ctx) {
     ctx.moveTo(this.xStartPos, this.yStartPos);
     ctx.lineTo(this.xEndPos, this.yEndPos);
     ctx.stroke();
+    ctx.closePath();
 };
 
 /**
