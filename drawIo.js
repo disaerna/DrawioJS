@@ -9,7 +9,10 @@ $(document).ready(function() {
     $(".shape").on("click", function(event) {
         //retrieve the id of the current event and pass to canvas.draw()
         $("#canvas").unbind();
-        canvas.draw(event.currentTarget.id);
+        canvas.draw(
+            event.currentTarget.id.split("-")[0],
+            event.currentTarget.id.split("-")[1]
+        );
     });
 
     // Hafa ser object sem er toolbarinn?

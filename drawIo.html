@@ -16,52 +16,52 @@
     <div id="container">
         <div id="toolbar">
             <div id="fa">
-                <button class="tool" id="save">
+                <button class="tool" id="save" title="Save">
                     <i class="fas fa-save tool"></i>
                 </button>
-                <button class="tool" id="load">
+                <button class="tool" id="load" title="Load">
                     <i class="fas fa-cloud-upload-alt tool"></i>
                 </button>
-                <button class="tool" id="undo">
+                <button class="tool" id="undo" title="Undo">
                     <i class="fas fa-undo tool"></i>
                 </button>
-                <button class="tool" id="redo">
+                <button class="tool" id="redo" title="Redo">
                     <i class="fas fa-redo tool"></i>
                 </button>
-                <button class="tool" id="clear">
+                <button class="tool" id="clear" title="Clear canvas">
                     <i class="fas fa-trash-alt tool"></i>
                 </button>
-                <button class="tool" id="move">
+                <button class="tool" id="move" title="Move">
                     <i class="fas fa-arrows-alt tool"></i>
                 </button>
-                <button class="shape" id="line">
+                <button class="shape" id="line-fill" title="Line">
                     <i class="flaticon-interface-1 shape"></i>
                 </button>
-                <button class="shape stroke" id="rectangle">
+                <button class="shape" id="rectangle-stroke" title="Rectangle stroke">
                     <i class="far fa-square shape"></i>
                 </button>
-                <button class="shape fill" id="rectangle">
+                <button class="shape" id="rectangle-fill" title="Rectangle fill">
                     <i class="fas fa-square shape"></i>
                 </button>
-                <button class="shape stroke" id="circle">
+                <button class="shape" id="circle-stroke" title="Circle stroke">
                     <i class="far fa-circle shape"></i>
                 </button>
-                <button class="shape fill" id="circle">
+                <button class="shape" id="circle-fill" title="Circle fill">
                     <i class="fas fa-circle shape"></i>
                 </button>
-                <button class="shape" id="pen">
+                <button class="shape" id="pen-fill" title="Pen">
                     <i class="fas fa-pencil-alt shape" id="pen"></i>
                 </button>
-                <button class="shape" id="letters">
+                <button class="shape" id="letters-fill" title="Text">
                     <i class="fas fa-font shape" id="letters"></i>
                 </button>
             </div>
             <div class="second-bar">
                 <div id="color-div">
-                    <label for="fillColor">Fill Color</label>
-                    <input id="fillColor" type="color" value="#ffffff" />
                     <label for="strokeColor">Color</label>
-                    <input id="strokeColor" type="color" value="#000000" />
+                    <input id="strokeColor" type="color" value="#000000" title="Color" />
+                    <label for="fillColor">Fill Color</label>
+                    <input id="fillColor" type="color" value="#ffffff" title="Fill color" />
                 </div>
                 <div>
                     <label for="lineWidth">Line width</label>
@@ -79,7 +79,7 @@
                     </select>
                     <div id="text">
                         <label for="textSize">Font size</label>
-                        <select id="textSize" class="form-control" title="Text size">
+                        <select id="textSize" class="form-control" title="Font size">
                             <option value="10px">10px</option>
                             <option value="14px" selected="selected">14px</option>
                             <option value="18px">18px</option>
@@ -90,7 +90,7 @@
                             <option value="38px">38px</option>
                         </select>
                         <label for="textType">Font type</label>
-                        <select id="textType" class="form-control" title="Font family">
+                        <select id="textType" class="form-control" title="Font type">
                             <option value="Arial" selected="selected">Arial</option>
                             <option value="Arial Black">Arial Black</option>
                             <option value="Comic Sans MS">Comic Sans MS</option>

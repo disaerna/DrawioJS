@@ -5,7 +5,7 @@ Shape.prototype.constructor = Shape;
 var currentLetter;
 var currentCtx;
 
-function Shape(type, id, mousePos, fillColor, strokeColor, lineWidth) {
+function Shape(type, id, mousePos, fillColor, strokeColor, lineWidth, stroke) {
     this.type = type;
     this.id = id;
     this.xStartPos = mousePos.xPos;
@@ -13,6 +13,7 @@ function Shape(type, id, mousePos, fillColor, strokeColor, lineWidth) {
     this.fillColor = fillColor;
     this.strokeColor = strokeColor;
     this.lineWidth = lineWidth;
+    this.stroke = stroke;
 }
 
 Shape.prototype.getType = function() {
@@ -38,7 +39,7 @@ Shape.prototype.loadStyles = function(ctx) {
 Rectangle.prototype = Object.create(Shape.prototype);
 Rectangle.prototype.constructor = Rectangle;
 
-function Rectangle(id, mousePos, fillColor, strokeColor, lineWidth) {
+function Rectangle(id, mousePos, fillColor, strokeColor, lineWidth, stroke) {
     Shape.call(
         this,
         "rectangle",
@@ -46,7 +47,8 @@ function Rectangle(id, mousePos, fillColor, strokeColor, lineWidth) {
         mousePos,
         fillColor,
         strokeColor,
-        lineWidth
+        lineWidth,
+        stroke
     );
     this.width = 0;
     this.height = 0;
@@ -58,16 +60,26 @@ Rectangle.prototype.draw = function(ctx, mousePos) {
     this.width = mousePos.xPos - this.xStartPos;
     this.height = mousePos.yPos - this.yStartPos;
     this.setStyles(ctx);
-    ctx.fillRect(this.xStartPos, this.yStartPos, this.width, this.height);
-    ctx.strokeRect(this.xStartPos, this.yStartPos, this.width, this.height);
+    if (this.stroke === "stroke") {
+        ctx.strokeRect(this.xStartPos, this.yStartPos, this.width, this.height);
+        console.log("STROKE");
+    } else {
+        ctx.fillRect(this.xStartPos, this.yStartPos, this.width, this.height);
+        ctx.strokeRect(this.xStartPos, this.yStartPos, this.width, this.height);
+    }
     this.xEndPos = mousePos.xPos;
     this.yEndPos = mousePos.yPos;
 };
 
 Rectangle.prototype.render = function(ctx) {
     this.loadStyles(ctx);
-    ctx.fillRect(this.xStartPos, this.yStartPos, this.width, this.height);
-    ctx.strokeRect(this.xStartPos, this.yStartPos, this.width, this.height);
+    if (this.stroke === "stroke") {
+        ctx.strokeRect(this.xStartPos, this.yStartPos, this.width, this.height);
+        console.log("STROKE");
+    } else {
+        ctx.fillRect(this.xStartPos, this.yStartPos, this.width, this.height);
+        ctx.strokeRect(this.xStartPos, this.yStartPos, this.width, this.height);
+    }
 };
 
 /**
@@ -76,8 +88,17 @@ Rectangle.prototype.render = function(ctx) {
 Circle.prototype = Object.create(Shape.prototype);
 Circle.prototype.constructor = Circle;
 
-function Circle(id, mousePos, fillColor, strokeColor, lineWidth) {
-    Shape.call(this, "circle", id, mousePos, fillColor, strokeColor, lineWidth);
+function Circle(id, mousePos, fillColor, strokeColor, lineWidth, stroke) {
+    Shape.call(
+        this,
+        "circle",
+        id,
+        mousePos,
+        fillColor,
+        strokeColor,
+        lineWidth,
+        stroke
+    );
     this.radius = 0;
 }
 
@@ -89,16 +110,24 @@ Circle.prototype.draw = function(ctx, mousePos) {
     );
     this.setStyles(ctx);
     ctx.arc(this.xStartPos, this.yStartPos, this.radius, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.stroke();
+    if (this.stroke === "stroke") {
+        ctx.stroke();
+    } else {
+        ctx.fill();
+        ctx.stroke();
+    }
 };
 
 Circle.prototype.render = function(ctx) {
     ctx.beginPath();
     this.loadStyles(ctx);
     ctx.arc(this.xStartPos, this.yStartPos, this.radius, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.stroke();
+    if (this.stroke === "stroke") {
+        ctx.stroke();
+    } else {
+        ctx.stroke();
+        ctx.fill();
+    }
 };
 
 /**

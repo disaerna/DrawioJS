@@ -215,7 +215,7 @@ Canvas.prototype.move = function() {
  * Recieves a requested shape to draw and sets up event listeners and draws the shape
  * @param {the requested shape to be drawn} requestedShape
  */
-Canvas.prototype.draw = function(requestedShape) {
+Canvas.prototype.draw = function(requestedShape, isStroke) {
     // assign this to the variable canvas, this is done due to javascripts scoping
     var canvas = this;
     $("#canvas").on("mousedown", mouseDown);
@@ -228,7 +228,8 @@ Canvas.prototype.draw = function(requestedShape) {
     function mouseDown(event) {
         canvas.drawing = true;
         // send the canvas element, the event and the requested shape as parameters
-        canvas.initShape(this, event, requestedShape);
+
+        canvas.initShape(this, event, requestedShape, isStroke);
         if (requestedShape === "letters") {
             console.log("PRESS");
             canvas.currentShape.display();
@@ -273,7 +274,7 @@ Canvas.prototype.draw = function(requestedShape) {
  * @param {an event} event
  * @param {a shape to initialize} shape
  */
-Canvas.prototype.initShape = function(canvas, event, shape) {
+Canvas.prototype.initShape = function(canvas, event, shape, isStroke) {
     mousePos = this.getMouseCoordinates(canvas, event);
     if (shape === "rectangle") {
         this.currentShape = new Rectangle(
@@ -281,7 +282,8 @@ Canvas.prototype.initShape = function(canvas, event, shape) {
             mousePos,
             this.fillColor,
             this.strokeColor,
-            this.lineWidth
+            this.lineWidth,
+            (this.stroke = isStroke)
         );
     }
     if (shape === "circle") {
@@ -290,7 +292,8 @@ Canvas.prototype.initShape = function(canvas, event, shape) {
             mousePos,
             this.fillColor,
             this.strokeColor,
-            this.lineWidth
+            this.lineWidth,
+            (this.stroke = isStroke)
         );
     }
     if (shape === "line") {
