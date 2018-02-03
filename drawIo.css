@@ -1,72 +1,147 @@
-body{
+body {
     margin: auto;
     background-color: rgb(255, 0, 225);
 }
 
-*{
-    margin-top: 5px;
+#container {
 }
 
-#toolbar{
+#toolbar {
+    display: inline-flex;
+    justify-content: center;
     width: 100%;
     cursor: pointer;
-    height: 100px;
+    min-height: 100px;
+    margin: 20px;
+    margin-left: 0px;
+    padding-left: 20px;
+    padding-top: 10px;
+    padding-bottom: 10px;
     border-bottom: 2px solid black;
-    display: inline-block;
-    margin-bottom: 20px;
-    padding: 4px;
+    flex-wrap: wrap;
+}
+
+#toolbar button {
+    background-repeat: no-repeat;
+    background: none;
+    background-color: transparent;
+    border: none;
+    outline: none;
+    overflow: hidden;
+}
+
+button:hover {
+    background-color: #a3a3c2;
+}
+
+#fa {
+    font-size: 30px;
+    color: #7300ab;
+    width: 100%;
+    text-align: center;
+    margin-bottom: 10px;
+}
+.second-bar {
+    display: flex;
+}
+
+.flaticon-interface-1 {
+    font-weight: 1000;
 }
 
 button.btn {
     padding: 1px 4px;
     font-size: 16px;
-    background-color:  #c2c2d6;
+    background-color: #c2c2d6;
     border: 2px solid;
     border-color: #47476b;
 }
 
-.tool:hover, .shape:hover{
-    background-color: #a3a3c2;
-    
-}
-#canvas-container{
-    width: 800px;
-    height: 500px;
-}
-#canvas{
-    border:1px solid #000000;
-    cursor: crosshair;
-    margin: auto;
-    display: block;
+#textValue {
+    display: none;
 }
 
-#text{
+/*.tool:hover, .shape:hover{
+    background-color: #a3a3c2;
+    
+}*/
+
+#canvas-container {
+    width: 800px;
+    height: 500px;
+    margin: 0 auto;
+}
+
+#canvas {
+    border: 1px solid #000000;
+    cursor: crosshair;
+}
+
+#text {
     display: inline;
 }
 
-select.form-control{
+select.form-control {
     width: 140px;
     display: inline;
 }
 
-#fillColor, #strokeColor {
-    width: 20px;
-    height: 20px;
+#fillColor,
+#strokeColor {
+    width: 30px;
+    height: 30px;
     border-radius: 0px;
+    margin-right: 5px;
+    background: white;
+    border: 0;
 }
 
-#color-div{
+#fillColor::-webkit-color-swatch,
+#strokeColor::-webkit-color-swatch {
+    border: 1px solid #000;
+    border-radius: 3px;
+    padding: 0;
+    background: #000;
+}
+
+#fillColor::-webkit-color-swatch-wrapper,
+#strokeColor::-webkit-color-swatch-wrapper {
+    border: 1px solid #000;
+    border-radius: 3px;
+    padding: 0;
+    background: #000;
+}
+
+select.form-control {
+    margin-right: 5px;
+    width: auto;
+}
+
+#color-div {
     display: inline-block;
+    margin-right: 10px;
 }
 
-select{
+#color-div label {
+    font-size: 14px;
+    color: initial;
+    position: relative;
+    top: -5px;
+}
+
+select {
     border-radius: 4px;
     font-size: 14px;
     font-weight: 400;
     line-height: 1.42857143;
     height: 34px;
 }
-#textValue{
+
+#line {
+    position: relative;
+    top: -2px;
+}
+#textValue {
     position: absolute;
 }
 
@@ -74,7 +149,7 @@ select{
     padding-top: 10px;
 }
 
-#colors > input{
+#colors > input {
     height: 25px;
     width: 25px;
 }

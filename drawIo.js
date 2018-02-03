@@ -1,52 +1,51 @@
 /**
  * partially inspired by: http://atomicrobotdesign.com/blog/javascript/draw-a-rectangle-using-the-mouse-on-the-canvas-in-less-than-40-lines-of-javascript/
  */
-$(document).ready(function(){
+$(document).ready(function() {
     let canvas = new Canvas();
     let storage = window.localStorage;
     //start with pen as default
     canvas.draw("pen");
-    $(".shape").on("click", function(event){
+    $(".shape").on("click", function(event) {
         //retrieve the id of the current event and pass to canvas.draw()
         $("#canvas").unbind();
         canvas.draw(event.currentTarget.id);
     });
 
     // Hafa ser object sem er toolbarinn?
-    
-    $(".tool").on("click", function(event){
+
+    $(".tool").on("click", function(event) {
         var request = event.currentTarget.id;
-        if(request === 'undo'){
+        if (request === "undo") {
             canvas.undo();
             //perform undo
         }
-        if(request === 'redo'){
+        if (request === "redo") {
             //perform redo
             canvas.redo();
         }
-        if(request === 'clear') {
+        if (request === "clear") {
             canvas.clear();
         }
-        if(request === 'save'){
-            console.log(canvas.shapes)
-            storage.setItem(canvas.canvas, JSON.stringify(canvas.shapes))
+        if (request === "save") {
+            console.log(canvas.shapes);
+            storage.setItem(canvas.canvas, JSON.stringify(canvas.shapes));
         }
-        if(request === 'load'){
+        if (request === "load") {
             var shapes = JSON.parse(storage.getItem(canvas.canvas));
             canvas.loadShapes(shapes);
         }
-        if(request === 'move'){
+        if (request === "move") {
             $("#canvas").unbind();
             canvas.move();
-        }    
+        }
     });
 
-    $("#fillColor").on("change", function(event){
+    $("#fillColor").on("change", function(event) {
         canvas.fillColor = document.getElementById("fillColor").value;
     });
 
-    $("#strokeColor").on("change", function(event){
+    $("#strokeColor").on("change", function(event) {
         canvas.strokeColor = document.getElementById("strokeColor").value;
-    }); 
+    });
 });
-
