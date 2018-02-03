@@ -25,6 +25,7 @@ Canvas.prototype.move = function(){
     var tempShape = null;
     var initialMousePos;
     function mouseDown(event){
+        canvas.loadContent();
         canvas.moving = true;
         var mousePos = canvas.getMouseCoordinates(this, event);
         canvas.shapes.forEach(shape => {
@@ -105,6 +106,9 @@ Canvas.prototype.move = function(){
                 if((mousePos.xPos >= shape.xStartPos && mousePos.xPos <= (shape.xStartPos + shape.width))
                 && mousePos.yPos >= shape.yStartPos && mousePos.yPos <= (shape.yStartPos + shape.height)){
                     tempShape = shape;
+                    console.log("shape id " + shape.id)
+                    console.log("shape width " + shape.width)
+                    console.log("shape heigt " + shape.height)
                     console.log("INSIDE")
                 }
             }
@@ -156,13 +160,14 @@ Canvas.prototype.draw = function(requestedShape){
     $("#canvas").on("mousedown", mouseDown);
     $("#canvas").on("mousemove", mouseMove);
     $("#canvas").on("mouseup", mouseUp);
-    $("#textValue").on('keydown',keyDown);
+    $("#textValue").unbind('keydown').bind('keydown',keyDown);
     
     function mouseDown(event){
         canvas.drawing = true;
         // send the canvas element, the event and the requested shape as parameters
         canvas.initShape(this, event, requestedShape);
         if(requestedShape === 'letters'){
+            console.log("PRESS")
             canvas.currentShape.display();
         }
     }
@@ -180,7 +185,10 @@ Canvas.prototype.draw = function(requestedShape){
     }
     
     function mouseUp(event){
-        if(requestedShape !== 'letters'){
+        if(requestedShape === 'letters'){
+            console.log(canvas.shapes)
+        }
+        else{
             canvas.drawing = false;
             canvas.shapes.push(canvas.currentShape);
         }
@@ -192,6 +200,7 @@ Canvas.prototype.draw = function(requestedShape){
         if(key == 13 && requestedShape === 'letters'){
             canvas.drawShape(canvas, event);
             canvas.drawing = false;
+            console.log(canvas.currentShape)
             canvas.shapes.push(canvas.currentShape);
         }
     }
