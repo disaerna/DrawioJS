@@ -10,8 +10,6 @@ function Canvas() {
     this.strokeColor = document.getElementById("strokeColor").value;
     this.lineWidth = document.getElementById("lineWidth").value;
     this.retShape = null;
-    //generate unique id for shapes for when moving them
-    this.id = 1;
 }
 /**
  * Loop through all shapes and check if mouse is within it's area
@@ -117,6 +115,8 @@ Canvas.prototype.findShape = function(mousePos) {
         }
         if (shape instanceof Letters) {
             console.log("letters");
+            console.log(shape.xStartPos + " " + shape.yStartPos);
+            console.log(mousePos.xPos + " " + mousePos.yPos);
             if (
                 mousePos.xPos >= shape.xStartPos &&
                 mousePos.xPos <= shape.xStartPos + shape.width &&

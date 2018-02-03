@@ -9,6 +9,8 @@ $(document).ready(function() {
     $(".shape").on("click", function(event) {
         //retrieve the id of the current event and pass to canvas.draw()
         $("#canvas").unbind();
+        $(".shape, .tool").removeClass("active");
+        $(this).toggleClass("active");
         canvas.draw(
             event.currentTarget.id.split("-")[0],
             event.currentTarget.id.split("-")[1]
@@ -18,6 +20,8 @@ $(document).ready(function() {
     // Hafa ser object sem er toolbarinn?
 
     $(".tool").on("click", function(event) {
+        $(".tool, .shape").removeClass("active");
+        $(this).toggleClass("active");
         var request = event.currentTarget.id;
         if (request === "undo") {
             canvas.undo();

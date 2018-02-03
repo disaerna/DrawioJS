@@ -3,9 +3,6 @@ body {
     background-color: rgb(255, 0, 225);
 }
 
-#container {
-}
-
 #toolbar {
     display: inline-flex;
     justify-content: center;
@@ -31,12 +28,16 @@ body {
 }
 
 button:hover {
-    background-color: #a3a3c2;
+    color: #f3822d;
+}
+
+button.active {
+    color: #37b8d3;
 }
 
 #fa {
     font-size: 30px;
-    color: #7300ab;
+    color: #940375;
     width: 100%;
     text-align: center;
     margin-bottom: 10px;
@@ -45,26 +46,9 @@ button:hover {
     display: flex;
 }
 
-.flaticon-interface-1 {
-    font-weight: 1000;
-}
-
-button.btn {
-    padding: 1px 4px;
-    font-size: 16px;
-    background-color: #c2c2d6;
-    border: 2px solid;
-    border-color: #47476b;
-}
-
 #textValue {
     display: none;
 }
-
-/*.tool:hover, .shape:hover{
-    background-color: #a3a3c2;
-    
-}*/
 
 #canvas-container {
     width: 800px;
@@ -143,13 +127,4 @@ select {
 }
 #textValue {
     position: absolute;
-}
-
-#colors {
-    padding-top: 10px;
-}
-
-#colors > input {
-    height: 25px;
-    width: 25px;
 }
