@@ -2,8 +2,8 @@
  * partially inspired by: http://atomicrobotdesign.com/blog/javascript/draw-a-rectangle-using-the-mouse-on-the-canvas-in-less-than-40-lines-of-javascript/
  */
 $(document).ready(function() {
-    let canvas = new Canvas();
-    let storage = window.localStorage;
+    var canvas = new Canvas();
+    var storage = window.localStorage;
     //start with pen as default
     canvas.draw("pen");
     $(".shape").on("click", function(event) {

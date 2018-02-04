@@ -1,13 +1,11 @@
-// Shape
 Shape.prototype = Object.create(Canvas.prototype);
 Shape.prototype.constructor = Shape;
 
 var currentLetter;
 var currentCtx;
 
-function Shape(type, id, mousePos, fillColor, strokeColor, lineWidth, stroke) {
+function Shape(type, mousePos, fillColor, strokeColor, lineWidth, stroke) {
     this.type = type;
-    this.id = id;
     this.xStartPos = mousePos.xPos;
     this.yStartPos = mousePos.yPos;
     this.fillColor = fillColor;
@@ -39,11 +37,10 @@ Shape.prototype.loadStyles = function(ctx) {
 Rectangle.prototype = Object.create(Shape.prototype);
 Rectangle.prototype.constructor = Rectangle;
 
-function Rectangle(id, mousePos, fillColor, strokeColor, lineWidth, stroke) {
+function Rectangle(mousePos, fillColor, strokeColor, lineWidth, stroke) {
     Shape.call(
         this,
         "rectangle",
-        id,
         mousePos,
         fillColor,
         strokeColor,
@@ -86,11 +83,10 @@ Rectangle.prototype.render = function(ctx) {
 Circle.prototype = Object.create(Shape.prototype);
 Circle.prototype.constructor = Circle;
 
-function Circle(id, mousePos, fillColor, strokeColor, lineWidth, stroke) {
+function Circle(mousePos, fillColor, strokeColor, lineWidth, stroke) {
     Shape.call(
         this,
         "circle",
-        id,
         mousePos,
         fillColor,
         strokeColor,
@@ -114,6 +110,7 @@ Circle.prototype.draw = function(ctx, mousePos) {
         ctx.fill();
         ctx.stroke();
     }
+    ctx.closePath();
 };
 
 Circle.prototype.render = function(ctx) {
@@ -134,8 +131,8 @@ Circle.prototype.render = function(ctx) {
 Line.prototype = Object.create(Shape.prototype);
 Line.prototype.constructor = Line;
 
-function Line(id, mousePos, fillColor, strokeColor, lineWidth) {
-    Shape.call(this, "line", id, mousePos, fillColor, strokeColor, lineWidth);
+function Line(mousePos, fillColor, strokeColor, lineWidth) {
+    Shape.call(this, "line", mousePos, fillColor, strokeColor, lineWidth);
     this.xEndPos = 0;
     this.yEndPos = 0;
 }
@@ -167,8 +164,8 @@ Line.prototype.render = function(ctx) {
 Letters.prototype = Object.create(Shape.prototype);
 Letters.prototype.constructor = Letters;
 
-function Letters(id, mousePos, fillColor, strokeColor, lineWidth) {
-    Shape.call(this, "letters", id, fillColor, strokeColor, lineWidth);
+function Letters(mousePos, fillColor, strokeColor, lineWidth) {
+    Shape.call(this, "letters", fillColor, strokeColor, lineWidth);
     this.fontSize = "12px";
     this.fontType = "Arial";
     this.font = this.fontSize + " " + this.fontType;
@@ -232,8 +229,8 @@ Letters.prototype.render = function(ctx) {
 Pen.prototype = Object.create(Shape.prototype);
 Pen.prototype.constructor = Pen;
 
-function Pen(id, mousePos, fillColor, strokeColor, lineWidth) {
-    Shape.call(this, "pen", id, mousePos, fillColor, strokeColor, lineWidth);
+function Pen(mousePos, fillColor, strokeColor, lineWidth) {
+    Shape.call(this, "pen", mousePos, fillColor, strokeColor, lineWidth);
     this.xEndPos = 0;
     this.yEndPos = 0;
     this.xPos = [];

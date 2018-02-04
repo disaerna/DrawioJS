@@ -4,21 +4,17 @@ function Canvas() {
     this.currentShape;
     this.canvas = document.getElementById("canvas");
     this.ctx = canvas.getContext("2d");
-    this.drawing = false;
-    this.moving = false;
+    this.mousedown = false;
     this.fillColor = document.getElementById("fillColor").value;
     this.strokeColor = document.getElementById("strokeColor").value;
     this.lineWidth = document.getElementById("lineWidth").value;
-    this.retShape = null;
-    this.id = 0;
 }
 /**
- * Loop through all shapes and check if mouse is within it's area
+ * Loop through all shapes and check if current mouse position is within its area
  * The shapes are layered as they are pushed onto the shapes array
  */
 Canvas.prototype.findShape = function(mousePos) {
     var canvas = this;
-    var tempShape = null;
     canvas.shapes.forEach(shape => {
         if (shape instanceof Rectangle) {
             if (shape.height < 0 && shape.width < 0) {
@@ -28,7 +24,7 @@ Canvas.prototype.findShape = function(mousePos) {
                     mousePos.yPos >= shape.yEndPos &&
                     mousePos.yPos <= shape.yEndPos + Math.abs(shape.height)
                 ) {
-                    tempShape = shape;
+                    canvas.currentShape = shape;
                 }
             } else if (shape.width < 0) {
                 if (
@@ -37,7 +33,7 @@ Canvas.prototype.findShape = function(mousePos) {
                     mousePos.yPos >= shape.yStartPos &&
                     mousePos.yPos <= shape.yStartPos + Math.abs(shape.height)
                 ) {
-                    tempShape = shape;
+                    canvas.currentShape = shape;
                 }
             } else if (shape.height < 0) {
                 if (
@@ -46,7 +42,7 @@ Canvas.prototype.findShape = function(mousePos) {
                     mousePos.yPos >= shape.yEndPos &&
                     mousePos.yPos <= shape.yEndPos + Math.abs(shape.height)
                 ) {
-                    tempShape = shape;
+                    canvas.currentShape = shape;
                 }
             } else {
                 if (
@@ -55,21 +51,19 @@ Canvas.prototype.findShape = function(mousePos) {
                     mousePos.yPos >= shape.yStartPos &&
                     mousePos.yPos <= shape.yStartPos + Math.abs(shape.height)
                 ) {
-                    tempShape = shape;
+                    canvas.currentShape = shape;
                 }
             }
         }
         if (shape instanceof Circle) {
-            //move circle
             var x = Math.pow(mousePos.xPos - shape.xStartPos, 2);
             var y = Math.pow(mousePos.yPos - shape.yStartPos, 2);
             var distance = Math.sqrt(x + y);
             if (distance < shape.radius) {
-                tempShape = shape;
+                canvas.currentShape = shape;
             }
         }
         if (shape instanceof Pen) {
-            //move pen
             var lineWidth = parseInt(
                 document.getElementById("lineWidth").value
             );
@@ -82,12 +76,11 @@ Canvas.prototype.findShape = function(mousePos) {
                     mousePos.yPos >= m.yPos - offset &&
                     mousePos.yPos <= m.yPos + offset
                 ) {
-                    tempShape = shape;
+                    canvas.currentShape = shape;
                 }
             }
         }
         if (shape instanceof Line) {
-            //move line
             var p0 = {
                 xPos: mousePos.xPos,
                 yPos: mousePos.yPos
@@ -111,7 +104,7 @@ Canvas.prototype.findShape = function(mousePos) {
             );
             var result = parseInt(numerator / denominator);
             if (result < 10) {
-                tempShape = shape;
+                canvas.currentShape = shape;
             }
         }
         if (shape instanceof Letters) {
@@ -123,74 +116,73 @@ Canvas.prototype.findShape = function(mousePos) {
                 mousePos.xPos <= shape.xStartPos + shape.width &&
                 mousePos.xPos >= shape.xStartPos
             ) {
-                tempShape = shape;
+                canvas.currentShape = shape;
             }
         }
-        this.retShape = tempShape;
     });
 };
 
 /**
- * Moves shape around the canvas.
+ * Applies event listeners for mousedown, mousemove and mouseup on the element
+ * with id canvas, listeners call appropriate functions to execute the moves
  */
 Canvas.prototype.move = function() {
     var canvas = this;
     $("#canvas").on("mousedown", mouseDown);
     $("#canvas").on("mousemove", mouseMove);
     $("#canvas").on("mouseup", mouseUp);
-    var tempShape = null;
+    var shape;
     var initialMousePos;
 
     function mouseDown(event) {
-        canvas.loadContent();
-        canvas.moving = true;
+        canvas.renderShapes();
+        canvas.mousedown = true;
         var mousePos = canvas.getMouseCoordinates(this, event);
         canvas.findShape(mousePos);
-        tempShape = canvas.retShape;
+        shape = canvas.currentShape;
         initialMousePos = mousePos;
     }
 
     function mouseMove(event) {
-        if (canvas.moving) {
-            if (tempShape != null) {
+        if (canvas.mousedown) {
+            if (shape != null) {
                 var mousePos = canvas.getMouseCoordinates(this, event);
                 var xOffset = initialMousePos.xPos - mousePos.xPos;
                 var yOffset = initialMousePos.yPos - mousePos.yPos;
-                if (tempShape instanceof Pen) {
-                    for (var i = 0; i < tempShape.xPos.length; ++i) {
-                        tempShape.xPos[i] = tempShape.xPos[i] - xOffset;
-                        tempShape.yPos[i] = tempShape.yPos[i] - yOffset;
-                        tempShape.moveArr[i].xPos =
-                            tempShape.moveArr[i].xPos - xOffset;
-                        tempShape.moveArr[i].yPos =
-                            tempShape.moveArr[i].yPos - yOffset;
+                if (shape instanceof Pen) {
+                    for (var i = 0; i < shape.xPos.length; ++i) {
+                        shape.xPos[i] = shape.xPos[i] - xOffset;
+                        shape.yPos[i] = shape.yPos[i] - yOffset;
+                        shape.moveArr[i].xPos = shape.moveArr[i].xPos - xOffset;
+                        shape.moveArr[i].yPos = shape.moveArr[i].yPos - yOffset;
                     }
                 }
-                tempShape.xStartPos = tempShape.xStartPos - xOffset;
-                tempShape.yStartPos = tempShape.yStartPos - yOffset;
-                if (tempShape.xEndPos != 0 || tempShape.yEndPos != 0) {
-                    tempShape.xEndPos = tempShape.xEndPos - xOffset;
-                    tempShape.yEndPos = tempShape.yEndPos - yOffset;
+                shape.xStartPos = shape.xStartPos - xOffset;
+                shape.yStartPos = shape.yStartPos - yOffset;
+                if (shape.xEndPos != 0 || shape.yEndPos != 0) {
+                    shape.xEndPos = shape.xEndPos - xOffset;
+                    shape.yEndPos = shape.yEndPos - yOffset;
                 }
-                canvas.loadContent();
                 initialMousePos.xPos = mousePos.xPos;
                 initialMousePos.yPos = mousePos.yPos;
+                canvas.renderShapes();
             }
         }
     }
 
     function mouseUp(event) {
-        canvas.moving = false;
-        tempShape = null;
+        canvas.mousedown = false;
+        canvas.currentShape = null;
     }
 };
 
 /**
- * Recieves a requested shape to draw and sets up event listeners and draws the shape
- * @param {the requested shape to be drawn} requestedShape
+ * First parameter is a requested shape to draw and sets up event listeners and draws the shape
+ * Second parameter is a string determining if the shape should have a stroke or not
+ * @param {string} requestedShape
+ * @param {string} isStroke
  */
 Canvas.prototype.draw = function(requestedShape, isStroke) {
-    // assign this to the variable canvas, this is done due to javascripts scoping
     var canvas = this;
     $("#canvas").on("mousedown", mouseDown);
     $("#canvas").on("mousemove", mouseMove);
@@ -200,9 +192,8 @@ Canvas.prototype.draw = function(requestedShape, isStroke) {
         .bind("keydown", keyDown);
 
     function mouseDown(event) {
-        canvas.drawing = true;
+        canvas.mousedown = true;
         // send the canvas element, the event and the requested shape as parameters
-
         canvas.initShape(this, event, requestedShape, isStroke);
         if (requestedShape === "letters") {
             canvas.currentShape.display();
@@ -211,10 +202,10 @@ Canvas.prototype.draw = function(requestedShape, isStroke) {
 
     function mouseMove(event) {
         // while we are in drawingmode we want to draw the shape
-        if (canvas.drawing) {
+        if (canvas.mousedown) {
             // every drawn element has to constantly print the previous drawn
             // shapes to be able to draw the current shape in right proportions
-            canvas.loadContent();
+            canvas.renderShapes();
             if (requestedShape !== "letters") {
                 canvas.drawShape(this, event);
             }
@@ -224,7 +215,7 @@ Canvas.prototype.draw = function(requestedShape, isStroke) {
     function mouseUp(event) {
         if (requestedShape === "letters") {
         } else {
-            canvas.drawing = false;
+            canvas.mousedown = false;
             canvas.shapes.push(canvas.currentShape);
         }
     }
@@ -233,12 +224,15 @@ Canvas.prototype.draw = function(requestedShape, isStroke) {
         var key = event.which;
         if (key == 13 && requestedShape === "letters") {
             canvas.drawShape(canvas, event);
-            canvas.drawing = false;
+            canvas.mousedown = false;
             canvas.shapes.push(canvas.currentShape);
         }
     }
 };
-
+/**
+ * Change the fill color of rectangles and circles
+ * Change the stroke color of letters, lines and freehand drawings
+ */
 Canvas.prototype.changeColor = function() {
     var canvas = this;
     $("#canvas").on("mousedown", mouseDown);
@@ -247,7 +241,7 @@ Canvas.prototype.changeColor = function() {
     function mouseDown(event) {
         var mousePos = canvas.getMouseCoordinates(this, event);
         canvas.findShape(mousePos);
-        shape = canvas.retShape;
+        shape = canvas.currentShape;
     }
 
     function mouseUp(event) {
@@ -260,21 +254,21 @@ Canvas.prototype.changeColor = function() {
                 shape.stroke = "fill";
             }
             shape.fillColor = color;
-            canvas.loadContent();
+            canvas.renderShapes();
         }
     }
 };
 /**
  * Initialize shape and prepare for drawing
- * @param {a canvas element} canvas
- * @param {an event} event
- * @param {a shape to initialize} shape
+ * @param {HTMLCanvasElement} canvas
+ * @param {MouseEvent} event
+ * @param {string} shape
+ * @param {string} isStroke
  */
 Canvas.prototype.initShape = function(canvas, event, shape, isStroke) {
     mousePos = this.getMouseCoordinates(canvas, event);
     if (shape === "rectangle") {
         this.currentShape = new Rectangle(
-            this.id,
             mousePos,
             this.fillColor,
             this.strokeColor,
@@ -284,7 +278,6 @@ Canvas.prototype.initShape = function(canvas, event, shape, isStroke) {
     }
     if (shape === "circle") {
         this.currentShape = new Circle(
-            this.id,
             mousePos,
             this.fillColor,
             this.strokeColor,
@@ -294,7 +287,6 @@ Canvas.prototype.initShape = function(canvas, event, shape, isStroke) {
     }
     if (shape === "line") {
         this.currentShape = new Line(
-            this.id,
             mousePos,
             this.fillColor,
             this.strokeColor,
@@ -303,7 +295,6 @@ Canvas.prototype.initShape = function(canvas, event, shape, isStroke) {
     }
     if (shape == "letters") {
         this.currentShape = new Letters(
-            this.id,
             mousePos,
             this.fillColor,
             this.strokeColor,
@@ -312,16 +303,18 @@ Canvas.prototype.initShape = function(canvas, event, shape, isStroke) {
     }
     if (shape == "pen") {
         this.currentShape = new Pen(
-            this.id,
             mousePos,
             this.fillColor,
             this.strokeColor,
             this.lineWidth
         );
     }
-    this.id += 1;
 };
-
+/**
+ * Argument is an array of shapes retrieved from the localstore
+ * Each shape is converted back to its original form
+ * @param {Array} shapes
+ */
 Canvas.prototype.loadShapes = function(shapes) {
     temp = [];
     shapes.forEach(shape => {
@@ -342,35 +335,44 @@ Canvas.prototype.loadShapes = function(shapes) {
         }
     });
     this.shapes = temp;
-    this.loadContent();
+    this.renderShapes();
 };
 
 /**
- * Draw the actual element
- * @param {a canvas element} canvas
- * @param {an event} event
+ * Draw the shape onto the canvas
+ * @param {HTMLCanvasElement} canvas
+ * @param {MouseEvent} event
  */
 Canvas.prototype.drawShape = function(canvas, event) {
     mousePos = this.getMouseCoordinates(canvas, event);
     this.currentShape.draw(this.ctx, mousePos);
 };
 
+/**
+ * Remove the last shape drawn on the canvas
+ */
 Canvas.prototype.undo = function() {
     if (this.shapes.length > 0) {
         var shape = this.shapes.pop();
         this.undone.push(shape);
-        this.loadContent();
+        this.renderShapes();
     }
 };
 
+/**
+ * Retrieve tha last shape removed by undone
+ */
 Canvas.prototype.redo = function() {
     if (this.undone.length > 0) {
         var shape = this.undone.pop();
         this.shapes.push(shape);
-        this.loadContent();
+        this.renderShapes();
     }
 };
 
+/**
+ * Clears the canvas
+ */
 Canvas.prototype.clear = function() {
     if (this.shapes.length > 0) {
         if (confirm("Are you sure you want to clear the canvas?")) {
@@ -398,13 +400,9 @@ Canvas.prototype.getMouseCoordinates = function(canvas, event) {
  * and print them on the canvas
  */
 Canvas.prototype.renderShapes = function() {
+    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     for (var i = 0; i < this.shapes.length; ++i) {
         shape = this.shapes[i];
         shape.render(this.ctx);
     }
-};
-
-Canvas.prototype.loadContent = function() {
-    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-    this.renderShapes();
 };
