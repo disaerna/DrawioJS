@@ -9,6 +9,7 @@ $(document).ready(function() {
     $(".shape").on("click", function(event) {
         //retrieve the id of the current event and pass to canvas.draw()
         $("#canvas").unbind();
+        // change fa icons when active
         $(".shape, .tool").removeClass("active");
         $(this).toggleClass("active");
         canvas.draw(
@@ -17,25 +18,21 @@ $(document).ready(function() {
         );
     });
 
-    // Hafa ser object sem er toolbarinn?
-
     $(".tool").on("click", function(event) {
+        // change fa icons when active
         $(".tool, .shape").removeClass("active");
         $(this).toggleClass("active");
         var request = event.currentTarget.id;
         if (request === "undo") {
             canvas.undo();
-            //perform undo
         }
         if (request === "redo") {
-            //perform redo
             canvas.redo();
         }
         if (request === "clear") {
             canvas.clear();
         }
         if (request === "save") {
-            console.log(canvas.shapes);
             storage.setItem(canvas.canvas, JSON.stringify(canvas.shapes));
         }
         if (request === "load") {
