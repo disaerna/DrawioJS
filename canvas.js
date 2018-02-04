@@ -253,7 +253,12 @@ Canvas.prototype.changeColor = function() {
             newFillColor = document.getElementById("fillColor").value;
             newStrokeColor = document.getElementById("strokeColor").value;
             shape.fillColor = newFillColor;
-            shape.strokeColor = newStrokeColor;
+            if (shape instanceof Letters) {
+                shape.fillColor = newStrokeColor;
+            } else {
+                shape.fillColor = newfillColor;
+                shape.strokeColor = newStrokeColor;
+            }
             canvas.renderShapes();
         }
     }
