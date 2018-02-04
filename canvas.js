@@ -252,11 +252,11 @@ Canvas.prototype.changeColor = function() {
         if (shape !== null) {
             newFillColor = document.getElementById("fillColor").value;
             newStrokeColor = document.getElementById("strokeColor").value;
-            shape.fillColor = newFillColor;
             if (shape instanceof Letters) {
                 shape.fillColor = newStrokeColor;
             } else {
-                shape.fillColor = newfillColor;
+                console.log("he");
+                shape.fillColor = newFillColor;
                 shape.strokeColor = newStrokeColor;
             }
             canvas.renderShapes();
