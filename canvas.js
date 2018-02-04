@@ -219,8 +219,6 @@ Canvas.prototype.draw = function(requestedShape, isStroke) {
         } else {
             canvas.mousedown = false;
             canvas.shapes.push(canvas.currentShape);
-            console.log("mouseup");
-            console.log(canvas.shapes);
         }
     }
 
@@ -252,14 +250,10 @@ Canvas.prototype.changeColor = function() {
 
     function mouseUp(event) {
         if (shape !== null) {
-            color = document.getElementById("fillColor").value;
-            if (shape instanceof Line || shape instanceof Pen) {
-                shape.strokeColor = color;
-            }
-            if (shape.stroke === "stroke") {
-                shape.stroke = "fill";
-            }
-            shape.fillColor = color;
+            newFillColor = document.getElementById("fillColor").value;
+            newStrokeColor = document.getElementById("strokeColor").value;
+            shape.fillColor = newFillColor;
+            shape.strokeColor = newStrokeColor;
             canvas.renderShapes();
         }
     }
@@ -364,9 +358,6 @@ Canvas.prototype.undo = function() {
         this.renderShapes();
     }
     this.active();
-    console.log("undo");
-    console.log(this.shapes);
-    console.log(this.undone);
 };
 
 /**
@@ -379,9 +370,6 @@ Canvas.prototype.redo = function() {
         this.renderShapes();
     }
     this.active();
-    console.log("redo");
-    console.log(this.shapes);
-    console.log(this.undone);
 };
 
 /**
