@@ -34,10 +34,12 @@ $(document).ready(function() {
         }
         if (request === "save") {
             storage.setItem(canvas.canvas, JSON.stringify(canvas.shapes));
+            canvas.active();
         }
         if (request === "load") {
             var shapes = JSON.parse(storage.getItem(canvas.canvas));
             canvas.loadShapes(shapes);
+            canvas.active();
         }
         if (request === "move") {
             $("#canvas").unbind();

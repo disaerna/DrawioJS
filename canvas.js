@@ -8,6 +8,7 @@ function Canvas() {
     this.fillColor = document.getElementById("fillColor").value;
     this.strokeColor = document.getElementById("strokeColor").value;
     this.lineWidth = document.getElementById("lineWidth").value;
+    this.lastShape = null;
 }
 /**
  * Loop through all shapes and check if current mouse position is within its area
@@ -184,6 +185,7 @@ Canvas.prototype.move = function() {
  */
 Canvas.prototype.draw = function(requestedShape, isStroke) {
     var canvas = this;
+    this.lastShape = requestedShape;
     $("#canvas").on("mousedown", mouseDown);
     $("#canvas").on("mousemove", mouseMove);
     $("#canvas").on("mouseup", mouseUp);
@@ -239,9 +241,11 @@ Canvas.prototype.changeColor = function() {
     $("#canvas").on("mouseup", mouseUp);
     var shape = null;
     function mouseDown(event) {
-        var mousePos = canvas.getMouseCoordinates(this, event);
-        canvas.findShape(mousePos);
-        shape = canvas.currentShape;
+        if (canvas.shapes.length !== 0) {
+            var mousePos = canvas.getMouseCoordinates(this, event);
+            canvas.findShape(mousePos);
+            shape = canvas.currentShape;
+        }
     }
 
     function mouseUp(event) {
@@ -357,6 +361,7 @@ Canvas.prototype.undo = function() {
         this.undone.push(shape);
         this.renderShapes();
     }
+    this.active();
 };
 
 /**
@@ -368,6 +373,7 @@ Canvas.prototype.redo = function() {
         this.shapes.push(shape);
         this.renderShapes();
     }
+    this.active();
 };
 
 /**
@@ -381,6 +387,7 @@ Canvas.prototype.clear = function() {
             this.shapes = [];
         }
     }
+    this.active();
 };
 
 /**
@@ -405,4 +412,16 @@ Canvas.prototype.renderShapes = function() {
         shape = this.shapes[i];
         shape.render(this.ctx);
     }
+};
+
+Canvas.prototype.active = function() {
+    console.log("active");
+    $(".tool").removeClass("active");
+    this.draw(this.lastShape, this.lastShape.stroke);
+    var lastStroke = this.currentShape.stroke;
+    if (lastStroke === undefined) {
+        lastStroke = "fill";
+    }
+    var last = this.lastShape + "-" + lastStroke;
+    $("#" + last).toggleClass("active");
 };
