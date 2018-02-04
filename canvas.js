@@ -413,9 +413,12 @@ Canvas.prototype.renderShapes = function() {
         shape.render(this.ctx);
     }
 };
+/**
+ * Removes tool class active when the tool is load,save,undo,redo or clear.
+ * Makes last shape be the current shape and the shape active
+ */
 
 Canvas.prototype.active = function() {
-    console.log("active");
     $(".tool").removeClass("active");
     this.draw(this.lastShape, this.lastShape.stroke);
     var lastStroke = this.currentShape.stroke;
