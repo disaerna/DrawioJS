@@ -219,6 +219,8 @@ Canvas.prototype.draw = function(requestedShape, isStroke) {
         } else {
             canvas.mousedown = false;
             canvas.shapes.push(canvas.currentShape);
+            console.log("mouseup");
+            console.log(canvas.shapes);
         }
     }
 
@@ -362,6 +364,9 @@ Canvas.prototype.undo = function() {
         this.renderShapes();
     }
     this.active();
+    console.log("undo");
+    console.log(this.shapes);
+    console.log(this.undone);
 };
 
 /**
@@ -374,6 +379,9 @@ Canvas.prototype.redo = function() {
         this.renderShapes();
     }
     this.active();
+    console.log("redo");
+    console.log(this.shapes);
+    console.log(this.undone);
 };
 
 /**

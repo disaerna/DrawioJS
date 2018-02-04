@@ -20,6 +20,7 @@ $(document).ready(function() {
 
     $(".tool").on("click", function(event) {
         // change fa icons when active
+        $("#canvas").unbind();
         $(".tool, .shape").removeClass("active");
         $(this).toggleClass("active");
         var request = event.currentTarget.id;
@@ -42,11 +43,9 @@ $(document).ready(function() {
             canvas.active();
         }
         if (request === "move") {
-            $("#canvas").unbind();
             canvas.move();
         }
         if (request === "colorchange") {
-            $("#canvas").unbind();
             canvas.changeColor();
         }
     });
