@@ -188,7 +188,8 @@ Letters.prototype.display = function() {
         height: this.fontSize,
         fontSize: this.fontSize,
         display: "block",
-        color: this.fillColor
+        color: this.fillColor,
+        fontFamily: this.fontType
     });
 
     setTimeout(function() {
