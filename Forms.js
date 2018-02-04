@@ -141,7 +141,6 @@ function Line(id, mousePos, fillColor, strokeColor, lineWidth) {
 }
 
 Line.prototype.draw = function(ctx, mousePos) {
-    console.log("draw");
     ctx.beginPath();
     ctx.moveTo(mousePos.xPos, mousePos.yPos);
     this.setStyles(ctx);
@@ -202,9 +201,7 @@ Letters.prototype.display = function() {
 
 Letters.prototype.draw = function(ctx, mousePos) {
     this.value = document.getElementById("textValue").value;
-    this.width = ctx.measureText(this.value).width;
-    var temp = String(this.fontSize);
-    this.height = temp.slice(0, 2);
+    this.height = parseInt(String(this.fontSize).slice(0, 2));
     ctx.beginPath();
     ctx.font = this.fontSize + " " + this.fontType;
     this.setStyles(ctx);
@@ -213,6 +210,7 @@ Letters.prototype.draw = function(ctx, mousePos) {
     ctx.fillText(this.value, this.xStartPos, this.yStartPos);
     //ctx.strokeText(this.value, this.xStartPos, this.yStartPos);
     ctx.closePath();
+    this.width = parseInt(ctx.measureText(this.value).width);
     $("#textValue")
         .removeAttr("style")
         .css("display", "none");

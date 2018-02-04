@@ -115,16 +115,14 @@ Canvas.prototype.findShape = function(mousePos) {
             }
         }
         if (shape instanceof Letters) {
-            console.log("letters");
-            console.log(shape.xStartPos + " " + shape.yStartPos);
-            console.log(mousePos.xPos + " " + mousePos.yPos);
+            var heightInPoints = shape.height * 72 / 96;
+            var offset = 2;
             if (
-                mousePos.xPos >= shape.xStartPos &&
+                mousePos.yPos <= shape.yStartPos &&
+                mousePos.yPos >= shape.yStartPos - heightInPoints &&
                 mousePos.xPos <= shape.xStartPos + shape.width &&
-                mousePos.yPos >= shape.yStartPos &&
-                mousePos.yPos <= shape.yStartPos + shape.height
+                mousePos.xPos >= shape.xStartPos
             ) {
-                console.log("inside letters");
                 tempShape = shape;
             }
         }
@@ -207,7 +205,6 @@ Canvas.prototype.draw = function(requestedShape, isStroke) {
 
         canvas.initShape(this, event, requestedShape, isStroke);
         if (requestedShape === "letters") {
-            console.log("PRESS");
             canvas.currentShape.display();
         }
     }
@@ -226,7 +223,6 @@ Canvas.prototype.draw = function(requestedShape, isStroke) {
 
     function mouseUp(event) {
         if (requestedShape === "letters") {
-            console.log(canvas.shapes);
         } else {
             canvas.drawing = false;
             canvas.shapes.push(canvas.currentShape);
@@ -238,7 +234,6 @@ Canvas.prototype.draw = function(requestedShape, isStroke) {
         if (key == 13 && requestedShape === "letters") {
             canvas.drawShape(canvas, event);
             canvas.drawing = false;
-            console.log(canvas.currentShape);
             canvas.shapes.push(canvas.currentShape);
         }
     }
@@ -277,7 +272,6 @@ Canvas.prototype.changeColor = function() {
  */
 Canvas.prototype.initShape = function(canvas, event, shape, isStroke) {
     mousePos = this.getMouseCoordinates(canvas, event);
-    console.log(mousePos.xPos + " " + mousePos.yPos);
     if (shape === "rectangle") {
         this.currentShape = new Rectangle(
             this.id,
